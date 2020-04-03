@@ -4,10 +4,9 @@ public class Player {
 	String name;
 	Hand hand;
 	int money;
-	
-	public Player(String name, Hand hand, int money) {
+
+	public Player(String name, int money) {
 		this.name = name;
-		this.hand = hand;
 		this.money = money;
 	}
 
@@ -15,25 +14,22 @@ public class Player {
 		return name;
 	}
 
-	public void setName(String name) {
-		this.name = name;
-	}
-
 	public Hand getHand() {
 		return hand;
-	}
-
-	public void setHand(Hand hand) {
-		this.hand = hand;
 	}
 
 	public int getMoney() {
 		return money;
 	}
 
-	public void setMoney(int money) {
-		this.money = money;
+	public int bet(int bet) {
+		if (this.money >= bet) {
+			this.money -= bet;
+			return bet;
+		} else {
+			int currentMoney = this.money;
+			this.money = 0;
+			return currentMoney;
+		}
 	}
-	
-	
 }

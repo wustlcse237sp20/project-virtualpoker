@@ -11,7 +11,7 @@ class DeckTest {
 		Deck d = new Deck();
 		Card c = d.deal();
 		assertEquals(c.getSuit(), Suits.SPADES);
-		assertEquals(c.getRank(), Ranks.ACE);
+		assertEquals(c.getRank().toString(), "ACE");
 	}
 
 }

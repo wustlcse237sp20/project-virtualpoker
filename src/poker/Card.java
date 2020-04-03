@@ -2,10 +2,10 @@ package poker;
 
 public class Card {
 	
-	Suits suit;
-	Ranks rank;
+	private Suits suit;
+	private Rank rank;
 	
-	public Card(Suits suit, Ranks rank) {
+	public Card(Suits suit, Rank rank) {
 		this.suit = suit;
 		this.rank = rank;
 	}
@@ -14,8 +14,11 @@ public class Card {
 		return suit;
 	}
 
-	public Ranks getRank() {
+	public Rank getRank() {
 		return rank;
 	}
 	
+	public @Override String toString() {
+		return rank + " of " + suit;
+				}
 }
