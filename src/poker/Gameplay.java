@@ -10,6 +10,7 @@ public class Gameplay {
 	
 	
 	public void newRound(Player player, Player computer) {
+		
 		//initialize game
 		Deck deck = new Deck();
 		deck.shuffle();

@@ -23,6 +23,7 @@ public class Deck {
 		Card topCard = this.cards.get(0);
 		this.cards.remove(0);
 		return topCard;
+	
 	}
 	
 	

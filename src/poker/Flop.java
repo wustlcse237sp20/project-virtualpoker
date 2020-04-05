@@ -6,6 +6,7 @@ public class Flop {
 	public ArrayList<Card> flop = new ArrayList<Card>();
 
 	public Flop() {
+	
 	}
 
 	public Card getFirstCard() {

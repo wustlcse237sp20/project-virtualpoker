@@ -6,6 +6,7 @@ public class Hand {
 	public ArrayList<Card> hand = new ArrayList<Card>();
 
 	public Hand() {
+		
 	}
 
 	public Card getFirstCard() {
