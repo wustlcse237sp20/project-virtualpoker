@@ -12,7 +12,7 @@ public class Player {
 	}
 
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	public void setName(String name) {
@@ -20,7 +20,7 @@ public class Player {
 	}
 
 	public Hand getHand() {
-		return hand;
+		return this.hand;
 	}
 
 	public void setHand(Hand hand) {
@@ -28,7 +28,7 @@ public class Player {
 	}
 
 	public int getMoney() {
-		return money;
+		return this.money;
 	}
 
 	public void setMoney(int money) {
