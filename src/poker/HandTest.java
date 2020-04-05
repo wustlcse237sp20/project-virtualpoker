@@ -293,7 +293,7 @@ class HandTest {
 		
 		assertEquals(hand.compareTo(opponentHand, communityCards), -2);
 		
-		handCards.clear();
+		handCards.clear(); 
 		Card aceOfSpades = new Card(Suit.SPADES, Rank.ACE);
 		Card aceOfClubs = new Card(Suit.CLUBS, Rank.ACE);
 		handCards.add(aceOfSpades);
