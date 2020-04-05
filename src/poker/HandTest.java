@@ -2,6 +2,8 @@ package poker;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.ArrayList;
+
 import org.junit.jupiter.api.Test;
 
 import poker.Hand.HandRank;
@@ -9,78 +11,308 @@ import poker.Hand.HandRank;
 class HandTest {
 
 	@Test
-	void testCreateHand() {
-		Rank three = new Rank(1, "THREE");
-		Rank ace = new Rank(12, "ACE");
-		Card threeOfHearts = new Card(Suits.HEARTS,three);
-		Card aceOfDiamonds = new Card(Suits.DIAMONDS, ace);
+	void testIsRoyalFlush() {
 		Hand h = new Hand();
-		Card[] hand = h.getHand();
-		hand[0] = threeOfHearts;
-		hand[1] = aceOfDiamonds;
-		assertEquals(hand[0].getRank().toString(), "THREE");
-		assertEquals(hand[0].getSuit(), Suits.HEARTS);
+		ArrayList<Card> handCards = h.getHand();
+		Card aceOfDiamonds = new Card(Suit.DIAMONDS, Rank.ACE);
+		Card kingOfDiamonds = new Card(Suit.DIAMONDS, Rank.KING);
+		handCards.add(aceOfDiamonds);
+		handCards.add(kingOfDiamonds);
+		ArrayList<Card> communityCards = new ArrayList<Card>();
+		Card queenOfDiamonds = new Card(Suit.DIAMONDS, Rank.QUEEN);
+		Card jackOfDiamonds = new Card(Suit.DIAMONDS, Rank.JACK);
+		Card tenOfDiamonds = new Card(Suit.DIAMONDS, Rank.TEN);
+		Card sevenOfHearts = new Card(Suit.HEARTS, Rank.SEVEN);
+		Card fiveOfSpades = new Card(Suit.SPADES, Rank.FIVE);
+		communityCards.add(queenOfDiamonds);
+		communityCards.add(fiveOfSpades);
+		communityCards.add(sevenOfHearts);
+		communityCards.add(jackOfDiamonds);
+		communityCards.add(tenOfDiamonds);
+		
+		h.determineHighestRank(communityCards);
+		
+		assertEquals(h.getHighestRank(), HandRank.ROYAL_FLUSH);
 	}
 	
 	@Test
-	void testDealToHand() {
-		Deck d = new Deck();
+	void testIsStraightFlush() {
 		Hand h = new Hand();
-		Card[] hand = h.getHand();
-		hand[0] = d.deal();
-		hand[1] = d.deal();
+		ArrayList<Card> handCards = h.getHand();
+		Card nineOfDiamonds = new Card(Suit.DIAMONDS, Rank.NINE);
+		Card kingOfDiamonds = new Card(Suit.DIAMONDS, Rank.KING);
+		handCards.add(nineOfDiamonds);
+		handCards.add(kingOfDiamonds);
+		ArrayList<Card> communityCards = new ArrayList<Card>();
+		Card queenOfDiamonds = new Card(Suit.DIAMONDS, Rank.QUEEN);
+		Card jackOfDiamonds = new Card(Suit.DIAMONDS, Rank.JACK);
+		Card tenOfDiamonds = new Card(Suit.DIAMONDS, Rank.TEN);
+		Card sevenOfHearts = new Card(Suit.HEARTS, Rank.SEVEN);
+		Card fiveOfSpades = new Card(Suit.SPADES, Rank.FIVE);
+		communityCards.add(queenOfDiamonds);
+		communityCards.add(fiveOfSpades);
+		communityCards.add(sevenOfHearts);
+		communityCards.add(jackOfDiamonds);
+		communityCards.add(tenOfDiamonds);
 		
-		Card[] communityCards = new Card[5];
-		communityCards[0] = d.deal();
-		communityCards[1] = d.deal();
-		communityCards[2] = d.deal();
-		communityCards[3] = d.deal();
-		communityCards[4] = d.deal();
+		h.determineHighestRank(communityCards);
 		
-		
-		
-		assertEquals(h.determineHandRank(communityCards), HandRank.STRAIGHT_FLUSH);
+		assertEquals(h.getHighestRank(), HandRank.STRAIGHT_FLUSH);
 	}
 	
 	@Test
-	void testDetermineHandRank() {
+	void testIsFourOfAKind() {
 		Hand h = new Hand();
-		Card[] hand = h.getHand();
-		Card[] communityCards = new Card[5];
+		ArrayList<Card> handCards = h.getHand();
+		Card nineOfDiamonds = new Card(Suit.DIAMONDS, Rank.NINE);
+		Card nineOfSpades = new Card(Suit.SPADES, Rank.NINE);
+		handCards.add(nineOfDiamonds);
+		handCards.add(nineOfSpades);
+		ArrayList<Card> communityCards = new ArrayList<Card>();
+		Card queenOfDiamonds = new Card(Suit.DIAMONDS, Rank.QUEEN);
+		Card jackOfDiamonds = new Card(Suit.DIAMONDS, Rank.JACK);
+		Card tenOfDiamonds = new Card(Suit.DIAMONDS, Rank.TEN);
+		Card nineOfHearts = new Card(Suit.HEARTS, Rank.NINE);
+		Card nineOfClubs = new Card(Suit.SPADES, Rank.NINE);
+		communityCards.add(queenOfDiamonds);
+		communityCards.add(nineOfHearts);
+		communityCards.add(nineOfClubs);
+		communityCards.add(jackOfDiamonds);
+		communityCards.add(tenOfDiamonds);
 		
-		Rank two = (new Rank(0, "TWO"));
-		Rank three = (new Rank(1, "THREE"));
-		Rank four = (new Rank(2, "FOUR"));
-		Rank five = (new Rank(3, "FIVE"));
-		Rank six = (new Rank(4, "SIX"));
-		Rank seven = (new Rank(5, "SEVEN"));
-		Rank eight = (new Rank(6, "EIGHT"));
-		Rank nine = (new Rank(7, "NINE"));
-		Rank ten = (new Rank(8, "TEN"));
-		Rank jack = (new Rank(9, "JACK"));
-		Rank queen = (new Rank(10, "QUEEN"));
-		Rank king = (new Rank(11, "KING"));
-		Rank ace= (new Rank(12, "ACE"));
+		h.determineHighestRank(communityCards);
 		
-		hand[0] = new Card(Suits.DIAMONDS, two);
-		hand[1] = new Card(Suits.CLUBS, two);
+		assertEquals(h.getHighestRank(), HandRank.FOUR_OF_A_KIND);
+	}
+	
+	@Test
+	void testIsFullHouse() {
+		Hand h = new Hand();
+		ArrayList<Card> handCards = h.getHand();
+		Card nineOfDiamonds = new Card(Suit.DIAMONDS, Rank.NINE);
+		Card nineOfSpades = new Card(Suit.SPADES, Rank.NINE);
+		handCards.add(nineOfDiamonds);
+		handCards.add(nineOfSpades);
+		ArrayList<Card> communityCards = new ArrayList<Card>();
+		Card queenOfDiamonds = new Card(Suit.DIAMONDS, Rank.QUEEN);
+		Card queenOfClubs = new Card(Suit.CLUBS, Rank.QUEEN);
+		Card tenOfDiamonds = new Card(Suit.DIAMONDS, Rank.TEN);
+		Card nineOfHearts = new Card(Suit.HEARTS, Rank.NINE);
+		Card sixOfClubs = new Card(Suit.CLUBS, Rank.SIX);
+		communityCards.add(queenOfDiamonds);
+		communityCards.add(nineOfHearts);
+		communityCards.add(sixOfClubs);
+		communityCards.add(queenOfClubs);
+		communityCards.add(tenOfDiamonds);
 		
-		communityCards[0] = new Card(Suits.HEARTS, two);
-		communityCards[1] = new Card(Suits.SPADES, two);
-		communityCards[2] = new Card(Suits.DIAMONDS, three);
-		communityCards[3] = new Card(Suits.CLUBS, three);
-		communityCards[4] = new Card(Suits.HEARTS, three);
+		h.determineHighestRank(communityCards);
+		
+		assertEquals(h.getHighestRank(), HandRank.FULL_HOUSE);
+	}
+	
+	@Test
+	void testIsFlush() {
+		Hand h = new Hand();
+		ArrayList<Card> handCards = h.getHand();
+		Card nineOfDiamonds = new Card(Suit.DIAMONDS, Rank.NINE);
+		Card jackOfDiamonds = new Card(Suit.DIAMONDS, Rank.JACK);
+		handCards.add(nineOfDiamonds);
+		handCards.add(jackOfDiamonds);
+		ArrayList<Card> communityCards = new ArrayList<Card>();
+		Card queenOfDiamonds = new Card(Suit.DIAMONDS, Rank.QUEEN);
+		Card queenOfClubs = new Card(Suit.CLUBS, Rank.QUEEN);
+		Card tenOfDiamonds = new Card(Suit.DIAMONDS, Rank.TEN);
+		Card twoOfHearts = new Card(Suit.DIAMONDS, Rank.TWO);
+		Card sixOfClubs = new Card(Suit.CLUBS, Rank.SIX);
+		communityCards.add(queenOfDiamonds);
+		communityCards.add(queenOfClubs);
+		communityCards.add(tenOfDiamonds);
+		communityCards.add(twoOfHearts);
+		communityCards.add(sixOfClubs);
+		
+		h.determineHighestRank(communityCards);
+		
+		assertEquals(h.getHighestRank(), HandRank.FLUSH);
+	}
+	
+	@Test
+	void testIsStraight() {
+		Hand h = new Hand();
+		ArrayList<Card> handCards = h.getHand();
+		Card nineOfDiamonds = new Card(Suit.DIAMONDS, Rank.NINE);
+		Card kingOfDiamonds = new Card(Suit.DIAMONDS, Rank.KING);
+		handCards.add(nineOfDiamonds);
+		handCards.add(kingOfDiamonds);
+		ArrayList<Card> communityCards = new ArrayList<Card>();
+		Card queenOfHearts = new Card(Suit.HEARTS, Rank.QUEEN);
+		Card jackOfDiamonds = new Card(Suit.DIAMONDS, Rank.JACK);
+		Card tenOfDiamonds = new Card(Suit.DIAMONDS, Rank.TEN);
+		Card sevenOfHearts = new Card(Suit.HEARTS, Rank.SEVEN);
+		Card fiveOfSpades = new Card(Suit.SPADES, Rank.FIVE);
+		communityCards.add(queenOfHearts);
+		communityCards.add(jackOfDiamonds);
+		communityCards.add(tenOfDiamonds);
+		communityCards.add(sevenOfHearts);
+		communityCards.add(fiveOfSpades);
+		
+		h.determineHighestRank(communityCards);
+		
+		assertEquals(h.getHighestRank(), HandRank.STRAIGHT);
+	}
+	
+	@Test
+	void testIsThreeOfAKind() {
+		Hand h = new Hand();
+		ArrayList<Card> handCards = h.getHand();
+		Card nineOfDiamonds = new Card(Suit.DIAMONDS, Rank.NINE);
+		Card kingOfDiamonds = new Card(Suit.DIAMONDS, Rank.KING);
+		handCards.add(nineOfDiamonds);
+		handCards.add(kingOfDiamonds);
+		ArrayList<Card> communityCards = new ArrayList<Card>();
+		Card kingOfHearts = new Card(Suit.HEARTS, Rank.KING);
+		Card jackOfDiamonds = new Card(Suit.DIAMONDS, Rank.JACK);
+		Card tenOfDiamonds = new Card(Suit.DIAMONDS, Rank.TEN);
+		Card sevenOfHearts = new Card(Suit.HEARTS, Rank.SEVEN);
+		Card kingOfSpades = new Card(Suit.SPADES, Rank.KING);
+		communityCards.add(kingOfHearts);
+		communityCards.add(jackOfDiamonds);
+		communityCards.add(tenOfDiamonds);
+		communityCards.add(sevenOfHearts);
+		communityCards.add(kingOfSpades);
+		
+		h.determineHighestRank(communityCards);
+		
+		assertEquals(h.getHighestRank(), HandRank.THREE_OF_A_KIND);
+	}
+	
+	@Test
+	void testIsTwoPair() {
+		Hand h = new Hand();
+		ArrayList<Card> handCards = h.getHand();
+		Card nineOfDiamonds = new Card(Suit.DIAMONDS, Rank.NINE);
+		Card kingOfDiamonds = new Card(Suit.DIAMONDS, Rank.KING);
+		handCards.add(nineOfDiamonds);
+		handCards.add(kingOfDiamonds);
+		ArrayList<Card> communityCards = new ArrayList<Card>();
+		Card kingOfHearts = new Card(Suit.HEARTS, Rank.KING);
+		Card jackOfDiamonds = new Card(Suit.DIAMONDS, Rank.JACK);
+		Card tenOfDiamonds = new Card(Suit.DIAMONDS, Rank.TEN);
+		Card sevenOfHearts = new Card(Suit.HEARTS, Rank.SEVEN);
+		Card jackOfSpades = new Card(Suit.SPADES, Rank.JACK);
+		communityCards.add(kingOfHearts);
+		communityCards.add(jackOfDiamonds);
+		communityCards.add(tenOfDiamonds);
+		communityCards.add(sevenOfHearts);
+		communityCards.add(jackOfSpades);
+		
+		h.determineHighestRank(communityCards);
+		
+		assertEquals(h.getHighestRank(), HandRank.TWO_PAIR);
+	}
+	
+	@Test
+	void testIsPair() {
+		Hand h = new Hand();
+		ArrayList<Card> handCards = h.getHand();
+		Card nineOfDiamonds = new Card(Suit.DIAMONDS, Rank.NINE);
+		Card kingOfDiamonds = new Card(Suit.DIAMONDS, Rank.KING);
+		handCards.add(nineOfDiamonds);
+		handCards.add(kingOfDiamonds);
+		ArrayList<Card> communityCards = new ArrayList<Card>();
+		Card kingOfHearts = new Card(Suit.HEARTS, Rank.KING);
+		Card jackOfDiamonds = new Card(Suit.DIAMONDS, Rank.JACK);
+		Card tenOfDiamonds = new Card(Suit.DIAMONDS, Rank.TEN);
+		Card sevenOfHearts = new Card(Suit.HEARTS, Rank.SEVEN);
+		Card aceOfSpades = new Card(Suit.SPADES, Rank.ACE);
+		communityCards.add(kingOfHearts);
+		communityCards.add(jackOfDiamonds);
+		communityCards.add(tenOfDiamonds);
+		communityCards.add(sevenOfHearts);
+		communityCards.add(aceOfSpades);
+		
+		h.determineHighestRank(communityCards);
+		
+		assertEquals(h.getHighestRank(), HandRank.PAIR);
+	}
 
-		assertEquals(h.determineHandRank(communityCards), HandRank.FOUR_OF_A_KIND);
+	@Test
+	void testIsHighCard() {
+		Hand h = new Hand();
+		ArrayList<Card> handCards = h.getHand();
+		Card nineOfDiamonds = new Card(Suit.DIAMONDS, Rank.NINE);
+		Card fourOfDiamonds = new Card(Suit.DIAMONDS, Rank.FOUR);
+		handCards.add(nineOfDiamonds);
+		handCards.add(fourOfDiamonds);
+		ArrayList<Card> communityCards = new ArrayList<Card>();
+		Card kingOfHearts = new Card(Suit.HEARTS, Rank.KING);
+		Card jackOfDiamonds = new Card(Suit.DIAMONDS, Rank.JACK);
+		Card tenOfDiamonds = new Card(Suit.DIAMONDS, Rank.TEN);
+		Card sevenOfHearts = new Card(Suit.HEARTS, Rank.SEVEN);
+		Card aceOfSpades = new Card(Suit.SPADES, Rank.ACE);
+		communityCards.add(kingOfHearts);
+		communityCards.add(jackOfDiamonds);
+		communityCards.add(tenOfDiamonds);
+		communityCards.add(sevenOfHearts);
+		communityCards.add(aceOfSpades);
 		
-		communityCards[0] = new Card(Suits.HEARTS, six);
-		communityCards[1] = new Card(Suits.DIAMONDS, ace);
+		h.determineHighestRank(communityCards);
 		
-		assertEquals(h.determineHandRank(communityCards), HandRank.FULL_HOUSE);
+		assertEquals(h.getHighestRank(), HandRank.HIGH_CARD);
+	}
+	
+	@Test
+	void testCompareTo() {
+		Hand hand = new Hand();
+		ArrayList<Card> handCards = hand.getHand();
+		Card nineOfDiamonds = new Card(Suit.DIAMONDS, Rank.NINE);
+		Card fourOfDiamonds = new Card(Suit.DIAMONDS, Rank.FOUR);
+		handCards.add(nineOfDiamonds);
+		handCards.add(fourOfDiamonds);
 		
-		communityCards[3] = new Card(Suits.CLUBS, four);
+		Hand opponentHand = new Hand();
+		ArrayList<Card> opponentHandCards = opponentHand.getHand();
+		Card kingOfClubs = new Card(Suit.CLUBS, Rank.KING);
+		Card kingOfDiamonds = new Card(Suit.DIAMONDS, Rank.KING);
+		opponentHandCards.add(kingOfClubs);
+		opponentHandCards.add(kingOfDiamonds);
 		
-		assertEquals(h.determineHandRank(communityCards), HandRank.TWO_PAIR);
+		ArrayList<Card> communityCards = new ArrayList<Card>();
+		Card kingOfHearts = new Card(Suit.HEARTS, Rank.KING);
+		Card jackOfDiamonds = new Card(Suit.DIAMONDS, Rank.JACK);
+		Card aceOfDiamonds = new Card(Suit.DIAMONDS, Rank.ACE);
+		Card sevenOfHearts = new Card(Suit.HEARTS, Rank.SEVEN);
+		Card fourOfSpades = new Card(Suit.SPADES, Rank.FOUR);
+		communityCards.add(kingOfHearts);
+		communityCards.add(jackOfDiamonds);
+		communityCards.add(aceOfDiamonds);
+		communityCards.add(sevenOfHearts);
+		communityCards.add(fourOfSpades);
+		
+		hand.determineHighestRank(communityCards);
+		opponentHand.determineHighestRank(communityCards);
+		
+		assertEquals(hand.compareTo(opponentHand, communityCards), -2);
+		
+		handCards.clear();
+		Card aceOfSpades = new Card(Suit.SPADES, Rank.ACE);
+		Card aceOfClubs = new Card(Suit.CLUBS, Rank.ACE);
+		handCards.add(aceOfSpades);
+		handCards.add(aceOfClubs);
+		
+		hand.determineHighestRank(communityCards);
+		assertEquals(hand.getHighestRank(), HandRank.THREE_OF_A_KIND);
+		assertEquals(hand.getHigh(), Rank.ACE);
+		assertEquals(opponentHand.getHigh(), Rank.KING);
+		
+		assertEquals(hand.compareTo(opponentHand, communityCards), 1);
+		
+		handCards.clear();
+		Card jackOfSpades = new Card(Suit.SPADES, Rank.JACK);
+		Card sevenOfSpades = new Card(Suit.SPADES, Rank.SEVEN);
+		handCards.add(jackOfSpades);
+		handCards.add(sevenOfSpades);
+		
+		assertEquals(hand.compareTo(opponentHand, communityCards), -1);
 		
 	}
 

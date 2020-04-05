@@ -1,20 +1,20 @@
 package poker;
 
-import java.util.Arrays;
-import java.util.Comparator;
+import java.util.ArrayList;
+import java.util.Collections;
 
 public class Hand {
-	public Card[] hand = new Card[2];
-	
+
+	public ArrayList<Card> handCards = new ArrayList<Card>();
+
 	public Rank high;
 	public Rank low;
-	public Card[] kickers;
-    
-    protected boolean usesLow = false;
-    protected boolean usesAllCards = false;
-    
+	public ArrayList<Card> kickers = new ArrayList<Card>();
 
-	public HandRank bestRank;
+	protected boolean usesLow = false;
+	protected boolean usesAllCards = false;
+
+	public HandRank highestRank;
 
 	public enum HandRank {
 		ROYAL_FLUSH, STRAIGHT_FLUSH, FOUR_OF_A_KIND, FULL_HOUSE, FLUSH, STRAIGHT, THREE_OF_A_KIND, TWO_PAIR, PAIR,
@@ -24,189 +24,170 @@ public class Hand {
 	public Hand() {
 	}
 
-	public Card[] getHand() {
-		return hand;
+	public ArrayList<Card> getHand() {
+		return handCards;
 	}
-	
-	public Card[] getKickers() {
+
+
+	public Rank getHigh() {
+		return high;
+	}
+
+	public Rank getLow() {
+		return low;
+	}
+
+	public ArrayList<Card> getKickers() {
 		return kickers;
 	}
 
 	public void displayHand() {
-		for (int i = 0; i < 2; i++) {
-			System.out.println(hand[i]);
+		for (int i = 0; i < handCards.size(); i++) {
+			System.out.println(handCards.get(i));
 		}
 	}
 
-	public HandRank determineHandRank(Card[] communityCards) {
-		Card[] allCards = concatenateArrays(communityCards);
-		if (isRoyalFlush(allCards)) {
-			return HandRank.ROYAL_FLUSH;
-		} else if (isStraightFlush(allCards)) {
-			return HandRank.STRAIGHT_FLUSH;
-		} else if (isFourOfAKind(allCards)) {
-			return HandRank.FOUR_OF_A_KIND;
-		} else if (isFullHouse(allCards)) {
-			return HandRank.FULL_HOUSE;
-		} else if (isFlush(allCards)) {
-			return HandRank.FLUSH;
-		} else if (isStraight(allCards)) {
-			return HandRank.STRAIGHT;
-		} else if (isThreeOfAKind(allCards)) {
-			return HandRank.THREE_OF_A_KIND;
-		} else if (isTwoPair(allCards)) {
-			return HandRank.TWO_PAIR;
-		} else if (isPair(allCards)) {
-			return HandRank.PAIR;
+	public HandRank getHighestRank() {
+		return highestRank;
+	}
+
+	public void determineHighestRank(ArrayList<Card> communityCards) {
+		ArrayList<Card> allCards = concatenateArrayLists(communityCards);
+		Collections.sort(allCards);
+		CardSet allCardsSet = new CardSet(allCards);
+		if (isRoyalFlush(allCardsSet)) {
+			highestRank = HandRank.ROYAL_FLUSH;
+		} else if (isStraightFlush(allCardsSet)) {
+			highestRank = HandRank.STRAIGHT_FLUSH;
+		} else if (isFourOfAKind(allCardsSet)) {
+			highestRank = HandRank.FOUR_OF_A_KIND;
+		} else if (isFullHouse(allCardsSet)) {
+			highestRank = HandRank.FULL_HOUSE;
+		} else if (isFlush(allCardsSet)) {
+			highestRank = HandRank.FLUSH;
+		} else if (isStraight(allCardsSet)) {
+			highestRank = HandRank.STRAIGHT;
+		} else if (isThreeOfAKind(allCardsSet)) {
+			highestRank = HandRank.THREE_OF_A_KIND;
+		} else if (isTwoPair(allCardsSet)) {
+			highestRank = HandRank.TWO_PAIR;
+		} else if (isPair(allCardsSet)) {
+			highestRank = HandRank.PAIR;
 		} else {
-			return HandRank.HIGH_CARD;
+			high = null;
+            low = null;
+            usesLow = false;
+            usesAllCards = false;
+			highestRank = HandRank.HIGH_CARD;
 		}
 	}
 
-	public Card[] concatenateArrays(Card[] communityCards) {
-		Card[] allCards = new Card[7];
-		for (int i = 0; i < 2; i++) {
-			allCards[i] = hand[i];
+	public ArrayList<Card> concatenateArrayLists(ArrayList<Card> communityCards) {
+		ArrayList<Card> allCards = new ArrayList<Card>();
+		for (int i = 0; i < handCards.size(); i++) {
+			allCards.add(handCards.get(i));
 		}
-		for (int j = 0; j < 5; j++) {
-			allCards[j + 2] = communityCards[j];
+		for (int j = 0; j < communityCards.size(); j++) {
+			allCards.add(communityCards.get(j));
 		}
 		return allCards;
 	}
 
-	public boolean isRoyalFlush(Card[] allCards) {
-		if (isFlush(allCards)) {
+	public boolean isRoyalFlush(CardSet allCardsSet) {
+		if (isStraightFlush(allCardsSet)) {
+			ArrayList<Card> allCards = allCardsSet.getCardSet();
 			boolean aceExists = false;
 			boolean kingExists = false;
 			boolean queenExists = false;
-			boolean jackExists = false;
-			boolean tenExists = false;
 			for (Card c : allCards) {
-				switch (c.getRank().toString()) {
-				case "ACE":
+				switch (c.getRank()) {
+				case ACE:
 					aceExists = true;
 					break;
-				case "KING":
+				case KING:
 					kingExists = true;
 					break;
-				case "QUEEN":
+				case QUEEN:
 					queenExists = true;
-					break;
-				case "JACK":
-					jackExists = true;
-					break;
-				case "TEN":
-					tenExists = true;
 					break;
 				}
 			}
-			return (aceExists && kingExists && queenExists && jackExists && tenExists);
+			return (aceExists && kingExists && queenExists);
 		} else {
 			return false;
 		}
 	}
 
-	private boolean isStraightFlush(Card[] allCards) {
-		usesLow = false;
-	    usesAllCards = false;
-		return isFlush(allCards) && isStraight(allCards);
-	}
-	
-	private boolean isFourOfAKind(Card[] allCards) {
+	private boolean isStraightFlush(CardSet allCardsSet) {
 		usesLow = false;
 		usesAllCards = false;
-		
-		int cardRepeats = 1;
-		int i = 0;
-		int k = i + 1;
-		
-		while (i < allCards.length) {
-			cardRepeats = 1;
-			while (k < allCards.length) {
-				if (allCards[i].getRank().getValue() == allCards[k].getRank().getValue()) {
-					cardRepeats++;
-					if (cardRepeats == 4) {
-						high = allCards[i].getRank();
-						kickers = removeByRank(high, allCards, 4);
-						return true;
-					}
-				}
-				k++;
+		return isFlush(allCardsSet) && isStraight(allCardsSet);
+	}
+
+	private boolean isFourOfAKind(CardSet allCardsSet) {
+		usesLow = false;
+		usesAllCards = false;
+
+		for (Rank rank : Rank.values()) {
+			if (allCardsSet.getRank(rank).size() == 4) {
+				high = rank;
+				kickers = allCardsSet.removeByRank(rank, 4);
+				return true;
 			}
-			i++;
-			k = i + 1;
 		}
 		return false;
 	}
-	
-	public boolean isFlush(Card[] allCards) {
-		usesLow = false;
-		usesAllCards = true;
-		
-		Card[] hearts = new Card[7];
-		Card[] spades = new Card[7];
-		Card[] clubs = new Card[7];
-		Card[] diamonds = new Card[7];
-		
-		int numOfHearts = 0;
-		int numOfSpades = 0;
-		int numOfClubs = 0;
-		int numOfDiamonds = 0;
-		for (Card c : allCards) {
-			switch (c.getSuit()) {
-			case HEARTS:
-				hearts[numOfHearts] = c;
-				numOfHearts++;
-				break;
-			case SPADES:
-				spades[numOfSpades] = c;
-				numOfSpades++;
-				break;
-			case CLUBS:
-				clubs[numOfClubs] = c;
-				numOfClubs++;
-				break;
-			case DIAMONDS: 
-				diamonds[numOfDiamonds] = c;
-				numOfDiamonds++;
-				break;
+
+	private boolean isFullHouse(CardSet allCardsSet) {
+		usesLow = true;
+		usesAllCards = false;
+		high = null;
+		low = null;
+
+		for (Rank rank : Rank.values()) {
+			if (allCardsSet.getRank(rank).size() == 3 && high == null) {
+				high = rank;
+			} else if (allCardsSet.getRank(rank).size() == 2 && low == null) {
+				low = rank;
+			}
+
+			if (high != null && low != null) {
+				return true;
 			}
 		}
-		
-		if(numOfHearts >= 5) {
-			Arrays.sort(hearts);
-			high = hearts[numOfHearts].getRank();
-		}
-		else if(numOfSpades >= 5) {
-			Arrays.sort(spades);
-			high = spades[numOfSpades].getRank();
-		}
-		if(numOfClubs >= 5) {
-			Arrays.sort(clubs);
-			high = clubs[numOfClubs].getRank();
-		}
-		if(numOfDiamonds >= 5) {
-			Arrays.sort(diamonds);
-			high = diamonds[numOfDiamonds].getRank();
-		}
-		
-		return (numOfHearts >= 5 || numOfSpades >= 5 || numOfClubs >= 5 || numOfDiamonds >= 5);
+		return false;
 	}
 
+	private boolean isFlush(CardSet allCardsSet) {
+		usesLow = false;
+		usesAllCards = true;
 
-	public boolean isStraight(Card[] allCards) {
+		ArrayList<Card> allSuitedCards;
+
+		for (Suit suit : Suit.values()) {
+			if (allCardsSet.getSuit(suit).size() >= 5) {
+				allSuitedCards = allCardsSet.getSuit(suit);
+				high = allSuitedCards.get(0).getRank();
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private boolean isStraight(CardSet allCardsSet) {
 		usesLow = false;
 		usesAllCards = false;
-		
-		Arrays.sort(allCards, byRank);
+
 		int numOfCardsInRow = 0;
 		int position = 0;
 
-		while (position < allCards.length - 1) {
-			if (allCards[position + 1].getRank().getValue() - allCards[position].getRank().getValue() == 1) {
+		ArrayList<Card> allCards = allCardsSet.getCardSet();
+
+		while (position < allCards.size() - 1) {
+			if (allCards.get(position).getRank().isOneLower(allCards.get(position + 1).getRank())) {
 				numOfCardsInRow++;
 				if (numOfCardsInRow == 4) {
-					high = allCards[position+1].getRank();
+					high = allCards.get(position + 1).getRank();
 					return true;
 				} else {
 					position++;
@@ -219,159 +200,83 @@ public class Hand {
 		return false;
 	}
 
-	
-	public Comparator<Card> byRank = (Card firstCard, Card secondCard) -> {
-		if (firstCard.getRank().getValue() < secondCard.getRank().getValue()) {
-			return -1;
-		} else {
-			return 1;
+	private boolean isThreeOfAKind(CardSet allCardsSet) {
+		usesLow = false;
+		usesAllCards = false;
+
+		for (Rank rank : Rank.values()) {
+			if (allCardsSet.getRank(rank).size() == 3) {
+				high = rank;
+				kickers = allCardsSet.removeByRank(rank, 3);
+				return true;
+			}
 		}
-	};
-	
-	private boolean isFullHouse(Card[] allCards) {
+		return false;
+	}
+
+	public boolean isTwoPair(CardSet allCardsSet) {
 		usesLow = true;
 		usesAllCards = false;
+
 		high = null;
 		low = null;
-		
-		int[] values = new int[13];
-		for (int i = 0; i < allCards.length; i++) {
-			values[allCards[i].getRank().getValue()]++;
-		}
-		boolean isThreeOfAKind = false;
-		boolean isTwoOfAKind = false;
-		for (int i = 0; i < 13; i++)
-			if (values[i] == 3) {
-				isThreeOfAKind = true;
-			}
-			else if(values[i] == 2) {
-				isTwoOfAKind = true;
-			}
-		return isThreeOfAKind && isTwoOfAKind;
-	}
-	
-	private boolean isAFullHouse(Card[] allCards) {
-		int cardRepeats = 1;
-		int i = 0;
-		int k = i + 1;
-		
-		boolean isThreeOfAKind = false;
-		boolean isTwoOfAKind = false;
-		
-		while (i < allCards.length) {
-			cardRepeats = 1;
-			while (k < allCards.length) {
-				if (allCards[i].getRank().getValue() == allCards[k].getRank().getValue()) {
-					cardRepeats++;
-					if (cardRepeats == 3) {
-						high = allCards[i].getRank();
-						kickers = this.removeByRank(high, allCards, 3);
-						return isPair(kickers);
-					}
+
+		for (Rank rank : Rank.values()) {
+			ArrayList<Card> rankedCards = allCardsSet.getRank(rank);
+			if (rankedCards.size() == 2) {
+				if (high == null) {
+					high = rank;
+					kickers = allCardsSet.removeByRank(rank, 2);
+				} else {
+					low = rank;
+					kickers = allCardsSet.removeByRank(rank, 2);
+					return true;
 				}
-				k++;
 			}
-			i++;
-			k = i + 1;
 		}
 		return false;
 	}
 
-	private boolean isThreeOfAKind(Card[] allCards) {
-		int cardRepeats = 1;
-		int i = 0;
-		int k = i + 1;
-		while (i < allCards.length) {
-			cardRepeats = 1;
-			while (k < allCards.length) {
-				if (allCards[i].getRank().getValue() == allCards[k].getRank().getValue()) {
-					cardRepeats++;
-					if (cardRepeats == 3) {
-						high = allCards[i].getRank();
-						kickers = this.removeByRank(high, allCards, 3);
-						return true;
-					}
-				}
-				k++;
+	private boolean isPair(CardSet allCardsSet) {
+		for (Rank rank : Rank.values()) {
+			if (allCardsSet.getRank(rank).size() == 2) {
+				high = rank;
+				kickers = allCardsSet.removeByRank(rank, 2);
+				return true;
 			}
-			i++;
-			k = i + 1;
 		}
 		return false;
 	}
 
-	public boolean isTwoPair(Card[] allCards) {
-		int[] values = new int[13];
-		for (int i = 0; i < allCards.length; i++) {
-			values[allCards[i].getRank().getValue()]++;
-		}
-		int count = 0;
-		for (int i = 0; i < 13; i++)
-			if (values[i] == 2) {
-				count++;
-			}
-		return (count == 2);
+	public Card getHighCard(CardSet allCardsSet) {
+		ArrayList<Card> allCards = allCardsSet.getCardSet();
+		return allCards.get(0);
 	}
 
-	private boolean isPair(Card[] allCards) {
-		int cardRepeats = 1;
-		int i = 0;
-		int k = i + 1;
-		while (i < allCards.length) {
-			cardRepeats = 1;
-			while (k < allCards.length) {
-				if (allCards[i].getRank().getValue() == allCards[k].getRank().getValue()) {
-					cardRepeats++;
-					if (cardRepeats == 2) {
-						high = allCards[i].getRank();
-						kickers = this.removeByRank(high, allCards, 2);
-						return true;
+	public int compareTo(Hand opponentHand, ArrayList<Card> communityCards) {
+		determineHighestRank(communityCards);
+		HandRank bestOpponentRank = opponentHand.getHighestRank();
+
+		if (this.highestRank == opponentHand.getHighestRank()) {
+
+			if (high == opponentHand.getHigh()) {
+				if (usesLow && low != opponentHand.getLow()) {
+
+					return -1 * low.compareTo(opponentHand.getLow());
+				}
+				for (int i = 0; i < kickers.size(); i++) {
+					if (kickers.get(i).compareTo(opponentHand.getKickers().get(i)) != 0) {
+						return -1 * kickers.get(i).compareTo(opponentHand.getKickers().get(i));
 					}
 				}
-				k++;
+			} else {
+				return (-1) * high.compareTo(opponentHand.getHigh());
 			}
-			i++;
-			k = i + 1;
+
+		} else {
+			return -1 * highestRank.compareTo(bestOpponentRank);
 		}
-		return false;
-	}
-
-	
-
-	public Card getHighCard(Card[] allCards) {
-		Arrays.sort(allCards, byRank);
-		return allCards[0];
-	}
-
-	public Card getHandHighCard() {
-		Arrays.sort(hand, byRank);
-		return hand[0];
-	}
-	
-	public Card[] removeByRank(Rank rank, Card[] allCards, int count) { 
-		int remaining = count;
-		Card[] allCardsWithRemovedRanks = new Card[7-count];
-		int i = 0;
-		for (Card card : allCards) {
-            if (card.getRank().equals(rank) && remaining > 0) {
-                remaining--;
-            } else {
-                allCardsWithRemovedRanks[i] = card;
-                i++;
-            }
-        }
-		return allCardsWithRemovedRanks;
-	}
-	
-	public int compareTo(Hand opponentHand, Card[] communityCards) {
-		HandRank bestRank = this.determineHandRank(communityCards);
-		HandRank bestOpponentRank = opponentHand.determineHandRank(communityCards);
 		
-		if(bestRank == bestOpponentRank) {
-			
-		}
-		else {
-			return -1 * bestRank.compareTo(bestOpponentRank);
-		}
+		return 0;
 	}
 }
