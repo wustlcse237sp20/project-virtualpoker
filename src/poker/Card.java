@@ -2,15 +2,15 @@ package poker;
 
 public class Card {
 	
-	private Suits suit;
+	private Suit suit;
 	private Rank rank;
 	
-	public Card(Suits suit, Rank rank) {
+	public Card(Suit suit, Rank rank) {
 		this.suit = suit;
 		this.rank = rank;
 	}
 
-	public Suits getSuit() {
+	public Suit getSuit() {
 		return suit;
 	}
 

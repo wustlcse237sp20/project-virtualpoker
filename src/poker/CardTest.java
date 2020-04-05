@@ -8,11 +8,10 @@ class CardTest {
 
 	@Test
 	void testCreateCard() {
-		Rank r = new Rank(0, "TWO");
-		Card c = new Card(Suits.HEARTS, r);
-		assertEquals(c.getSuit(), Suits.HEARTS);
-		assertEquals(c.getRank().toString(), "TWO");
+		Card c = new Card(Suit.HEARTS, Rank.TWO);
+		assertEquals(c.getSuit(), Suit.HEARTS);
+		assertEquals(c.getRank(), Rank.TWO);
 		assertEquals(c.toString(), "TWO of HEARTS");
 	}
-
+	
 }

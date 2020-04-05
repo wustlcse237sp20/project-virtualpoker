@@ -10,8 +10,8 @@ class DeckTest {
 	void testCreateDeckAndDeal() {
 		Deck d = new Deck();
 		Card c = d.deal();
-		assertEquals(c.getSuit(), Suits.SPADES);
-		assertEquals(c.getRank().toString(), "ACE");
+		assertEquals(c.getSuit(), Suit.SPADES);
+		assertEquals(c.getRank(), Rank.ACE);
 	}
 
 }
