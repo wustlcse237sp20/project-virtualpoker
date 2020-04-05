@@ -24,4 +24,8 @@ public class Hand {
 		this.hand.set(1, secondCard);
 	}
 
+	public void dealtCard(Deck d) {
+		hand.add(d.deal());
+	}
+	
 }

@@ -24,4 +24,21 @@ public class Deck {
 		this.cards.remove(0);
 		return topCard;
 	}
+	
+	
+	
+	public void removeCard(Card c) {
+		for(int i=0; i< cards.size(); i++) {
+			if(cards.get(i).equals(c)) {
+				this.cards.remove(i);
+			}
+		}
+	}
+	
+	public void deckAfterDeal(Hand playerHand, Hand comptHand) {
+			removeCard(playerHand.getFirstCard());
+			removeCard(playerHand.getSecondCard());
+			removeCard(comptHand.getFirstCard());
+			removeCard(comptHand.getFirstCard());
+	}
 }
