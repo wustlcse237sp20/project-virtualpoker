@@ -14,3 +14,9 @@ We have not yet implemented the standard blinds of poker. Furthermore, we are no
 - Is there anything that you implemented but doesn't currently work?
 
 We are working to eliminate any bugs or logic inconsistencies, but overall the flow of the game is there. Additionally, some unit tests may be incomplete.
+
+- What commands are needed to compile and run the code?
+
+cd src
+javac ./poker/Play.java
+java poker/Play
