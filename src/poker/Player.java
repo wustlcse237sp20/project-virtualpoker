@@ -5,6 +5,11 @@ public class Player {
 	Hand hand;
 	int money;
 
+	/**
+	 * Constructor for player class
+	 * @param name
+	 * @param money
+	 */
 	public Player(String name, int money) {
 		this.name = name;
 		this.money = money;
@@ -22,6 +27,11 @@ public class Player {
 		return money;
 	}
 
+	/**
+	 * determine the amount of bet placed
+	 * @param bet
+	 * @return the amount of money bet
+	 */
 	public int bet(int bet) {
 		if (this.money >= bet) {
 			this.money -= bet;

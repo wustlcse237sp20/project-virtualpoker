@@ -41,6 +41,9 @@ public class Hand {
 		return kickers;
 	}
 
+	/**
+	 * Display the cards at hand
+	 */
 	public void displayHand() {
 		for (int i = 0; i < handCards.size(); i++) {
 			System.out.println(handCards.get(i));
@@ -51,6 +54,10 @@ public class Hand {
 		return highestRank;
 	}
 
+	/**
+	 * Determine the highest rank of the Hand
+	 * @param communityCards 
+	 */
 	public void determineHighestRank(ArrayList<Card> communityCards) {
 		ArrayList<Card> allCards = concatenateArrayLists(communityCards);
 		Collections.sort(allCards);
@@ -93,6 +100,11 @@ public class Hand {
 		return allCards;
 	}
 
+	/**
+	 * Check if the hand is a Royal Flush
+	 * @param allCardsSet
+	 * @return boolean value of whether the hand is a royal flush or not
+	 */
 	public boolean isRoyalFlush(CardSet allCardsSet) {
 		if (isStraightFlush(allCardsSet)) {
 			ArrayList<Card> allCards = allCardsSet.getCardSet();
@@ -118,12 +130,22 @@ public class Hand {
 		}
 	}
 
+	/**
+	 * Check if the hand is a Straight Flush
+	 * @param allCardsSet
+	 * @return boolean value of whether the hand is a Straight flush or not
+	 */
 	private boolean isStraightFlush(CardSet allCardsSet) {
 		usesLow = false;
 		usesAllCards = false;
 		return isFlush(allCardsSet) && isStraight(allCardsSet);
 	}
 
+	/**
+	 * Check if the hand is four of a kind
+	 * @param allCardsSet
+	 * @return boolean value of whether the hand has four of a kind or not
+	 */
 	private boolean isFourOfAKind(CardSet allCardsSet) {
 		usesLow = false;
 		usesAllCards = false;
@@ -137,7 +159,12 @@ public class Hand {
 		}
 		return false;
 	}
-
+	
+	/**
+	 * Check if the hand is a Straight Flush
+	 * @param allCardsSet
+	 * @return boolean value of whether the hand is a Straight flush or not
+	 */
 	private boolean isFullHouse(CardSet allCardsSet) {
 		usesLow = true;
 		usesAllCards = false;
@@ -158,6 +185,11 @@ public class Hand {
 		return false;
 	}
 
+	/**
+	 * Check if the hand is a Flush
+	 * @param allCardsSet
+	 * @return boolean value of whether the hand is a flush or not
+	 */
 	private boolean isFlush(CardSet allCardsSet) {
 		usesLow = false;
 		usesAllCards = true;
@@ -174,6 +206,11 @@ public class Hand {
 		return false;
 	}
 
+	/**
+	 * Check if the hand is Straight 
+	 * @param allCardsSet
+	 * @return boolean value of whether the hand is Straight or not
+	 */
 	private boolean isStraight(CardSet allCardsSet) {
 		usesLow = false;
 		usesAllCards = false;
@@ -200,6 +237,11 @@ public class Hand {
 		return false;
 	}
 
+	/**
+	 * Check if the hand has three of a kind
+	 * @param allCardsSet
+	 * @return boolean value of whether the hand has three of a kind or not
+	 */
 	private boolean isThreeOfAKind(CardSet allCardsSet) {
 		usesLow = false;
 		usesAllCards = false;
@@ -214,6 +256,11 @@ public class Hand {
 		return false;
 	}
 
+	/**
+	 * Check if the hand has a two pair
+	 * @param allCardsSet
+	 * @return boolean value of whether the hand has a two pair or not
+	 */
 	public boolean isTwoPair(CardSet allCardsSet) {
 		usesLow = true;
 		usesAllCards = false;
@@ -237,6 +284,11 @@ public class Hand {
 		return false;
 	}
 
+	/**
+	 * Check if the hand is a pair
+	 * @param allCardsSet
+	 * @return boolean value of whether the hand is a pair or not
+	 */
 	private boolean isPair(CardSet allCardsSet) {
 		for (Rank rank : Rank.values()) {
 			if (allCardsSet.getRank(rank).size() == 2) {
@@ -253,10 +305,21 @@ public class Hand {
 		return allCards.get(0);
 	}
 
+	/**
+	 *This method compares the opponents hand and the players card to determine
+	 *who has the highest ranking card 
+	 * @param opponentHand
+	 * @param communityCards
+	 * @return integer value of the highest card
+	 */
 	public int compareTo(Hand opponentHand, ArrayList<Card> communityCards) {
+		// get the highest rank in the players hand
 		determineHighestRank(communityCards);
+		
+		//get the highest rank in the opponents hand
 		HandRank bestOpponentRank = opponentHand.getHighestRank();
 
+		// check if the players and opponents both have the same highest rank
 		if (this.highestRank == opponentHand.getHighestRank()) {
 
 			if (high == opponentHand.getHigh()) {
