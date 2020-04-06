@@ -44,10 +44,16 @@ public class Deck {
 		
 	}
 	
-	public void deckAfterDeal(Hand playerHand, Hand comptHand) {
-			removeCard(playerHand.getFirstCard());
-			removeCard(playerHand.getSecondCard());
-			removeCard(comptHand.getFirstCard());
-			removeCard(comptHand.getFirstCard());
+	public void firstFlop(Flop flop) {
+		flop.setFirstCard(deal());
+		flop.setSecondCard(deal());
+		flop.setThirdCard(deal());
 	}
+	
+	//public void deckAfterDeal(Hand playerHand, Hand comptHand) {
+		//	removeCard(playerHand.getFirstCard());
+		//	removeCard(playerHand.getSecondCard());
+		//	removeCard(comptHand.getFirstCard());
+		//	removeCard(comptHand.getFirstCard());
+	//}
 }

@@ -21,7 +21,7 @@ public class Gameplay {
 		deck.firstDeal(player.getHand(), computer.getHand());
 		//create community cards
 		Flop flop = new Flop();
-		flop.setCards(deck);
+		deck.firstFlop(flop);
 		//deal turn card
 		flop.newFlopCard(deck);
 		//deal river card
