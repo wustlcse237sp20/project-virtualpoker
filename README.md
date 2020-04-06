@@ -9,7 +9,7 @@ We completed all user stories relating to playing poker against a computer oppon
 
 - What user stories do you intend to complete next iteration?
 
-We have not yet implemented the standard blinds of poker. Furthermore, we are not done creating an interactive GUI, so this first iteration is a purely text-based game. We also intend to improve the logic of the game and bolster up the computer's AI to be a more formidable opponent.
+We have not yet implemented the standard blinds of poker. Furthermore, we are not done creating an interactive GUI, so this first iteration is a purely text-based game. We also intend to improve the logic of the game and bolster up the computer's AI to be a more formidable opponent. Finally, we want to be able to play again after a game is over without terminating the program and running it again.
 
 - Is there anything that you implemented but doesn't currently work?
 
