@@ -47,7 +47,6 @@ public class Player {
 		return money;
 	}
 
-<<<<<<< HEAD
 	public void setMoney(int money) {
 		this.money = money;
 	}
@@ -56,13 +55,11 @@ public class Player {
 		return bet;
 	}
 
-=======
 	/**
 	 * determine the amount of bet placed
 	 * @param bet
 	 * @return the amount of money bet
 	 */
->>>>>>> 15cf18958af2311fc8a59f15120fd8102db81aa7
 	public int bet(int bet) {
 		int sizeOfBet = Math.min(money, bet);
 		
