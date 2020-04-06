@@ -160,13 +160,13 @@ public class Game {
 			if (isPlayerTurn) {
 				isPlayerTurn = !isPlayerTurn;
 				playerBettingRound();
-				if(winner == null) {
+				if(winner == null && !(computerActed && playerActed)) {
 					computerBettingRound();
 				}
 			} else {
 				isPlayerTurn = !isPlayerTurn;
 				computerBettingRound();
-				if(winner == null) {
+				if(winner == null  && !(computerActed && playerActed)) {
 					playerBettingRound();
 				}
 			}
@@ -196,6 +196,7 @@ public class Game {
 				switch (player.callRaiseFold()) {
 				case CALL:
 					playerActed = true;
+					computerActed = true;
 					player.bet(maxBet - player.getBet());
 					System.out.println(player.getName() + " calls.");
 					break;
@@ -236,6 +237,7 @@ public class Game {
 				switch (computer.simulateCallRaiseFold(isPreflop, communityCards)) {
 				case CALL:
 					computerActed = true;
+					playerActed = true;
 					computer.bet(maxBet - computer.getBet());
 					System.out.println(computer.getName() + " calls.");
 					break;
