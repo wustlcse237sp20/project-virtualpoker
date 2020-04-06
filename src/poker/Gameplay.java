@@ -1,22 +1,24 @@
 package poker;
 
 public class Gameplay {
-	//Player player = new Player(playerName, playerHand, startingMoney);
-	//Player computer = new Player("Computer", computerHand, startingMoney);
-	//newRound(player, computer);
 	
+	private Player player;
+	private Player computer;
+	private Hand playerHand;
+	private Hand computerHand;
 	
-	//i need to make initializers and stuff but i think this is okay??...i hope
+	public Gameplay() {
+		playerHand = new Hand();
+		player = new Player ("Name", playerHand, 100);
+		computerHand = new Hand();
+		computer = new Player ("Name", computerHand, 100);
+	}
 	
-	
-	public void newRound(Player player, Player computer) {
-		
+	public String newRound() {
 		//initialize game
 		Deck deck = new Deck();
 		deck.shuffle();
-		Hand playerHand = new Hand();
-		Hand computerHand = new Hand();
-		deck.deckAfterDeal(playerHand, computerHand);
+		deck.firstDeal(player.getHand(), computer.getHand());
 		//create community cards
 		Flop flop = new Flop();
 		flop.setCards(deck);
@@ -27,7 +29,10 @@ public class Gameplay {
 		
 	//at this point cards are compared to determine winner
 	//I'm not sure if we're including betting at this point so it's not here
+	return "the winner is: ";
 	}
+	
+	
 }
 		
 		

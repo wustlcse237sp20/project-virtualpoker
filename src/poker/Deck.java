@@ -36,6 +36,14 @@ public class Deck {
 		}
 	}
 	
+	public void firstDeal(Hand playerHand, Hand comptHand) {
+		playerHand.setFirstCard(deal());
+		comptHand.setFirstCard(deal());
+		playerHand.setSecondCard(deal());
+		comptHand.setSecondCard(deal());
+		
+	}
+	
 	public void deckAfterDeal(Hand playerHand, Hand comptHand) {
 			removeCard(playerHand.getFirstCard());
 			removeCard(playerHand.getSecondCard());
