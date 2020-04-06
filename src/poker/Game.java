@@ -244,7 +244,8 @@ public class Game {
 				case RAISE:
 					computerActed = true;
 					playerActed = false;
-					int raiseAmount = computer.bet(smallBlind * 2);
+					System.out.println(computer.getName() + " ");
+					int raiseAmount = computer.bet(maxBet-computer.getBet() + smallBlind * 2);
 					maxBet += raiseAmount;
 					System.out.println(computer.getName() + " raises " + raiseAmount + ".");
 					break;

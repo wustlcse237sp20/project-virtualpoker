@@ -62,8 +62,6 @@ public class Player {
 	 */
 	public int bet(int bet) {
 		int sizeOfBet = Math.min(money, bet);
-		
-
 		this.bet += sizeOfBet;
 		money -= sizeOfBet;
 		return sizeOfBet;
