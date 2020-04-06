@@ -4,36 +4,42 @@ public class Player {
 	String name;
 	Hand hand;
 	int money;
-	
-	public Player(String name, Hand hand, int money) {
+
+	/**
+	 * Constructor for player class
+	 * @param name
+	 * @param money
+	 */
+	public Player(String name, int money) {
 		this.name = name;
-		this.hand = hand;
 		this.money = money;
 	}
 
 	public String getName() {
-		return this.name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
+		return name;
 	}
 
 	public Hand getHand() {
-		return this.hand;
-	}
-
-	public void setHand(Hand hand) {
-		this.hand = hand;
+		return hand;
 	}
 
 	public int getMoney() {
-		return this.money;
+		return money;
 	}
 
-	public void setMoney(int money) {
-		this.money = money;
+	/**
+	 * determine the amount of bet placed
+	 * @param bet
+	 * @return the amount of money bet
+	 */
+	public int bet(int bet) {
+		if (this.money >= bet) {
+			this.money -= bet;
+			return bet;
+		} else {
+			int currentMoney = this.money;
+			this.money = 0;
+			return currentMoney;
+		}
 	}
-	
-	
 }
