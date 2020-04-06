@@ -300,10 +300,7 @@ class HandTest {
 		handCards.add(aceOfClubs);
 		
 		hand.determineHighestRank(communityCards);
-		assertEquals(hand.getHighestRank(), HandRank.THREE_OF_A_KIND);
-		assertEquals(hand.getHigh(), Rank.ACE);
-		assertEquals(opponentHand.getHigh(), Rank.KING);
-		
+
 		assertEquals(hand.compareTo(opponentHand, communityCards), 1);
 		
 		handCards.clear();

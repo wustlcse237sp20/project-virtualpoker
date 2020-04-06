@@ -9,10 +9,10 @@ public class Hand {
 
 	public Rank high;
 	public Rank low;
+
 	public ArrayList<Card> kickers = new ArrayList<Card>();
 
 	protected boolean usesLow = false;
-	protected boolean usesAllCards = false;
 
 	public HandRank highestRank;
 
@@ -27,7 +27,6 @@ public class Hand {
 	public ArrayList<Card> getHand() {
 		return handCards;
 	}
-
 
 	public Rank getHigh() {
 		return high;
@@ -45,6 +44,10 @@ public class Hand {
 		for (int i = 0; i < handCards.size(); i++) {
 			System.out.println(handCards.get(i));
 		}
+	}
+
+	public void receiveCard(Card c) {
+		this.handCards.add(c);
 	}
 
 	public HandRank getHighestRank() {
@@ -75,9 +78,8 @@ public class Hand {
 			highestRank = HandRank.PAIR;
 		} else {
 			high = null;
-            low = null;
-            usesLow = false;
-            usesAllCards = false;
+			low = null;
+			usesLow = false;
 			highestRank = HandRank.HIGH_CARD;
 		}
 	}
@@ -99,6 +101,8 @@ public class Hand {
 			boolean aceExists = false;
 			boolean kingExists = false;
 			boolean queenExists = false;
+			boolean jackExists = false;
+			boolean tenExists = false;
 			for (Card c : allCards) {
 				switch (c.getRank()) {
 				case ACE:
@@ -110,9 +114,15 @@ public class Hand {
 				case QUEEN:
 					queenExists = true;
 					break;
+				case JACK:
+					jackExists = true;
+					break;
+				case TEN:
+					tenExists = true;
+					break;
 				}
 			}
-			return (aceExists && kingExists && queenExists);
+			return (aceExists && kingExists && queenExists && jackExists && tenExists);
 		} else {
 			return false;
 		}
@@ -120,13 +130,11 @@ public class Hand {
 
 	private boolean isStraightFlush(CardSet allCardsSet) {
 		usesLow = false;
-		usesAllCards = false;
 		return isFlush(allCardsSet) && isStraight(allCardsSet);
 	}
 
 	private boolean isFourOfAKind(CardSet allCardsSet) {
 		usesLow = false;
-		usesAllCards = false;
 
 		for (Rank rank : Rank.values()) {
 			if (allCardsSet.getRank(rank).size() == 4) {
@@ -140,7 +148,6 @@ public class Hand {
 
 	private boolean isFullHouse(CardSet allCardsSet) {
 		usesLow = true;
-		usesAllCards = false;
 		high = null;
 		low = null;
 
@@ -160,7 +167,6 @@ public class Hand {
 
 	private boolean isFlush(CardSet allCardsSet) {
 		usesLow = false;
-		usesAllCards = true;
 
 		ArrayList<Card> allSuitedCards;
 
@@ -176,7 +182,6 @@ public class Hand {
 
 	private boolean isStraight(CardSet allCardsSet) {
 		usesLow = false;
-		usesAllCards = false;
 
 		int numOfCardsInRow = 0;
 		int position = 0;
@@ -202,7 +207,6 @@ public class Hand {
 
 	private boolean isThreeOfAKind(CardSet allCardsSet) {
 		usesLow = false;
-		usesAllCards = false;
 
 		for (Rank rank : Rank.values()) {
 			if (allCardsSet.getRank(rank).size() == 3) {
@@ -216,7 +220,6 @@ public class Hand {
 
 	public boolean isTwoPair(CardSet allCardsSet) {
 		usesLow = true;
-		usesAllCards = false;
 
 		high = null;
 		low = null;
@@ -276,7 +279,7 @@ public class Hand {
 		} else {
 			return -1 * highestRank.compareTo(bestOpponentRank);
 		}
-		
+
 		return 0;
 	}
 }
