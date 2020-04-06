@@ -7,7 +7,7 @@ import org.junit.Test;
 class FlopTest {
 
 		@Test
-		void testCreateCard() {
+		void testCreateFlop() {
 			Flop f = new Flop();
 			Card c1 = new Card(Suits.HEARTS, Ranks.TEN);
 			Card c2 = new Card(Suits.HEARTS, Ranks.NINE);
