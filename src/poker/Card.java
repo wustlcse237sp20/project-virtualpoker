@@ -27,3 +27,4 @@ public class Card implements Comparable<Card>{
 		return(rank.compareTo(o.getRank()));
 	}
 }
+

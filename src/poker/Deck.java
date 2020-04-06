@@ -31,6 +31,7 @@ public class Deck {
 				cards.add(card);
 			}
 		}
+
 		//Shuffle the collection(array List) of cards
 		Collections.shuffle(this.cards);
 	}

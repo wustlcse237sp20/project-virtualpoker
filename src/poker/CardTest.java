@@ -13,5 +13,6 @@ class CardTest {
 		assertEquals(c.getRank(), Rank.TWO);
 		assertEquals(c.toString(), "TWO of HEARTS");
 	}
-	
+
 }
+
