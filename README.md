@@ -18,5 +18,7 @@ We are working to eliminate any bugs or logic inconsistencies, but overall the f
 - What commands are needed to compile and run the code?
 
 cd src
+
 javac ./poker/Play.java
+
 java poker/Play
