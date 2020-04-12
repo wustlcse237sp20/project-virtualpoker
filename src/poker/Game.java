@@ -62,10 +62,15 @@ public class Game {
 	
 	public void playRound() {
 		System.out.println("New Round!");
+		player.resetBet();
+		computer.resetBet();
 		System.out.println(player.getName() + " has " + player.getMoney() + ".");
 		System.out.println(computer.getName() + " has " + computer.getMoney() + ".");
+		
+		doBlinds();
+		
 		playPreflop();
-
+		
 		if (winner == null) {
 			playFlop();
 		}
@@ -80,7 +85,30 @@ public class Game {
 		}
 		doRoundWinner();
 	}
+	
+	public void doBlinds() {
+		if(isPlayerTurn){
+			doSmallBlind(player);
+			doBigBlind(computer);
+		}
+		else {
+			doSmallBlind(computer);
+			doBigBlind(player);
+		}
+		System.out.println("Current Pot: " + this.getCurrentPot());
+	}
+	
+	public void doSmallBlind(Player player) {
+		player.bet(smallBlind);
+		System.out.println(player.getName() + " is the small blind and bets " + smallBlind + ".");
+	}
 
+	public void doBigBlind(Player player) {
+		int bigBlind = smallBlind * 2;
+		player.bet(bigBlind);
+		System.out.println(player.getName() + " is the big blind and bets " + bigBlind + ".");
+	}
+	
 	public void playPreflop() {
 		isPreflop = true;
 		deck.shuffle();
@@ -88,8 +116,6 @@ public class Game {
 		Hand playerHand = player.getHand();
 		System.out.println("Your hand:");
 		playerHand.displayHand();
-		player.resetBet();
-		computer.resetBet();
 		playBettingRound(isPreflop);
 	}
 

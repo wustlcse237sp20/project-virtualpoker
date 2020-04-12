@@ -10,6 +10,20 @@ import org.junit.jupiter.api.Test;
 class GameTest {
 
 	@Test
+	void testDoBlinds() {
+		Player player = new Player("Player", 50);
+		ComputerPlayer computer = new ComputerPlayer("Computer", 50);
+		player.setHand(new Hand());
+		computer.setHand(new Hand());
+		Game game = new Game(player, computer);
+		
+		game.doBlinds();
+		
+		assertEquals(player.getBet(), 5);
+		assertEquals(computer.getBet(), 10);
+	}
+	
+	@Test
 	void testDealPlayerCards() {
 		Player player = new Player("Player", 50);
 		ComputerPlayer computer = new ComputerPlayer("Computer", 50);
