@@ -312,5 +312,22 @@ class HandTest {
 		assertEquals(hand.compareTo(opponentHand, communityCards), -1);
 		
 	}
+	
+	
+	@Test
+	void testSecondCardString() {
+		Hand hand = new Hand();
+		ArrayList<Card> handCards = hand.getHand();
+		Card nineOfDiamonds = new Card(Suit.DIAMONDS, Rank.NINE);
+		Card fourOfDiamonds = new Card(Suit.DIAMONDS, Rank.FOUR);
+		handCards.add(nineOfDiamonds);
+		handCards.add(fourOfDiamonds);
+		
+		String secondCard = hand.SecondCardtoString();
+		
+		assertEquals(secondCard, "card=FOUR of DIAMONDS");
+
+	}
+	
 
 }

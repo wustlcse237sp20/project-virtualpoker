@@ -1,10 +1,13 @@
 package poker;
 
+
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class Game {
+public class Game{
 
+
+	
 	public int smallBlind = 5;
 	public int startingMoney = 100;
 
@@ -51,6 +54,7 @@ public class Game {
 		}
 	}
 
+	
 	public int getSmallBlind() {
 		return smallBlind;
 	}
@@ -79,9 +83,24 @@ public class Game {
 			playShowdown();
 		}
 		doRoundWinner();
-	}
+				
 
-	public void playPreflop() {
+	}	
+	
+	public String displayPlayersMoney() {
+		int playersMoney = player.getMoney();
+		String playersMoneyString = Integer.toString(playersMoney);
+		return playersMoneyString;
+	}
+	
+	public String displayComputersMoney() {
+		int computersMoney = computer.getMoney();
+		String computersMoneyString = Integer.toString(computersMoney);
+		return computersMoneyString;
+	}
+	
+	
+	public Hand playPreflop() {
 		isPreflop = true;
 		deck.shuffle();
 		dealPlayerCards();
@@ -91,15 +110,17 @@ public class Game {
 		player.resetBet();
 		computer.resetBet();
 		playBettingRound(isPreflop);
+		
+		return playerHand;
 	}
 
 	public void dealPlayerCards() {
 		player.setHand(new Hand());
 		computer.setHand(new Hand());
+		player.receiveCard(deck.deal()); // returns  back a card
+		computer.receiveCard(deck.deal()); // returns back a card 
 		player.receiveCard(deck.deal());
-		computer.receiveCard(deck.deal());
-		player.receiveCard(deck.deal());
-		computer.receiveCard(deck.deal());
+		computer.receiveCard(deck.deal()); 
 	}
 
 	public void playFlop() {
@@ -118,6 +139,7 @@ public class Game {
 		communityCards.add(deck.deal());
 		communityCards.add(deck.deal());
 		communityCards.add(deck.deal());
+
 	}
 
 	public void playTurn() {
@@ -337,4 +359,33 @@ public class Game {
 		}
 		return false;
 	}
+
+	
+	
+	public String firstCommunityCardToString() {
+		return "card=" + communityCards.get(0);
+	}
+	
+	public String secondCommunityCardToString() {
+		return "card=" + communityCards.get(1);
+	}
+	
+	public String thirdCommunityCardToString() {
+		return "card=" + communityCards.get(2);
+	}
+	
+	public String fourthCommunityCardToString() {
+		return "card=" + communityCards.get(3);
+	}
+	
+	public String fifthCommunityCardToString() {
+		return "card=" + communityCards.get(4);
+	}
+	
+
+		
 }
+
+
+
+

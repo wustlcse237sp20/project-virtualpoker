@@ -345,4 +345,13 @@ public class Hand {
 
 		return 0;
 	}
+
+	public String FirstCardtoString() {
+		return "card=" + handCards.get(0);
+	}
+	
+	public String SecondCardtoString() {
+		return "card=" + handCards.get(1);
+	}
+	
 }
