@@ -429,6 +429,7 @@ public class pokerTable {
 		Image img = new ImageIcon(this.getClass().getResource("/poker_table.png")).getImage();
 		lblNewLabel.setIcon(new ImageIcon(img));
 		layeredPane.add(lblNewLabel);
+		
 		}
 	}
 
