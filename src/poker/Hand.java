@@ -132,6 +132,24 @@ public class Hand {
 				case TEN:
 					tenExists = true;
 					break;
+				case EIGHT:
+					break;
+				case FIVE:
+					break;
+				case FOUR:
+					break;
+				case NINE:
+					break;
+				case SEVEN:
+					break;
+				case SIX:
+					break;
+				case THREE:
+					break;
+				case TWO:
+					break;
+				default:
+					break;
 				}
 			}
 			return (aceExists && kingExists && queenExists && jackExists && tenExists);

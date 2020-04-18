@@ -1,7 +1,7 @@
 package poker;
 
 import java.util.ArrayList;
-import java.util.Scanner;
+//import java.util.Scanner;
 
 import GUI.pokerTable;
 
@@ -262,6 +262,12 @@ public class Game {
 					System.out.println(player.getName() + " raises " + raiseAmount + ".");
 					pokerTable.displayMessage(player.getName() + " raises " + raiseAmount + ".");
 					break;
+				case CALL:
+					break;
+				case FOLD:
+					break;
+				default:
+					break;
 				}
 			} else {
 				switch (player.callRaiseFold()) {
@@ -284,6 +290,10 @@ public class Game {
 					System.out.println(player.getName() + " folds.");
 					pokerTable.displayMessage(player.getName() + " folds.");
 					winner = computer;
+					break;
+				case CHECK:
+					break;
+				default:
 					break;
 
 				}
@@ -308,6 +318,12 @@ public class Game {
 					System.out.println(computer.getName() + " raises " + raiseAmount + ".");
 					pokerTable.displayMessage(computer.getName() + " raises " + raiseAmount + ".");
 					break;
+				case CALL:
+					break;
+				case FOLD:
+					break;
+				default:
+					break;
 				}
 			} else {
 				switch (computer.simulateCallRaiseFold(isPreflop, communityCards)) {
@@ -331,6 +347,10 @@ public class Game {
 					System.out.println(computer.getName() + " folds.");
 					pokerTable.displayMessage(computer.getName() + " folds.");
 					winner = player;
+					break;
+				case CHECK:
+					break;
+				default:
 					break;
 
 				}
