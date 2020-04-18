@@ -345,4 +345,28 @@ public class Hand {
 
 		return 0;
 	}
+	
+	
+	public String PlayerFirstCardtoString() {
+		if(handCards.size() != 0) {
+			return "card=" + handCards.get(0);
+		}
+		return "";
+	}
+	
+	public String PlayerSecondCardtoString() {
+		if(handCards.size() != 0) {
+		return "card=" + handCards.get(1);
+		}
+		return "";
+	}
+	
+	public int handSize() {
+		
+		if(!handCards.isEmpty()) {
+			return handCards.size();
+		}
+		
+		return 0;
+	}
 }

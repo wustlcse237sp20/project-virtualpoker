@@ -3,6 +3,9 @@ package poker;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import GUI.pokerTable;
+
+
 public class Game {
 
 	public int smallBlind = 5;
@@ -14,9 +17,11 @@ public class Game {
 
 	Hand playerHand = player.getHand();
 	Hand computerHand = computer.getHand();
-
+	
 	boolean isPlayerTurn = true;
 	ArrayList<Card> communityCards = new ArrayList<Card>();
+	ArrayList<Card> playerHandArray = new ArrayList<Card>();
+	ArrayList<Card> computerHandArray = new ArrayList<Card>();
 
 	boolean isPreflop = true;
 
@@ -28,7 +33,8 @@ public class Game {
 	Player winner = null;
 
 	Deck deck = new Deck();
-
+	
+	
 	public Game(Player player, ComputerPlayer computer) {
 		this.player = player;
 		this.computer = computer;
@@ -40,15 +46,15 @@ public class Game {
 		this.players = players;
 	}
 
-	public void startGame() {
+	public void startGame(String playerName) {
 		players.add(player);
 		players.add(computer);
 		player.setHand(new Hand());
 		computer.setHand(new Hand());
-
-		while (!checkForWinner()) {
-			playRound();
-		}
+//		pokertable = new pokerTable(playerName);
+//		while (!checkForWinner()) {
+//			playRound();
+//		}
 	}
 
 	public int getSmallBlind() {
@@ -65,26 +71,36 @@ public class Game {
 		player.resetBet();
 		computer.resetBet();
 		System.out.println(player.getName() + " has " + player.getMoney() + ".");
+		pokerTable.displayMessage(player.getName() + " has " + player.getMoney() + ".");
 		System.out.println(computer.getName() + " has " + computer.getMoney() + ".");
+		pokerTable.displayMessage(computer.getName() + " has " + computer.getMoney() + ".");
 		
-		doBlinds();
-		
-		playPreflop();
-		
-		if (winner == null) {
-			playFlop();
-		}
-		if (winner == null) {
-			playTurn();
-		}
-		if (winner == null) {
-			playRiver();
-		}
-		if (winner == null) {
-			playShowdown();
-		}
-		doRoundWinner();
+//		doBlinds();
+//		
+//		playPreflop();
+//		
+//		if (winner == null) {
+//			playFlop();
+//		}
+//		if (winner == null) {
+//			playTurn();
+//		}
+//		if (winner == null) {
+//			playRiver();
+//		}
+//		if (winner == null) {
+//			playShowdown();
+//		}
+//		doRoundWinner();
 	}
+	
+	public boolean isWinner() {
+		if (winner == null) {
+			return false;
+		}
+		return true;
+	}
+	
 	
 	public void doBlinds() {
 		if(isPlayerTurn){
@@ -96,27 +112,41 @@ public class Game {
 			doBigBlind(player);
 		}
 		System.out.println("Current Pot: " + this.getCurrentPot());
+		pokerTable.displayMessage("Current Pot: " + this.getCurrentPot());
 	}
 	
-	public void doSmallBlind(Player player) {
+	public int doSmallBlind(Player player) {
 		player.bet(smallBlind);
 		System.out.println(player.getName() + " is the small blind and bets " + smallBlind + ".");
+		pokerTable.displayMessage(player.getName() + " is the small blind and bets " + smallBlind + ".");
+		return smallBlind;
+		
 	}
 
-	public void doBigBlind(Player player) {
+	public int doBigBlind(Player player) {
 		int bigBlind = smallBlind * 2;
 		player.bet(bigBlind);
 		System.out.println(player.getName() + " is the big blind and bets " + bigBlind + ".");
+		pokerTable.displayMessage(player.getName() + " is the big blind and bets " + bigBlind + ".");
+		return bigBlind;
 	}
 	
-	public void playPreflop() {
+	public ArrayList<Card> playPreflop() {
 		isPreflop = true;
 		deck.shuffle();
 		dealPlayerCards();
 		Hand playerHand = player.getHand();
 		System.out.println("Your hand:");
 		playerHand.displayHand();
-		playBettingRound(isPreflop);
+		playerHandArray = playerHand.getHand();
+		return playerHandArray;
+//		playBettingRound(isPreflop);
+	}
+	
+	
+	public ArrayList<Card> playerHandArray(){
+		 playerHandArray = playerHand.getHand();
+		return playerHandArray;
 	}
 
 	public void dealPlayerCards() {
@@ -128,12 +158,14 @@ public class Game {
 		computer.receiveCard(deck.deal());
 	}
 
-	public void playFlop() {
+//	ArrayList<Card> communityCards
+	public ArrayList<Card> playFlop() {
 		System.out.println("FLOP");
 		isPreflop = false;
 		dealFlop();
 		displayCommunityCards();
-		playBettingRound(isPreflop);
+		return communityCards;
+//		playBettingRound(isPreflop);
 	}
 
 	public void dealFlop() {
@@ -146,11 +178,12 @@ public class Game {
 		communityCards.add(deck.deal());
 	}
 
-	public void playTurn() {
+	public ArrayList<Card> playTurn() {
 		System.out.println("TURN");
 		dealTurn();
 		displayCommunityCards();
-		playBettingRound(isPreflop);
+//		playBettingRound(isPreflop);
+		return communityCards;
 	}
 
 	public void dealTurn() {
@@ -158,11 +191,12 @@ public class Game {
 		communityCards.add(deck.deal());
 	}
 
-	public void playRiver() {
+	public ArrayList<Card> playRiver() {
 		System.out.println("RIVER");
 		dealRiver();
 		displayCommunityCards();
-		playBettingRound(isPreflop);
+//		playBettingRound(isPreflop);
+		return communityCards;
 	}
 
 	public void dealRiver() {
@@ -178,6 +212,15 @@ public class Game {
 
 	}
 
+	public boolean isPreflop() {
+		if (isPreflop == true) {
+			return true;
+		}
+		
+		return false;
+	}
+	
+		
 	public void playBettingRound(boolean isPreflop) {
 		maxBet = getMaxBet();
 		do {
@@ -209,6 +252,7 @@ public class Game {
 				case CHECK:
 					playerActed = true;
 					System.out.println(player.getName() + " checks.");
+					pokerTable.displayMessage(player.getName() + " checks.");
 					break;
 				case RAISE:
 					playerActed = true;
@@ -216,6 +260,7 @@ public class Game {
 					int raiseAmount = player.bet(askPlayerForBet(player));
 					maxBet += raiseAmount;
 					System.out.println(player.getName() + " raises " + raiseAmount + ".");
+					pokerTable.displayMessage(player.getName() + " raises " + raiseAmount + ".");
 					break;
 				}
 			} else {
@@ -225,6 +270,7 @@ public class Game {
 					computerActed = true;
 					player.bet(maxBet - player.getBet());
 					System.out.println(player.getName() + " calls.");
+					pokerTable.displayMessage(player.getName() + " calls.");
 					break;
 				case RAISE:
 					playerActed = true;
@@ -232,9 +278,11 @@ public class Game {
 					int raiseAmount = player.bet(askPlayerForBet(player));
 					maxBet += raiseAmount;
 					System.out.println(player.getName() + " raises " + raiseAmount + ".");
+					pokerTable.displayMessage(player.getName() + " raises " + raiseAmount + ".");
 					break;
 				case FOLD:
 					System.out.println(player.getName() + " folds.");
+					pokerTable.displayMessage(player.getName() + " folds.");
 					winner = computer;
 					break;
 
@@ -250,6 +298,7 @@ public class Game {
 				case CHECK:
 					computerActed = true;
 					System.out.println(computer.getName() + " checks.");
+					pokerTable.displayMessage(computer.getName() + " checks.");
 					break;
 				case RAISE:
 					computerActed = true;
@@ -257,6 +306,7 @@ public class Game {
 					int raiseAmount = computer.bet(smallBlind * 2);
 					maxBet += raiseAmount;
 					System.out.println(computer.getName() + " raises " + raiseAmount + ".");
+					pokerTable.displayMessage(computer.getName() + " raises " + raiseAmount + ".");
 					break;
 				}
 			} else {
@@ -266,6 +316,7 @@ public class Game {
 					playerActed = true;
 					computer.bet(maxBet - computer.getBet());
 					System.out.println(computer.getName() + " calls.");
+					pokerTable.displayMessage(computer.getName() + " calls.");
 					break;
 				case RAISE:
 					computerActed = true;
@@ -274,9 +325,11 @@ public class Game {
 					int raiseAmount = computer.bet(maxBet-computer.getBet() + smallBlind * 2);
 					maxBet += raiseAmount;
 					System.out.println(computer.getName() + " raises " + raiseAmount + ".");
+					pokerTable.displayMessage(computer.getName() + " raises " + raiseAmount + ".");
 					break;
 				case FOLD:
 					System.out.println(computer.getName() + " folds.");
+					pokerTable.displayMessage(computer.getName() + " folds.");
 					winner = player;
 					break;
 
@@ -295,7 +348,11 @@ public class Game {
 		playerHand.determineHighestRank(communityCards);
 		computerHand.determineHighestRank(communityCards);
 		System.out.println(player.getName() + ": " + player.getHand().getHighestRank());
+		pokerTable.displayMessage(player.getName() + ": " + player.getHand().getHighestRank());
+		
 		System.out.println(computer.getName() + ": " + computer.getHand().getHighestRank());
+		pokerTable.displayMessage(computer.getName() + ": " + computer.getHand().getHighestRank());
+		
 		int comparison = playerHand.compareTo(computerHand, communityCards);
 		if (comparison > 0) {
 			winner = player;
@@ -333,9 +390,11 @@ public class Game {
 	}
 
 	public int askPlayerForBet(Player player) {
-		Scanner in = new Scanner(System.in);
-		System.out.println("How much would you like to bet?");
-		return in.nextInt();
+//		Scanner in = new Scanner(System.in);
+//		System.out.println("How much would you like to bet?");
+//		return in.nextInt();
+		int betAmount = pokerTable.getUserInput("How much would you like to bet?");
+		return betAmount;
 	}
 
 	public void doRoundWinner() {
@@ -348,6 +407,7 @@ public class Game {
 			computer.setMoney(computer.getMoney() + computer.getBet());
 		}
 		System.out.println(winner.getName() + " wins the hand and the pot of " + this.getCurrentPot() + "!");
+		pokerTable.displayMessage(winner.getName() + " wins the hand and the pot of " + this.getCurrentPot() + "!");
 		System.out.println("");
 		winner = null;
 
@@ -356,11 +416,65 @@ public class Game {
 	public boolean checkForWinner() {
 		if (player.getMoney() == 0) {
 			System.out.println("The computer wins the game!");
+			pokerTable.displayMessage("The computer wins the game!");
+			
 			return true;
 		} else if (computer.getMoney() == 0) {
 			System.out.println("You win the game!");
+			pokerTable.displayMessage("You win the game!");
 			return true;
 		}
 		return false;
 	}
+	
+	public boolean isPlayerTurn() {
+		if(isPlayerTurn) {
+			return true;
+		}
+		return false;
+	}
+	
+	public ArrayList<Card> getComputerHandArray(){
+		computerHandArray = computerHand.getHand();
+		return computerHandArray;
+	}
+	
+	public String ComputerFirstCardtoString() {
+		return "card=" + computerHandArray.get(0);
+	}
+	
+	public String ComputerSecondCardtoString() {
+		return "card=" + computerHandArray.get(1);
+	}
+	
+	public String PlayerFirstCardtoString() {
+		return "card=" + playerHandArray.get(0);
+	}
+	
+	public String PlayerSecondCardtoString() {
+		return "card=" + playerHandArray.get(1);
+	}
+	
+	
+	public String firstCommunityCardToString() {
+		return "card=" + communityCards.get(0);
+	}
+	
+	public String secondCommunityCardToString() {
+		return "card=" + communityCards.get(1);
+	}
+	
+	public String thirdCommunityCardToString() {
+		return "card=" + communityCards.get(2);
+	}
+	
+	public String fourthCommunityCardToString() {
+		return "card=" + communityCards.get(3);
+	}
+	
+	public String fifthCommunityCardToString() {
+		return "card=" + communityCards.get(4);
+	}
+	
+	
 }
