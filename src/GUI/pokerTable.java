@@ -5,19 +5,19 @@ import java.awt.Image;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
-import javax.swing.SpringLayout;
+//import javax.swing.SpringLayout;
 import javax.swing.JLabel;
-import javax.swing.JTextPane;
+//import javax.swing.JTextPane;
 import javax.swing.JPanel;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import javax.swing.JButton;
 import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
-import javax.swing.JInternalFrame;
-import java.awt.event.ActionListener;
+//import javax.swing.JInternalFrame;
+//import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.awt.event.ActionEvent;
+//import java.awt.event.ActionEvent;
 import java.awt.Font;
 import java.awt.Color;
 import javax.swing.SwingConstants;
@@ -26,7 +26,7 @@ import javax.swing.border.MatteBorder;
 import poker.Card;
 import poker.ComputerPlayer;
 import poker.Game;
-import poker.Hand;
+//import poker.Hand;
 import poker.Player;
 
 public class pokerTable {
@@ -68,8 +68,8 @@ public class pokerTable {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					pokerTable window = new pokerTable(playerName);
-					window.frame.setVisible(true);
+					new pokerTable(playerName);
+					pokerTable.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -95,8 +95,8 @@ public class pokerTable {
 			EventQueue.invokeLater(new Runnable() {
 				public void run() {
 					try {
-						pokerTable window = new pokerTable(playerName);
-						window.frame.setVisible(true);
+						new pokerTable(playerName);
+						pokerTable.frame.setVisible(true);
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
@@ -121,8 +121,8 @@ public class pokerTable {
 			EventQueue.invokeLater(new Runnable() {
 				public void run() {
 					try {
-						pokerTable window = new pokerTable(playerName);
-						window.frame.setVisible(true);
+						new pokerTable(playerName);
+						pokerTable.frame.setVisible(true);
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
@@ -146,8 +146,8 @@ public class pokerTable {
 			EventQueue.invokeLater(new Runnable() {
 				public void run() {
 					try {
-						pokerTable window = new pokerTable(playerName);
-						window.frame.setVisible(true);
+						new pokerTable(playerName);
+						pokerTable.frame.setVisible(true);
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
@@ -172,8 +172,8 @@ public class pokerTable {
 			EventQueue.invokeLater(new Runnable() {
 				public void run() {
 					try {
-						pokerTable window = new pokerTable(playerName);
-						window.frame.setVisible(true);
+						new pokerTable(playerName);
+						pokerTable.frame.setVisible(true);
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
