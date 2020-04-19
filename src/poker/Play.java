@@ -5,7 +5,6 @@ public class Play {
 		Player player = new Player("Player", 100);
 		ComputerPlayer computer = new ComputerPlayer("Computer", 100);
 		Game game = new Game(player, computer);
-		game.startGame();
+		// game.startGame();
 	}
 }
-
