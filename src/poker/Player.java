@@ -2,7 +2,7 @@ package poker;
 
 import java.util.Scanner;
 
-import GUI.pokerTable;
+import gui.pokerTable;
 
 public class Player {
 	String name;
@@ -81,9 +81,6 @@ public class Player {
 	}
 
 	public PlayerChoice checkRaise() {
-//		System.out.println("Please enter your choice:");
-//		System.out.println("1 to CHECK and 2 to RAISE");
-		
 		int playerStrategy = pokerTable.getUserInput("Please enter: 1 to CHECK and 2 to RAISE");
 		
 		while (true) {
@@ -101,9 +98,6 @@ public class Player {
 	}
 	
 	public PlayerChoice callRaiseFold() {
-//		Scanner in = new Scanner(System.in);
-//		System.out.println("Please enter your choice:");
-//		System.out.println("1 to CALL, 2 to RAISE, and 3 to FOLD");
 		int playerStrategy = pokerTable.getUserInput("Please enter: 1 to CALL, 2 to RAISE and 3 to FOLD");
 		
 		while (true) {
