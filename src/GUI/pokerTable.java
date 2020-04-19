@@ -192,7 +192,7 @@ public class pokerTable {
 		if(!pokerGame.isWinner()){
 			//Play ShowDown
 			displayMessage("Round: SHOWDOWN!");
-			computerHandArray = pokerGame.getComputerHandArray();
+			//computerHandArray = pokerGame.getComputerHandArray();
 			pokerGame.playShowdown();
 		}
 		
