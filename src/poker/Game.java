@@ -10,6 +10,7 @@ public class Game {
 
 	public int smallBlind = 5;
 	public int startingMoney = 100;
+	public int again = 1;
 
 	Player player = new Player("Player", startingMoney);
 	ComputerPlayer computer = new ComputerPlayer("Computer", startingMoney);
@@ -430,7 +431,19 @@ public class Game {
 		pokerTable.displayMessage(winner.getName() + " wins the hand and the pot of " + this.getCurrentPot() + "!");
 		System.out.println("");
 		winner = null;
+		playAgain();
 
+	}
+	
+	public boolean playAgain() {
+		int again = pokerTable.getUserInput("Want to Play? 1=YES, 2=NO");
+		if(again==1) {
+			return true;
+		}
+		else {
+			return false;
+		}
+		
 	}
 
 	public boolean checkForWinner() {

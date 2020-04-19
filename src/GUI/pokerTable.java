@@ -79,7 +79,7 @@ public class pokerTable {
 		
 		pokerGame.startGame(playerName);
 		
-		while (!pokerGame.checkForWinner()) {
+		while ((!pokerGame.checkForWinner())&&(pokerGame.playAgain())) {
 			displayMessage("Round: New Round!");
 
 			 playersMoney = player.getMoney();
@@ -206,6 +206,8 @@ public class pokerTable {
 		}
 	
 		}
+	
+	
 	
 	/**
 	 * Create the application.
