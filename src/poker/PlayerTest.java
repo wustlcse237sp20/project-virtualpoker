@@ -33,6 +33,25 @@ class PlayerTest {
 		assertEquals(playerHandCards.get(0), card);
 		
 	}
+	@Test
+	void testBetReset() {
+		Player player = new Player("TestPlayer", 40);
+		
+		int bet = player.bet(40);
+		assertEquals(bet, 40);
+		player.resetBet();
+		assertEquals(player.getBet(), 0);
+		assertEquals(player.getMoney(), 0);
+		assertTrue(player.isAllIn());
+		
+	}
+	
+	@Test
+	void PlayerName() {
+		Player player = new Player("TestPlayer", 40);
+		assertEquals(player.name,"TestPlayer");
+		
+	}
 	
 	
 
