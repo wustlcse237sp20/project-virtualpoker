@@ -5,19 +5,19 @@ import java.awt.Image;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
-//import javax.swing.SpringLayout;
+import javax.swing.SpringLayout;
 import javax.swing.JLabel;
-//import javax.swing.JTextPane;
+import javax.swing.JTextPane;
 import javax.swing.JPanel;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import javax.swing.JButton;
 import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
-//import javax.swing.JInternalFrame;
-//import java.awt.event.ActionListener;
+import javax.swing.JInternalFrame;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
-//import java.awt.event.ActionEvent;
+import java.awt.event.ActionEvent;
 import java.awt.Font;
 import java.awt.Color;
 import javax.swing.SwingConstants;
@@ -41,6 +41,11 @@ public class pokerTable {
 	static int playersMoney = 0;
 	static int computersMoney = 0;
 	
+	
+	
+	
+	
+	
 
 	/**
 	 * Launch the application.
@@ -56,6 +61,7 @@ public class pokerTable {
 				null,
 				null,
 				null);
+		
 		
 		Player player = new Player(playerName, 100);
 		ComputerPlayer computer = new ComputerPlayer("Computer", 100);
@@ -208,7 +214,6 @@ public class pokerTable {
 		}
 	
 	
-	
 	/**
 	 * Create the application.
 	 */ 
@@ -228,7 +233,16 @@ public class pokerTable {
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private  void initialize(String playerName) {
+	
+	
+	
+	
+	
+	
+
+	
+	
+	private void initialize(String playerName) {
 
 		
 		String playersFirstCard  = "backOfCard";
@@ -242,7 +256,8 @@ public class pokerTable {
 		String communityCard3 = "";
 		String communityCard4 = "";
 		String communityCard5 = "";
-						
+		
+		
 		frame = new JFrame();
 		frame.setBounds(100, 100, 957, 660);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -251,12 +266,15 @@ public class pokerTable {
 		frame.getContentPane().add(panel, BorderLayout.WEST);
 		panel.setLayout(new GridLayout(0, 1, 0, 0));
 		
+		
 		JButton btnNewButton = new JButton("Call");
 		btnNewButton.setFocusable(false);
 		btnNewButton.setBackground(Color.GRAY);
 		btnNewButton.setForeground(Color.DARK_GRAY);
 		btnNewButton.setFont(new Font("Times New Roman", Font.BOLD, 17));
 		panel.add(btnNewButton);
+		//btnNewButton.setEnabled(false);
+		
 		
 		JButton btnNewButton_1 = new JButton("Raise");
 		btnNewButton_1.setFocusable(false);
@@ -264,6 +282,7 @@ public class pokerTable {
 		btnNewButton_1.setForeground(Color.DARK_GRAY);
 		btnNewButton_1.setFont(new Font("Times New Roman", Font.BOLD, 17));
 		panel.add(btnNewButton_1);
+		//btnNewButton_1.setEnabled(false);
 		
 		JButton btnNewButton_2 = new JButton("Fold");
 		btnNewButton_2.setFocusable(false);
@@ -271,6 +290,8 @@ public class pokerTable {
 		btnNewButton_2.setForeground(Color.DARK_GRAY);
 		btnNewButton_2.setFont(new Font("Times New Roman", Font.BOLD, 17));
 		panel.add(btnNewButton_2);
+		//btnNewButton_2.setEnabled(false);
+		
 		
 		JButton btnNewButton_3 = new JButton("Exit");
 		btnNewButton_3.setFocusable(false);
@@ -278,6 +299,10 @@ public class pokerTable {
 		btnNewButton_3.setForeground(Color.DARK_GRAY);
 		btnNewButton_3.setFont(new Font("Times New Roman", Font.BOLD, 17));
 		panel.add(btnNewButton_3);
+		//btnNewButton_3.setEnabled(false);
+		
+		
+		
 		
 		JLayeredPane layeredPane = new JLayeredPane();
 		frame.getContentPane().add(layeredPane, BorderLayout.CENTER);

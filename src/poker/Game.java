@@ -1,16 +1,31 @@
 package poker;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
 //import java.util.Scanner;
+import GUI.ButtonPress;
 
 import GUI.pokerTable;
+import poker.Player.PlayerChoice;
 
 
-public class Game {
+public class Game implements ActionListener{
 
 	public int smallBlind = 5;
 	public int startingMoney = 100;
 	public int again = 1;
+	
+	
 
 	Player player = new Player("Player", startingMoney);
 	ComputerPlayer computer = new ComputerPlayer("Computer", startingMoney);
@@ -247,13 +262,14 @@ public class Game {
 
 	public void playerBettingRound() {
 		isPlayerTurn = !isPlayerTurn;
-		if (!player.isAllIn()) {
+		if ((!player.isAllIn())&&(countHolder!=0)) {
 			if (playerHasBet(player, maxBet)) {
-				switch (player.checkRaise()) {
+				switch (checkRaise()) {
 				case CHECK:
 					playerActed = true;
 					System.out.println(player.getName() + " checks.");
 					pokerTable.displayMessage(player.getName() + " checks.");
+					countHolder = 0;
 					break;
 				case RAISE:
 					playerActed = true;
@@ -262,22 +278,26 @@ public class Game {
 					maxBet += raiseAmount;
 					System.out.println(player.getName() + " raises " + raiseAmount + ".");
 					pokerTable.displayMessage(player.getName() + " raises " + raiseAmount + ".");
+					countHolder =0;
 					break;
 				case CALL:
+					//countHolder=0;
 					break;
 				case FOLD:
+					//countHolder=0;
 					break;
 				default:
 					break;
 				}
 			} else {
-				switch (player.callRaiseFold()) {
+				switch (callRaiseFold()) {
 				case CALL:
 					playerActed = true;
 					computerActed = true;
 					player.bet(maxBet - player.getBet());
 					System.out.println(player.getName() + " calls.");
 					pokerTable.displayMessage(player.getName() + " calls.");
+					countHolder=0;
 					break;
 				case RAISE:
 					playerActed = true;
@@ -286,13 +306,16 @@ public class Game {
 					maxBet += raiseAmount;
 					System.out.println(player.getName() + " raises " + raiseAmount + ".");
 					pokerTable.displayMessage(player.getName() + " raises " + raiseAmount + ".");
+					countHolder=0;
 					break;
 				case FOLD:
 					System.out.println(player.getName() + " folds.");
 					pokerTable.displayMessage(player.getName() + " folds.");
 					winner = computer;
+					countHolder=0;
 					break;
 				case CHECK:
+					countHolder=0;
 					break;
 				default:
 					break;
@@ -303,7 +326,7 @@ public class Game {
 	}
 
 	public void computerBettingRound() {
-		if (!computer.isAllIn()) {
+		if ((!computer.isAllIn())&&(countHolder!=0)) {
 			if (playerHasBet(computer, maxBet)) {
 				switch (computer.simulateCheckRaise(isPreflop, communityCards)) {
 				case CHECK:
@@ -508,6 +531,125 @@ public class Game {
 	public String fifthCommunityCardToString() {
 		return "card=" + communityCards.get(4);
 	}
+	
+	JFrame frame = new JFrame();
+	JPanel panel = new JPanel();
+	int countHolder;
+	
+	
+	JButton btnNewButton = new JButton("Call");
+	JButton btnNewButton_1 = new JButton("Raise");
+	JButton btnNewButton_2 = new JButton("Fold");
+	JButton btnNewButton_3 = new JButton("Exit");
+	
+	
+	//public ButtonPress(){
+	//	prepareGUI();
+	//}
+	
+	public void prepareGUI() {
+		frame.getContentPane().setLayout(null);
+		frame.setVisible(true);
+		frame.setBounds(100, 100, 957, 660);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.getContentPane().add(panel, BorderLayout.WEST);
+		panel.setLayout(new GridLayout(0, 1, 0, 0));
+	}
+	
+	public void buttonProperties() {
+		btnNewButton.setFocusable(false);
+		btnNewButton.setBackground(Color.GRAY);
+		btnNewButton.setForeground(Color.DARK_GRAY);
+		btnNewButton.setFont(new Font("Times New Roman", Font.BOLD, 17));
+		panel.add(btnNewButton);
+		btnNewButton.addActionListener(this);
+		
+	}
+		
+	public void buttonProperties_1() {
+		btnNewButton_1.setFocusable(false);
+		btnNewButton_1.setBackground(Color.GRAY);
+		btnNewButton_1.setForeground(Color.DARK_GRAY);
+		btnNewButton_1.setFont(new Font("Times New Roman", Font.BOLD, 17));
+		panel.add(btnNewButton_1);
+		btnNewButton_1.addActionListener(this);
+	}
+	
+	public void buttonProperties_2() {
+		btnNewButton_2.setFocusable(false);
+		btnNewButton_2.setBackground(Color.GRAY);
+		btnNewButton_2.setForeground(Color.DARK_GRAY);
+		btnNewButton_2.setFont(new Font("Times New Roman", Font.BOLD, 17));
+		panel.add(btnNewButton_2);
+		btnNewButton_2.addActionListener(this);
+	}
+	public void buttonProperties_3() {
+		btnNewButton_3.setFocusable(false);
+		btnNewButton_3.setBackground(Color.GRAY);
+		btnNewButton_3.setForeground(Color.DARK_GRAY);
+		btnNewButton_3.setFont(new Font("Times New Roman", Font.BOLD, 17));
+		panel.add(btnNewButton_3);
+		btnNewButton_3.addActionListener(this);
+	}
+	
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if(e.getSource() == btnNewButton) {
+			this.countHolder = 1;
+			 }
+		if(e.getSource() == btnNewButton_1) {
+			this.countHolder = 2;
+				}
+				
+		if(e.getSource() == btnNewButton_2) {
+			this.countHolder = 3; 
+			 }
+			
+		
+	}
+	
+	public PlayerChoice checkRaise() {
+		if(countHolder ==1) {
+			return PlayerChoice.CALL;
+			 }
+			else {
+				if(countHolder==2) {
+					return PlayerChoice.RAISE;
+				}
+				else {
+			if(countHolder==3) {
+					return PlayerChoice.FOLD;
+			 }
+			else {
+				return PlayerChoice.NULL;
+			}
+				}
+				}
+	}
+	
+	
+	public PlayerChoice callRaiseFold() {
+
+		if(countHolder ==1) {
+			return PlayerChoice.CALL;
+			 }
+			else {
+				if(countHolder==2) {
+					return PlayerChoice.RAISE;
+				}
+				else {
+			if(countHolder==3) {
+					return PlayerChoice.FOLD;
+			 }
+			else {
+				return PlayerChoice.NULL;
+			}
+				}
+				}
+		
+	}
+
 	
 	
 }

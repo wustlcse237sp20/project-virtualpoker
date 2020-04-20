@@ -17,6 +17,8 @@ public class ButtonPress implements ActionListener{
 	
 	JFrame frame = new JFrame();
 	JPanel panel = new JPanel();
+	int countHolder;
+	
 	
 	JButton btnNewButton = new JButton("Call");
 	JButton btnNewButton_1 = new JButton("Raise");
@@ -24,9 +26,9 @@ public class ButtonPress implements ActionListener{
 	JButton btnNewButton_3 = new JButton("Exit");
 	
 	
-	ButtonPress(){
-		prepareGUI();
-	}
+	//public ButtonPress(){
+	//	prepareGUI();
+	//}
 	
 	public void prepareGUI() {
 		frame.getContentPane().setLayout(null);
@@ -73,29 +75,65 @@ public class ButtonPress implements ActionListener{
 		btnNewButton_3.addActionListener(this);
 	}
 	
-	public PlayerChoice choice(ActionEvent e) {
-		if(e.getSource() == btnNewButton) {
-		return PlayerChoice.CALL;
-		 }
-		else {
-			if(e.getSource() == btnNewButton_1) {
-				return PlayerChoice.RAISE;
-			}
-			else {
-		if(e.getSource() == btnNewButton_2) {
-				return PlayerChoice.FOLD;
-		 }
-		else {
-			return PlayerChoice.NULL;
-		}
-			}
-			}
-		}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		if(e.getSource() == btnNewButton) {
+			this.countHolder = 1;
+			 }
+		if(e.getSource() == btnNewButton_1) {
+			this.countHolder = 2;
+				}
+				
+		if(e.getSource() == btnNewButton_2) {
+			this.countHolder = 3; 
+			 }
+			
 		
 	}
+	
+	public PlayerChoice checkRaise() {
+		if(countHolder ==1) {
+			return PlayerChoice.CALL;
+			 }
+			else {
+				if(countHolder==2) {
+					return PlayerChoice.RAISE;
+				}
+				else {
+			if(countHolder==3) {
+					return PlayerChoice.FOLD;
+			 }
+			else {
+				return PlayerChoice.NULL;
+			}
+				}
+				}
+	}
+	
+	
+	public PlayerChoice callRaiseFold() {
+
+		if(countHolder ==1) {
+			return PlayerChoice.CALL;
+			 }
+			else {
+				if(countHolder==2) {
+					return PlayerChoice.RAISE;
+				}
+				else {
+			if(countHolder==3) {
+					return PlayerChoice.FOLD;
+			 }
+			else {
+				return PlayerChoice.NULL;
+			}
+				}
+				}
+		
+	}
+
+
 	
 	}
 	

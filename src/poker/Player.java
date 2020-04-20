@@ -1,15 +1,18 @@
 package poker;
 
+import javax.swing.JButton;
 import java.util.Scanner;
-
 import GUI.pokerTable;
+import GUI.ButtonPress;
 
 public class Player {
 	String name;
 	Hand hand;
 	int money;
 	int bet;
+	//int choiceHolder;
 	Scanner in = new Scanner(System.in);
+	
 
 	/**
 	 * Constructor for player class
@@ -19,10 +22,11 @@ public class Player {
 	public Player(String name, int money) {
 		this.name = name;
 		this.money = money;
+		
 	}
 
 	public enum PlayerChoice {
-		CHECK,CALL,FOLD,RAISE
+		CHECK,CALL,FOLD,RAISE,NULL
 	}
 	
 	public String getName() {
@@ -36,7 +40,7 @@ public class Player {
 	public Hand getHand() {
 		return hand;
 	}
-
+	
 	public void setHand(Hand hand) {
 		this.hand = hand;
 	}
@@ -57,6 +61,8 @@ public class Player {
 		return bet;
 	}
 
+	
+	
 	/**
 	 * determine the amount of bet placed
 	 * @param bet
@@ -80,11 +86,15 @@ public class Player {
 		return false;
 	}
 
-	public PlayerChoice checkRaise() {
+	
+	//public PlayerChoice checkRaise() {
 //		System.out.println("Please enter your choice:");
 //		System.out.println("1 to CHECK and 2 to RAISE");
 		
-		int playerStrategy = pokerTable.getUserInput("Please enter: 1 to CHECK and 2 to RAISE");
+		
+		
+	/*	int playerStrategy = pokerTable.getUserInput("Please enter: 1 to CHECK and 2 to RAISE");
+		
 		
 		while (true) {
 			switch (playerStrategy) {
@@ -98,12 +108,16 @@ public class Player {
 				break;
 			}
 		}
-	}
+		*/
+	//}
 	
-	public PlayerChoice callRaiseFold() {
+	
+	
+	/*public PlayerChoice callRaiseFold() {
 //		Scanner in = new Scanner(System.in);
 //		System.out.println("Please enter your choice:");
 //		System.out.println("1 to CALL, 2 to RAISE, and 3 to FOLD");
+		
 		int playerStrategy = pokerTable.getUserInput("Please enter: 1 to CALL, 2 to RAISE and 3 to FOLD");
 		
 		while (true) {
@@ -121,4 +135,5 @@ public class Player {
 			}
 		}
 	}
+	*/
 }
