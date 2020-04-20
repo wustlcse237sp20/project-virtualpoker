@@ -312,5 +312,6 @@ class HandTest {
 		assertEquals(hand.compareTo(opponentHand, communityCards), -1);
 		
 	}
+	
 
 }
