@@ -45,4 +45,11 @@ public class Deck {
 		this.cards.remove(0);
 		return topCard;
 	}
+	
+	public int DeckSize() {
+		return this.cards.size();
+	}
+
+
+
 }
