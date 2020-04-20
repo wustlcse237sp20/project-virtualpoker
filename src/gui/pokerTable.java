@@ -41,6 +41,8 @@ public class pokerTable {
 
 	static int playersMoney = 0;
 	static int computersMoney = 0;
+	
+	static boolean isShowdown = false;
 
 	/**
 	 * Launch the application.
@@ -59,6 +61,7 @@ public class pokerTable {
 
 		playersMoney = player.getMoney();
 		computersMoney = computer.getMoney();
+		
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -73,6 +76,8 @@ public class pokerTable {
 		pokerGame.startGame(playerName);
 
 		while (!pokerGame.checkForWinner()) {
+			
+			isShowdown = false;
 			displayMessage("Round: New Round!");
 
 			playersMoney = player.getMoney();
@@ -178,6 +183,7 @@ public class pokerTable {
 
 			if (!pokerGame.isWinner()) {
 				// Play ShowDown
+				isShowdown = true;
 				displayMessage("Round: SHOWDOWN!");
 				computerHandArray = pokerGame.getComputerHandArray();
 				EventQueue.invokeLater(new Runnable() {
@@ -236,40 +242,21 @@ public class pokerTable {
 		String communityCard5 = "";
 
 		frame = new JFrame();
-		frame.setBounds(100, 100, 957, 660);
+		frame.setBounds(100, 100, 957, 730);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		JPanel panel = new JPanel();
 		frame.getContentPane().add(panel, BorderLayout.WEST);
-		panel.setLayout(new GridLayout(0, 1, 0, 0));
+		panel.setLayout(new GridLayout(3, 1, 0, 0));
 
 		JButton callButton = new JButton("Call");
-		callButton.setFocusable(false);
-		callButton.setBackground(Color.GRAY);
-		callButton.setForeground(Color.DARK_GRAY);
-		callButton.setFont(new Font("Times New Roman", Font.BOLD, 17));
 		panel.add(callButton);
 
 		JButton raiseButton = new JButton("Raise");
-		raiseButton.setFocusable(false);
-		raiseButton.setBackground(Color.GRAY);
-		raiseButton.setForeground(Color.DARK_GRAY);
-		raiseButton.setFont(new Font("Times New Roman", Font.BOLD, 17));
 		panel.add(raiseButton);
 
 		JButton foldButton = new JButton("Fold");
-		foldButton.setFocusable(false);
-		foldButton.setBackground(Color.GRAY);
-		foldButton.setForeground(Color.DARK_GRAY);
-		foldButton.setFont(new Font("Times New Roman", Font.BOLD, 17));
 		panel.add(foldButton);
-
-		JButton exitButton = new JButton("Exit");
-		exitButton.setFocusable(false);
-		exitButton.setBackground(Color.GRAY);
-		exitButton.setForeground(Color.DARK_GRAY);
-		exitButton.setFont(new Font("Times New Roman", Font.BOLD, 17));
-		panel.add(exitButton);
 
 		JLayeredPane layeredPane = new JLayeredPane();
 		frame.getContentPane().add(layeredPane, BorderLayout.CENTER);
@@ -299,78 +286,78 @@ public class pokerTable {
 		layeredPane.add(lblNewLabel_4);
 
 		// display card box
-		JLabel lblNewLabel_2222 = new JLabel("");
-		lblNewLabel_2222.setBorder(new MatteBorder(1, 1, 1, 1, (Color) Color.DARK_GRAY));
-		lblNewLabel_2222.setBounds(501, 443, 289, 167);
-		layeredPane.add(lblNewLabel_2222);
+		JLabel cardBox = new JLabel("");
+		cardBox.setBorder(new MatteBorder(1, 1, 1, 1, (Color) Color.DARK_GRAY));
+		cardBox.setBounds(501, 443, 289, 167);
+		layeredPane.add(cardBox);
 
-		JLabel lblNewLabel_1222 = new JLabel("Computer Money");
-		lblNewLabel_1222.setFont(new Font("Times New Roman", Font.BOLD, 15));
-		lblNewLabel_1222.setBounds(650, 455, 125, 14);
-		layeredPane.add(lblNewLabel_1222);
+		JLabel computerMoneyLabel = new JLabel("Computer Money");
+		computerMoneyLabel.setFont(new Font("Times New Roman", Font.BOLD, 15));
+		computerMoneyLabel.setBounds(650, 455, 125, 14);
+		layeredPane.add(computerMoneyLabel);
 
-		JLabel lblNewLabel_1322 = new JLabel(String.valueOf(computersMoney));
-		lblNewLabel_1322.setBounds(692, 486, 46, 14);
-		layeredPane.add(lblNewLabel_1322);
+		JLabel computerMoneyValue = new JLabel(String.valueOf(computersMoney));
+		computerMoneyValue.setBounds(692, 486, 46, 14);
+		layeredPane.add(computerMoneyValue);
 
-		JLabel lblNewLabel_322 = new JLabel("Computer Name");
-		lblNewLabel_322.setFont(new Font("Times New Roman", Font.BOLD, 15));
-		lblNewLabel_322.setBounds(526, 455, 110, 14);
-		layeredPane.add(lblNewLabel_322);
+		JLabel computerNameLabel = new JLabel("Computer Name");
+		computerNameLabel.setFont(new Font("Times New Roman", Font.BOLD, 15));
+		computerNameLabel.setBounds(526, 455, 110, 14);
+		layeredPane.add(computerNameLabel);
 
-		JLabel lblNewLabel_42 = new JLabel("Computer");
-		lblNewLabel_42.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_42.setBounds(536, 486, 75, 14);
-		layeredPane.add(lblNewLabel_42);
+		JLabel computerName = new JLabel("Computer");
+		computerName.setHorizontalAlignment(SwingConstants.CENTER);
+		computerName.setBounds(536, 486, 75, 14);
+		layeredPane.add(computerName);
 
-		if (computerHandArray.size() == 0) {
-			JLabel computerCard1Label = new JLabel("ComputerCard1");
-			computerCard1Label.setBounds(526, 511, 75, 98);
-			computerCard1Label.setBorder(new MatteBorder(1, 1, 1, 1, (Color) Color.DARK_GRAY));
-			Image imgCard46 = new ImageIcon(this.getClass().getResource("/" + computerFirstCard + ".jpg")).getImage();
-			computerCard1Label.setIcon(new ImageIcon(imgCard46));
-			layeredPane.add(computerCard1Label);
+		if (!isShowdown) {
+			JLabel computerFirstCardLabel = new JLabel("ComputerCard1");
+			computerFirstCardLabel.setBounds(526, 511, 75, 98);
+			computerFirstCardLabel.setBorder(new MatteBorder(1, 1, 1, 1, (Color) Color.DARK_GRAY));
+			Image computerFirstCardImage = new ImageIcon(this.getClass().getResource("/" + computerFirstCard + ".jpg")).getImage();
+			computerFirstCardLabel.setIcon(new ImageIcon(computerFirstCardImage));
+			layeredPane.add(computerFirstCardLabel);
 
-			JLabel computerCard2Label = new JLabel("ComputerCard2");
-			computerCard2Label.setBounds(670, 511, 75, 98);
-			computerCard2Label.setBorder(new MatteBorder(1, 1, 1, 1, (Color) Color.DARK_GRAY));
-			Image imgCard56 = new ImageIcon(this.getClass().getResource("/" + computerSecondCard + ".jpg")).getImage();
-			computerCard2Label.setIcon(new ImageIcon(imgCard56));
-			layeredPane.add(computerCard2Label);
+			JLabel computerSecondCardLabel = new JLabel("ComputerCard2");
+			computerSecondCardLabel.setBounds(670, 511, 75, 98);
+			computerSecondCardLabel.setBorder(new MatteBorder(1, 1, 1, 1, (Color) Color.DARK_GRAY));
+			Image computerSecondCardImage = new ImageIcon(this.getClass().getResource("/" + computerSecondCard + ".jpg")).getImage();
+			computerSecondCardLabel.setIcon(new ImageIcon(computerSecondCardImage));
+			layeredPane.add(computerSecondCardLabel);
 		}
 
-		if (computerHandArray.size() == 2) {
+		if (isShowdown) {
 			computerFirstCard = pokerGame.ComputerFirstCardtoString();
 			computerSecondCard = pokerGame.ComputerSecondCardtoString();
 
-			JLabel computerCard1Label = new JLabel("ComputerCard1");
-			computerCard1Label.setBounds(526, 511, 75, 98);
+			JLabel computerFirstCardLabel = new JLabel("ComputerCard1");
+			computerFirstCardLabel.setBounds(526, 511, 75, 98);
 			Image imgCard46 = new ImageIcon(this.getClass().getResource("/" + computerFirstCard + ".png")).getImage();
-			computerCard1Label.setIcon(new ImageIcon(imgCard46));
-			layeredPane.add(computerCard1Label);
+			computerFirstCardLabel.setIcon(new ImageIcon(imgCard46));
+			layeredPane.add(computerFirstCardLabel);
 			
-			JLabel computerCard2Label = new JLabel("ComputerCard2");
-			computerCard2Label.setBounds(670, 511, 75, 98);
+			JLabel computerSecondCardLabel = new JLabel("ComputerCard2");
+			computerSecondCardLabel.setBounds(670, 511, 75, 98);
 			Image imgCard56 = new ImageIcon(this.getClass().getResource("/" + computerSecondCard + ".png")).getImage();
-			computerCard2Label.setIcon(new ImageIcon(imgCard56));
-			layeredPane.add(computerCard2Label);
+			computerSecondCardLabel.setIcon(new ImageIcon(imgCard56));
+			layeredPane.add(computerSecondCardLabel);
 		}
 
 		if (playerHandArray.size() == 2) {
 			playersFirstCard = pokerGame.PlayerFirstCardtoString();
 			playersSecondCard = pokerGame.PlayerSecondCardtoString();
 
-			JLabel playerCard1Label = new JLabel("PlayerCard1");
-			playerCard1Label.setBounds(75, 511, 75, 98);
+			JLabel playerFirstCardLabel = new JLabel("PlayerCard1");
+			playerFirstCardLabel.setBounds(75, 511, 75, 98);
 			Image imgCard4 = new ImageIcon(this.getClass().getResource("/" + playersFirstCard + ".png")).getImage();
-			playerCard1Label.setIcon(new ImageIcon(imgCard4));
-			layeredPane.add(playerCard1Label);
+			playerFirstCardLabel.setIcon(new ImageIcon(imgCard4));
+			layeredPane.add(playerFirstCardLabel);
 
-			JLabel playerCard2Label = new JLabel("PlayerCard2");
-			playerCard2Label.setBounds(212, 511, 75, 98);
+			JLabel playerSecondCardLabel = new JLabel("PlayerCard2");
+			playerSecondCardLabel.setBounds(212, 511, 75, 98);
 			Image imgCard5 = new ImageIcon(this.getClass().getResource("/" + playersSecondCard + ".png")).getImage();
-			playerCard2Label.setIcon(new ImageIcon(imgCard5));
-			layeredPane.add(playerCard2Label);
+			playerSecondCardLabel.setIcon(new ImageIcon(imgCard5));
+			layeredPane.add(playerSecondCardLabel);
 		}
 
 		if (communityCards.size() != 0) {
@@ -379,53 +366,54 @@ public class pokerTable {
 			communityCard2 = pokerGame.secondCommunityCardToString();
 			communityCard3 = pokerGame.thirdCommunityCardToString();
 
-			JLabel lblNewLabel_3 = new JLabel("CommunityCard1");
-			lblNewLabel_3.setBounds(197, 226, 75, 98);
-			Image imgCard3 = new ImageIcon(this.getClass().getResource("/" + communityCard1 + ".png")).getImage();
-			lblNewLabel_3.setIcon(new ImageIcon(imgCard3));
-			layeredPane.add(lblNewLabel_3);
+			JLabel communityFirstCardLabel = new JLabel("CommunityCard1");
+			communityFirstCardLabel.setBounds(197, 226, 75, 98);
+			Image communityFirstCardImage = new ImageIcon(this.getClass().getResource("/" + communityCard1 + ".png")).getImage();
+			communityFirstCardLabel.setIcon(new ImageIcon(communityFirstCardImage));
+			layeredPane.add(communityFirstCardLabel);
 
-			JLabel lblNewLabel_2 = new JLabel("CommunityCard2");
-			lblNewLabel_2.setBounds(292, 226, 75, 98);
-			Image imgCard2 = new ImageIcon(this.getClass().getResource("/" + communityCard2 + ".png")).getImage();
-			lblNewLabel_2.setIcon(new ImageIcon(imgCard2));
-			layeredPane.add(lblNewLabel_2);
+			JLabel communitySecondCardLabel = new JLabel("CommunityCard2");
+			communitySecondCardLabel.setBounds(292, 226, 75, 98);
+			Image communitySecondCardImage = new ImageIcon(this.getClass().getResource("/" + communityCard2 + ".png")).getImage();
+			communitySecondCardLabel.setIcon(new ImageIcon(communitySecondCardImage));
+			layeredPane.add(communitySecondCardLabel);
 
-			JLabel lblNewLabel_1 = new JLabel("CommunityCard3");
-			lblNewLabel_1.setBounds(385, 226, 75, 98);
-			Image imgCard1 = new ImageIcon(this.getClass().getResource("/" + communityCard3 + ".png")).getImage();
-			lblNewLabel_1.setIcon(new ImageIcon(imgCard1));
-			layeredPane.add(lblNewLabel_1);
+			JLabel communityThirdCardLabel = new JLabel("CommunityCard3");
+			communityThirdCardLabel.setBounds(385, 226, 75, 98);
+			Image communityThirdCardImage = new ImageIcon(this.getClass().getResource("/" + communityCard3 + ".png")).getImage();
+			communityThirdCardLabel.setIcon(new ImageIcon(communityThirdCardImage));
+			layeredPane.add(communityThirdCardLabel);
 		}
 
 		if (communityCards.size() >= 4) {
 
 			communityCard4 = pokerGame.fourthCommunityCardToString();
 
-			JLabel lblNewLabel_9 = new JLabel("");
-			lblNewLabel_9.setBounds(481, 226, 75, 98);
-			Image imgCard6 = new ImageIcon(this.getClass().getResource("/" + communityCard4 + ".png")).getImage();
-			lblNewLabel_9.setIcon(new ImageIcon(imgCard6));
-			layeredPane.add(lblNewLabel_9);
+			JLabel communityFourthCardLabel = new JLabel("");
+			communityFourthCardLabel.setBounds(481, 226, 75, 98);
+			Image communityFourthCardImage = new ImageIcon(this.getClass().getResource("/" + communityCard4 + ".png")).getImage();
+			communityFourthCardLabel.setIcon(new ImageIcon(communityFourthCardImage));
+			layeredPane.add(communityFourthCardLabel);
 		}
 
 		if (communityCards.size() == 5) {
 
 			communityCard5 = pokerGame.fifthCommunityCardToString();
-			JLabel lblNewLabel_10 = new JLabel("");
-			lblNewLabel_10.setBounds(584, 226, 75, 98);
-			Image imgCard7 = new ImageIcon(this.getClass().getResource("/" + communityCard5 + ".png")).getImage();
-			lblNewLabel_10.setIcon(new ImageIcon(imgCard7));
-			layeredPane.add(lblNewLabel_10);
+			
+			JLabel communityFifthCardLabel = new JLabel("");
+			communityFifthCardLabel.setBounds(584, 226, 75, 98);
+			Image communityFifthCardImage = new ImageIcon(this.getClass().getResource("/" + communityCard5 + ".png")).getImage();
+			communityFifthCardLabel.setIcon(new ImageIcon(communityFifthCardImage));
+			layeredPane.add(communityFifthCardLabel);
 
 		}
 
-		JLabel lblNewLabel = new JLabel("");
-		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel.setBounds(51, 107, 731, 352);
-		Image img = new ImageIcon(this.getClass().getResource("/poker_table.png")).getImage();
-		lblNewLabel.setIcon(new ImageIcon(img));
-		layeredPane.add(lblNewLabel);
+		JLabel pokerTableLabel = new JLabel("");
+		pokerTableLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		pokerTableLabel.setBounds(51, 107, 731, 352);
+		Image pokerTableImage = new ImageIcon(this.getClass().getResource("/poker_table.png")).getImage();
+		pokerTableLabel.setIcon(new ImageIcon(pokerTableImage));
+		layeredPane.add(pokerTableLabel);
 
 	}
 }
