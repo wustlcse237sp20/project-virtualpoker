@@ -2,7 +2,7 @@ package poker;
 
 import java.util.Scanner;
 
-import gui.pokerTable;
+import gui.PokerTable;
 
 public class Player {
 	String name;
@@ -81,7 +81,7 @@ public class Player {
 	}
 
 	public PlayerChoice checkRaise() {
-		int playerStrategy = pokerTable.getUserInput("Please enter: 1 to CHECK and 2 to RAISE");
+		int playerStrategy = PokerTable.getUserInput("Please enter: 1 to CHECK and 2 to RAISE");
 		
 		while (true) {
 			switch (playerStrategy) {
@@ -90,7 +90,7 @@ public class Player {
 			case 2:
 				return PlayerChoice.RAISE;
 			default:
-				pokerTable.displayMessage("That's not an option. Try again!");
+				PokerTable.displayMessage("That's not an option. Try again!");
 				System.out.println("That's not an option. Try again!");
 				break;
 			}
@@ -98,7 +98,7 @@ public class Player {
 	}
 	
 	public PlayerChoice callRaiseFold() {
-		int playerStrategy = pokerTable.getUserInput("Please enter: 1 to CALL, 2 to RAISE and 3 to FOLD");
+		int playerStrategy = PokerTable.getUserInput("Please enter: 1 to CALL, 2 to RAISE and 3 to FOLD");
 		
 		while (true) {
 			switch (playerStrategy) {
@@ -109,7 +109,7 @@ public class Player {
 			case 3:
 				return PlayerChoice.FOLD;
 			default:
-				pokerTable.displayMessage("That's not an option. Try again!");
+				PokerTable.displayMessage("That's not an option. Try again!");
 				System.out.println("That's not an option. Try again!");
 				break;
 			}

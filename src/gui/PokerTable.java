@@ -30,7 +30,7 @@ import poker.Game;
 import poker.Hand;
 import poker.Player;
 
-public class pokerTable {
+public class PokerTable {
 
 	private static JFrame frame;
 	private static Game pokerGame;
@@ -65,7 +65,7 @@ public class pokerTable {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					pokerTable window = new pokerTable(playerName);
+					PokerTable window = new PokerTable(playerName);
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -93,7 +93,7 @@ public class pokerTable {
 			EventQueue.invokeLater(new Runnable() {
 				public void run() {
 					try {
-						pokerTable window = new pokerTable(playerName);
+						PokerTable window = new PokerTable(playerName);
 						window.frame.setVisible(true);
 					} catch (Exception e) {
 						e.printStackTrace();
@@ -117,7 +117,7 @@ public class pokerTable {
 				EventQueue.invokeLater(new Runnable() {
 					public void run() {
 						try {
-							pokerTable window = new pokerTable(playerName);
+							PokerTable window = new PokerTable(playerName);
 							window.frame.setVisible(true);
 						} catch (Exception e) {
 							e.printStackTrace();
@@ -140,7 +140,7 @@ public class pokerTable {
 				EventQueue.invokeLater(new Runnable() {
 					public void run() {
 						try {
-							pokerTable window = new pokerTable(playerName);
+							PokerTable window = new PokerTable(playerName);
 							window.frame.setVisible(true);
 						} catch (Exception e) {
 							e.printStackTrace();
@@ -165,7 +165,7 @@ public class pokerTable {
 				EventQueue.invokeLater(new Runnable() {
 					public void run() {
 						try {
-							pokerTable window = new pokerTable(playerName);
+							PokerTable window = new PokerTable(playerName);
 							window.frame.setVisible(true);
 						} catch (Exception e) {
 							e.printStackTrace();
@@ -189,7 +189,7 @@ public class pokerTable {
 				EventQueue.invokeLater(new Runnable() {
 					public void run() {
 						try {
-							pokerTable window = new pokerTable(playerName);
+							PokerTable window = new PokerTable(playerName);
 							window.frame.setVisible(true);
 						} catch (Exception e) {
 							e.printStackTrace();
@@ -211,7 +211,7 @@ public class pokerTable {
 	/**
 	 * Create the application.
 	 */
-	public pokerTable(String playerName) {
+	public PokerTable(String playerName) {
 		initialize(playerName);
 	}
 
