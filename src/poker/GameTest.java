@@ -67,4 +67,29 @@ class GameTest {
 		
 	}
 	
+	@Test
+	void testCheckForDraw() {
+		Player player = new Player("Player", 50);
+		ComputerPlayer computer = new ComputerPlayer("Computer", 50);
+		Game game = new Game(player, computer);
+		
+		player.bet(30);
+		computer.bet(40);
+		player.bet(10);
+		assertEquals(game.checkForWinner(), false);
+		
+		
+	}
+	@Test
+	void testCheckHigherBet() {
+		Player player = new Player("Player", 50);
+		ComputerPlayer computer = new ComputerPlayer("Computer", 50);
+		Game game = new Game(player, computer);
+		
+		player.bet(60);
+		assertEquals(game.checkForWinner(), true);
+		
+		
+	}
+	
 }
