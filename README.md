@@ -1,24 +1,20 @@
 # cse237-project
 This project aims to create a fully-playable virtual poker game, where a user can play against the computer in one-on-one no-limit Texas Hold'em.
 
-Iteration 1:
+Iteration 2:
 
 - What user stories were completed this iteration?
 
-We completed all user stories relating to playing poker against a computer opponent with the options of checking, calling, raising, and folding. We also made it possible to view the cards in the player's hand and the community cards. Moreover, the user can view the value of his or her best five-card hand and face off against the computer's hand, winning or losing money in the process. Running out of money will cause a player to lose the game, and vice versa for the computer.
+In this iteration, we developed a functional GUI, in which the user can see his or her hole cards and the community cards as they are dealt. Moreover, during the showdown, the computer shows its cards. The game is played in a series of popups in which the user can make choices. Additionally, we implemented the standard blinds of poker to improve the betting experience. Finally, we fixed some logic that caused errors.
 
 - What user stories do you intend to complete next iteration?
 
-We have not yet implemented the standard blinds of poker. Furthermore, we are not done creating an interactive GUI, so this first iteration is a purely text-based game. We also intend to improve the logic of the game and bolster up the computer's AI to be a more formidable opponent. Finally, we want to be able to play again after a game is over without terminating the program and running it again.
+Next iteration, we aim to implement the buttons, which are displayed on the GUI, but have no functionality. Furthermore, we plan to add more features to the GUI, such as the current pot and the history of each move. Finally, we will add some more user choice, such as how much money each player starts with.
 
 - Is there anything that you implemented but doesn't currently work?
 
-We are working to eliminate any bugs or logic inconsistencies, but overall the flow of the game is there. Additionally, some unit tests may be incomplete.
+The buttons are on the screen, but currently do nothing. Additionally, we aim to fix some errors that arise from unexpected user input.
 
 - What commands are needed to compile and run the code?
 
-cd src
-
-javac ./poker/Play.java
-
-java poker/Play
+java -cp ./PokerTable.jar gui.PokerTable
