@@ -3,6 +3,8 @@ package poker;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import gui.PokerTable;
+
 public class Game {
 
 	public int smallBlind = 5;
@@ -17,11 +19,15 @@ public class Game {
 
 	boolean isPlayerTurn = true;
 	ArrayList<Card> communityCards = new ArrayList<Card>();
+	ArrayList<Card> playerHandArray = new ArrayList<Card>();
+	ArrayList<Card> computerHandArray = new ArrayList<Card>();
 
 	boolean isPreflop = true;
 
 	boolean playerActed = false;
 	boolean computerActed = false;
+
+	boolean isShowdown = false;
 
 	int maxBet = getMaxBet();
 
@@ -40,15 +46,11 @@ public class Game {
 		this.players = players;
 	}
 
-	public void startGame() {
+	public void startGame(String playerName) {
 		players.add(player);
 		players.add(computer);
 		player.setHand(new Hand());
 		computer.setHand(new Hand());
-
-		while (!checkForWinner()) {
-			playRound();
-		}
 	}
 
 	public int getSmallBlind() {
@@ -59,38 +61,59 @@ public class Game {
 		return players;
 	}
 
-	
 	public void playRound() {
-		System.out.println("New Round!");
-		System.out.println(player.getName() + " has " + player.getMoney() + ".");
-		System.out.println(computer.getName() + " has " + computer.getMoney() + ".");
-		playPreflop();
-
-		if (winner == null) {
-			playFlop();
-		}
-		if (winner == null) {
-			playTurn();
-		}
-		if (winner == null) {
-			playRiver();
-		}
-		if (winner == null) {
-			playShowdown();
-		}
-		doRoundWinner();
+		player.resetBet();
+		computer.resetBet();
+		PokerTable.displayMessage(player.getName() + " has " + player.getMoney() + ".");
+		PokerTable.displayMessage(computer.getName() + " has " + computer.getMoney() + ".");
+		isShowdown = false;
 	}
 
-	public void playPreflop() {
+	public boolean isWinner() {
+		if (winner == null) {
+			return false;
+		}
+		return true;
+	}
+
+	public void doBlinds() {
+		if (isPlayerTurn) {
+			doSmallBlind(player);
+			doBigBlind(computer);
+		} else {
+			doSmallBlind(computer);
+			doBigBlind(player);
+		}
+		System.out.println("Current Pot: " + this.getCurrentPot());
+		PokerTable.displayMessage("Current Pot: " + this.getCurrentPot());
+	}
+
+	public int doSmallBlind(Player player) {
+		player.bet(smallBlind);
+		PokerTable.displayMessage(player.getName() + " is the small blind and bets " + smallBlind + ".");
+		return smallBlind;
+
+	}
+
+	public int doBigBlind(Player player) {
+		int bigBlind = smallBlind * 2;
+		player.bet(bigBlind);
+		PokerTable.displayMessage(player.getName() + " is the big blind and bets " + bigBlind + ".");
+		return bigBlind;
+	}
+
+	public ArrayList<Card> playPreflop() {
 		isPreflop = true;
 		deck.shuffle();
 		dealPlayerCards();
 		Hand playerHand = player.getHand();
-		System.out.println("Your hand:");
-		playerHand.displayHand();
-		player.resetBet();
-		computer.resetBet();
-		playBettingRound(isPreflop);
+		playerHandArray = playerHand.getHand();
+		return playerHandArray;
+	}
+
+	public ArrayList<Card> playerHandArray() {
+		playerHandArray = playerHand.getHand();
+		return playerHandArray;
 	}
 
 	public void dealPlayerCards() {
@@ -102,12 +125,10 @@ public class Game {
 		computer.receiveCard(deck.deal());
 	}
 
-	public void playFlop() {
-		System.out.println("FLOP");
+	public ArrayList<Card> playFlop() {
 		isPreflop = false;
 		dealFlop();
-		displayCommunityCards();
-		playBettingRound(isPreflop);
+		return communityCards;
 	}
 
 	public void dealFlop() {
@@ -120,11 +141,9 @@ public class Game {
 		communityCards.add(deck.deal());
 	}
 
-	public void playTurn() {
-		System.out.println("TURN");
+	public ArrayList<Card> playTurn() {
 		dealTurn();
-		displayCommunityCards();
-		playBettingRound(isPreflop);
+		return communityCards;
 	}
 
 	public void dealTurn() {
@@ -132,11 +151,9 @@ public class Game {
 		communityCards.add(deck.deal());
 	}
 
-	public void playRiver() {
-		System.out.println("RIVER");
+	public ArrayList<Card> playRiver() {
 		dealRiver();
-		displayCommunityCards();
-		playBettingRound(isPreflop);
+		return communityCards;
 	}
 
 	public void dealRiver() {
@@ -144,12 +161,12 @@ public class Game {
 		communityCards.add(deck.deal());
 	}
 
-	public void displayCommunityCards() {
-		System.out.println("Community cards:");
-		for (int i = 0; i < communityCards.size(); i++) {
-			System.out.println(communityCards.get(i));
+	public boolean isPreflop() {
+		if (isPreflop == true) {
+			return true;
 		}
 
+		return false;
 	}
 
 	public void playBettingRound(boolean isPreflop) {
@@ -160,19 +177,20 @@ public class Game {
 			if (isPlayerTurn) {
 				isPlayerTurn = !isPlayerTurn;
 				playerBettingRound();
-				if(winner == null && !(computerActed && playerActed)) {
+				if (winner == null && !(computerActed && playerActed)) {
 					computerBettingRound();
 				}
 			} else {
 				isPlayerTurn = !isPlayerTurn;
 				computerBettingRound();
-				if(winner == null  && !(computerActed && playerActed)) {
+				if (winner == null && !(computerActed && playerActed)) {
 					playerBettingRound();
 				}
 			}
-			System.out.println("Current Pot: " + this.getCurrentPot());
 		} while (((!playerHasBet(player, maxBet) || !playerHasBet(computer, maxBet)) || !(computerActed && playerActed))
 				&& (winner == null) && !player.isAllIn() && !computer.isAllIn());
+		PokerTable.displayMessage("Current Pot: " + this.getCurrentPot())
+		;
 	}
 
 	public void playerBettingRound() {
@@ -182,14 +200,14 @@ public class Game {
 				switch (player.checkRaise()) {
 				case CHECK:
 					playerActed = true;
-					System.out.println(player.getName() + " checks.");
+					PokerTable.displayMessage(player.getName() + " checks.");
 					break;
 				case RAISE:
 					playerActed = true;
 					computerActed = false;
 					int raiseAmount = player.bet(askPlayerForBet(player));
 					maxBet += raiseAmount;
-					System.out.println(player.getName() + " raises " + raiseAmount + ".");
+					PokerTable.displayMessage(player.getName() + " raises " + raiseAmount + ".");
 					break;
 				}
 			} else {
@@ -198,17 +216,17 @@ public class Game {
 					playerActed = true;
 					computerActed = true;
 					player.bet(maxBet - player.getBet());
-					System.out.println(player.getName() + " calls.");
+					PokerTable.displayMessage(player.getName() + " calls.");
 					break;
 				case RAISE:
 					playerActed = true;
 					computerActed = false;
 					int raiseAmount = player.bet(askPlayerForBet(player));
 					maxBet += raiseAmount;
-					System.out.println(player.getName() + " raises " + raiseAmount + ".");
+					PokerTable.displayMessage(player.getName() + " raises " + raiseAmount + ".");
 					break;
 				case FOLD:
-					System.out.println(player.getName() + " folds.");
+					PokerTable.displayMessage(player.getName() + " folds.");
 					winner = computer;
 					break;
 
@@ -223,14 +241,14 @@ public class Game {
 				switch (computer.simulateCheckRaise(isPreflop, communityCards)) {
 				case CHECK:
 					computerActed = true;
-					System.out.println(computer.getName() + " checks.");
+					PokerTable.displayMessage(computer.getName() + " checks.");
 					break;
 				case RAISE:
 					computerActed = true;
 					playerActed = false;
 					int raiseAmount = computer.bet(smallBlind * 2);
 					maxBet += raiseAmount;
-					System.out.println(computer.getName() + " raises " + raiseAmount + ".");
+					PokerTable.displayMessage(computer.getName() + " raises " + raiseAmount + ".");
 					break;
 				}
 			} else {
@@ -239,43 +257,39 @@ public class Game {
 					computerActed = true;
 					playerActed = true;
 					computer.bet(maxBet - computer.getBet());
-					System.out.println(computer.getName() + " calls.");
+					PokerTable.displayMessage(computer.getName() + " calls.");
 					break;
 				case RAISE:
 					computerActed = true;
 					playerActed = false;
-					System.out.println(computer.getName() + " ");
-					int raiseAmount = computer.bet(maxBet-computer.getBet() + smallBlind * 2);
+					int raiseAmount = computer.bet(maxBet - computer.getBet() + smallBlind * 2);
 					maxBet += raiseAmount;
-					System.out.println(computer.getName() + " raises " + raiseAmount + ".");
+					PokerTable.displayMessage(computer.getName() + " raises " + raiseAmount + ".");
 					break;
 				case FOLD:
-					System.out.println(computer.getName() + " folds.");
+					PokerTable.displayMessage(computer.getName() + " folds.");
 					winner = player;
 					break;
 
 				}
 			}
 		}
-
 	}
 
 	public void playShowdown() {
-		System.out.println("SHOWDOWN");
 		Hand playerHand = player.getHand();
 		Hand computerHand = computer.getHand();
-		System.out.println("Computer hand: ");
-		computerHand.displayHand();
 		playerHand.determineHighestRank(communityCards);
 		computerHand.determineHighestRank(communityCards);
-		System.out.println(player.getName() + ": " + player.getHand().getHighestRank());
-		System.out.println(computer.getName() + ": " + computer.getHand().getHighestRank());
+		PokerTable.displayMessage(player.getName() + ": " + player.getHand().getHighestRank());
+		PokerTable.displayMessage(computer.getName() + ": " + computer.getHand().getHighestRank());
 		int comparison = playerHand.compareTo(computerHand, communityCards);
 		if (comparison > 0) {
 			winner = player;
 		} else if (comparison < 0) {
 			winner = computer;
 		}
+		isShowdown = true;
 	}
 
 	public int getMaxBet() {
@@ -307,9 +321,8 @@ public class Game {
 	}
 
 	public int askPlayerForBet(Player player) {
-		Scanner in = new Scanner(System.in);
-		System.out.println("How much would you like to bet?");
-		return in.nextInt();
+		int betAmount = PokerTable.getUserInput("How much would you like to bet?");
+		return betAmount;
 	}
 
 	public void doRoundWinner() {
@@ -321,18 +334,30 @@ public class Game {
 			player.setMoney(player.getMoney() + player.getBet());
 			computer.setMoney(computer.getMoney() + computer.getBet());
 		}
-		System.out.println(winner.getName() + " wins the hand and the pot of " + this.getCurrentPot() + "!");
-		System.out.println("");
+		if (winner != null) {
+			if (isShowdown) {
+				PokerTable.displayMessage(
+						winner.getName() + " wins the hand with a " + winner.getHand().getHighestRank() + " and the pot of " + this.getCurrentPot() + "!");
+				
+			} else {
+				PokerTable.displayMessage(
+						winner.getName() + " wins the hand and the pot of " + this.getCurrentPot() + "!");
+
+			}
+		} else {
+			PokerTable.displayMessage("Split hand! The pot was split.");
+		}
 		winner = null;
 
 	}
 
 	public boolean checkForWinner() {
 		if (player.getMoney() == 0) {
-			System.out.println("The computer wins the game!");
+			PokerTable.displayMessage("The computer wins the game!");
+
 			return true;
 		} else if (computer.getMoney() == 0) {
-			System.out.println("You win the game!");
+			PokerTable.displayMessage("You win the game!");
 			return true;
 		}
 		return false;

@@ -26,5 +26,9 @@ public class Card implements Comparable<Card>{
 	public int compareTo(Card o) {
 		return(rank.compareTo(o.getRank()));
 	}
+	
+	public String imageToString() {
+		return "card=" + this;
+	}
 }
 

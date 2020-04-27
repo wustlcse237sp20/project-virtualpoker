@@ -10,6 +10,20 @@ import org.junit.jupiter.api.Test;
 class GameTest {
 
 	@Test
+	void testDoBlinds() {
+		Player player = new Player("Player", 50);
+		ComputerPlayer computer = new ComputerPlayer("Computer", 50);
+		player.setHand(new Hand());
+		computer.setHand(new Hand());
+		Game game = new Game(player, computer);
+		
+		game.doBlinds();
+		
+		assertEquals(player.getBet(), 5);
+		assertEquals(computer.getBet(), 10);
+	}
+	
+	@Test
 	void testDealPlayerCards() {
 		Player player = new Player("Player", 50);
 		ComputerPlayer computer = new ComputerPlayer("Computer", 50);
@@ -39,6 +53,19 @@ class GameTest {
 		int maxBet = game.getMaxBet();
 		
 		assertEquals(maxBet, 40);
+	}
+	
+	@Test
+	void testHasMaxBet() {
+		int maxBet = 50;
+		Player player = new Player("Player", 50);
+		ComputerPlayer computer = new ComputerPlayer("Computer", 50);
+		Game game = new Game(player, computer);
+		player.bet(30);
+		
+		boolean hasMaxBet = game.playerHasBet(player, maxBet);
+		
+		assertEquals(hasMaxBet, false);
 	}
 	
 	@Test
