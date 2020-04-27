@@ -182,10 +182,10 @@ public class PokerTable {
 			}
 
 			if (!pokerGame.isWinner()) {
-				// Play ShowDown
+				//play showdown
 				isShowdown = true;
 				displayMessage("Round: SHOWDOWN!");
-				computerHandArray = pokerGame.getComputerHandArray();
+				computerHandArray = computer.getHand().getHand();
 				EventQueue.invokeLater(new Runnable() {
 					public void run() {
 						try {
@@ -327,8 +327,8 @@ public class PokerTable {
 		}
 
 		if (isShowdown) {
-			computerFirstCard = pokerGame.ComputerFirstCardtoString();
-			computerSecondCard = pokerGame.ComputerSecondCardtoString();
+			computerFirstCard = computerHandArray.get(0).imageToString();
+			computerSecondCard = computerHandArray.get(1).imageToString();
 
 			JLabel computerFirstCardLabel = new JLabel("ComputerCard1");
 			computerFirstCardLabel.setBounds(526, 511, 75, 98);
@@ -344,8 +344,8 @@ public class PokerTable {
 		}
 
 		if (playerHandArray.size() == 2) {
-			playersFirstCard = pokerGame.PlayerFirstCardtoString();
-			playersSecondCard = pokerGame.PlayerSecondCardtoString();
+			playersFirstCard = playerHandArray.get(0).imageToString();
+			playersSecondCard = playerHandArray.get(1).imageToString();
 
 			JLabel playerFirstCardLabel = new JLabel("PlayerCard1");
 			playerFirstCardLabel.setBounds(75, 511, 75, 98);
@@ -362,10 +362,10 @@ public class PokerTable {
 
 		if (communityCards.size() != 0) {
 
-			communityCard1 = pokerGame.firstCommunityCardToString();
-			communityCard2 = pokerGame.secondCommunityCardToString();
-			communityCard3 = pokerGame.thirdCommunityCardToString();
-
+			communityCard1 = communityCards.get(0).imageToString();
+			communityCard2 = communityCards.get(1).imageToString();
+			communityCard3 = communityCards.get(2).imageToString();
+			
 			JLabel communityFirstCardLabel = new JLabel("CommunityCard1");
 			communityFirstCardLabel.setBounds(197, 226, 75, 98);
 			Image communityFirstCardImage = new ImageIcon(this.getClass().getResource("/" + communityCard1 + ".png")).getImage();
@@ -387,7 +387,7 @@ public class PokerTable {
 
 		if (communityCards.size() >= 4) {
 
-			communityCard4 = pokerGame.fourthCommunityCardToString();
+			communityCard4 = communityCards.get(3).imageToString();
 
 			JLabel communityFourthCardLabel = new JLabel("");
 			communityFourthCardLabel.setBounds(481, 226, 75, 98);
@@ -398,7 +398,7 @@ public class PokerTable {
 
 		if (communityCards.size() == 5) {
 
-			communityCard5 = pokerGame.fifthCommunityCardToString();
+			communityCard5 = communityCards.get(4).imageToString();
 			
 			JLabel communityFifthCardLabel = new JLabel("");
 			communityFifthCardLabel.setBounds(584, 226, 75, 98);

@@ -56,6 +56,19 @@ class GameTest {
 	}
 	
 	@Test
+	void testHasMaxBet() {
+		int maxBet = 50;
+		Player player = new Player("Player", 50);
+		ComputerPlayer computer = new ComputerPlayer("Computer", 50);
+		Game game = new Game(player, computer);
+		player.bet(30);
+		
+		boolean hasMaxBet = game.playerHasBet(player, maxBet);
+		
+		assertEquals(hasMaxBet, false);
+	}
+	
+	@Test
 	void testCheckForWinner() {
 		Player player = new Player("Player", 50);
 		ComputerPlayer computer = new ComputerPlayer("Computer", 50);
