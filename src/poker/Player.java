@@ -81,9 +81,10 @@ public class Player {
 	}
 
 	public PlayerChoice checkRaise() {
-		int playerStrategy = PokerTable.getUserInput("Please enter: 1 to CHECK and 2 to RAISE");
+		int playerStrategy;
 		
 		while (true) {
+			playerStrategy = PokerTable.getUserInput("Please enter: 1 to CHECK and 2 to RAISE");
 			switch (playerStrategy) {
 			case 1:
 				return PlayerChoice.CHECK;
@@ -91,16 +92,16 @@ public class Player {
 				return PlayerChoice.RAISE;
 			default:
 				PokerTable.displayMessage("That's not an option. Try again!");
-				System.out.println("That's not an option. Try again!");
 				break;
 			}
 		}
 	}
 	
 	public PlayerChoice callRaiseFold() {
-		int playerStrategy = PokerTable.getUserInput("Please enter: 1 to CALL, 2 to RAISE and 3 to FOLD");
+		int playerStrategy;
 		
 		while (true) {
+			playerStrategy = PokerTable.getUserInput("Please enter: 1 to CALL, 2 to RAISE and 3 to FOLD");
 			switch (playerStrategy) {
 			case 1:
 				return PlayerChoice.CALL;
@@ -110,7 +111,6 @@ public class Player {
 				return PlayerChoice.FOLD;
 			default:
 				PokerTable.displayMessage("That's not an option. Try again!");
-				System.out.println("That's not an option. Try again!");
 				break;
 			}
 		}
