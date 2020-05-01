@@ -41,15 +41,25 @@ public class PokerTable {
 
 	static int playersMoney = 0;
 	static int computersMoney = 0;
-	
+
 	static boolean isShowdown = false;
+	static boolean fold = false;
+	static boolean call = false;
+	static boolean raise = false;
+	
+	static JPanel panel = new JPanel();
+	
+	static JButton checkButton = new JButton("Check");
+	static JButton callButton = new JButton("Call");
+	static JButton raiseButton = new JButton("Raise");	
+	static JButton foldButton = new JButton("Fold");
 
 	/**
 	 * Launch the application.
 	 * 
 	 * @wbp.parser.entryPoint
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args){
 
 		String playerName = (String) JOptionPane.showInputDialog(frame, "Input Player Name:", "Input Name",
 				JOptionPane.PLAIN_MESSAGE, null, null, null);
@@ -61,7 +71,7 @@ public class PokerTable {
 
 		playersMoney = player.getMoney();
 		computersMoney = computer.getMoney();
-		
+
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -76,7 +86,7 @@ public class PokerTable {
 		pokerGame.startGame(playerName);
 
 		while (!pokerGame.checkForWinner()) {
-			
+
 			isShowdown = false;
 			displayMessage("Round: New Round!");
 
@@ -173,7 +183,7 @@ public class PokerTable {
 					}
 				});
 
-				// call plyBetting Round in RIVER
+				// call playBetting Round in RIVER
 				pokerGame.playBettingRound(pokerGame.isPreflop());
 
 				playersMoney = player.getMoney();
@@ -182,7 +192,7 @@ public class PokerTable {
 			}
 
 			if (!pokerGame.isWinner()) {
-				//play showdown
+				// play showdown
 				isShowdown = true;
 				displayMessage("Round: SHOWDOWN!");
 				computerHandArray = computer.getHand().getHand();
@@ -223,6 +233,52 @@ public class PokerTable {
 		int playerStrategy = Integer.parseInt(JOptionPane.showInputDialog(message));
 		return playerStrategy;
 	}
+	
+	public static int getUserInputCheckRaise() {
+		int[] choices = new int[1];
+
+		checkButton.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e) {
+            	System.out.println(1);
+                choices[0] = 1;
+            }
+		});
+		
+		raiseButton.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e) {
+            	System.out.println(2);
+            	choices[0] = 2;
+            }
+		});
+		return choices[0];
+	}
+	
+	public static int getUserInputCallRaiseFold() {
+		int[] choices = new int[1];
+		
+		callButton.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e) {
+            	System.out.println(1);
+                choices[0] = 1;
+            }
+		});
+
+		raiseButton.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e) {
+            	System.out.println(2);
+                choices[0] = 2;
+            }
+		});
+		
+		foldButton.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e) {
+            	System.out.println(3);
+                choices[0] = 3;
+            }
+		});
+		System.out.println(choices[0]);
+		return choices[0];
+	}
 
 	/**
 	 * Initialize the contents of the frame.
@@ -245,19 +301,14 @@ public class PokerTable {
 		frame.setBounds(100, 100, 957, 730);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-		JPanel panel = new JPanel();
 		frame.getContentPane().add(panel, BorderLayout.WEST);
-		panel.setLayout(new GridLayout(3, 1, 0, 0));
-
-		JButton callButton = new JButton("Call");
+		panel.setLayout(new GridLayout(4, 1, 0, 0));
+		
+		panel.add(checkButton);
 		panel.add(callButton);
-
-		JButton raiseButton = new JButton("Raise");
 		panel.add(raiseButton);
-
-		JButton foldButton = new JButton("Fold");
 		panel.add(foldButton);
-
+		
 		JLayeredPane layeredPane = new JLayeredPane();
 		frame.getContentPane().add(layeredPane, BorderLayout.CENTER);
 

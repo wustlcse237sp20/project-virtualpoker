@@ -84,7 +84,6 @@ public class Game {
 			doSmallBlind(computer);
 			doBigBlind(player);
 		}
-		System.out.println("Current Pot: " + this.getCurrentPot());
 		PokerTable.displayMessage("Current Pot: " + this.getCurrentPot());
 	}
 
@@ -169,7 +168,7 @@ public class Game {
 		return false;
 	}
 
-	public void playBettingRound(boolean isPreflop) {
+	public void playBettingRound(boolean isPreflop){
 		maxBet = getMaxBet();
 		do {
 			playerActed = false;
@@ -193,7 +192,8 @@ public class Game {
 		;
 	}
 
-	public void playerBettingRound() {
+	public void playerBettingRound(){
+
 		isPlayerTurn = !isPlayerTurn;
 		if (!player.isAllIn()) {
 			if (playerHasBet(player, maxBet)) {
