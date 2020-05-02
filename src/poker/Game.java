@@ -46,7 +46,7 @@ public class Game {
 		this.players = players;
 	}
 
-	public void startGame(String playerName) {
+	public void startGame() {
 		players.add(player);
 		players.add(computer);
 		player.setHand(new Hand());
@@ -65,7 +65,11 @@ public class Game {
 		player.resetBet();
 		computer.resetBet();
 		PokerTable.displayMessage(player.getName() + " has " + player.getMoney() + ".");
+		PokerTable.updateCurrentMessage(player.getName() + " has " + player.getMoney() + ".");
+
 		PokerTable.displayMessage(computer.getName() + " has " + computer.getMoney() + ".");
+		PokerTable.updateCurrentMessage(computer.getName() + " has " + computer.getMoney() + ".");
+
 		isShowdown = false;
 	}
 
@@ -84,12 +88,12 @@ public class Game {
 			doSmallBlind(computer);
 			doBigBlind(player);
 		}
-		PokerTable.displayMessage("Current Pot: " + this.getCurrentPot());
 	}
 
 	public int doSmallBlind(Player player) {
 		player.bet(smallBlind);
 		PokerTable.displayMessage(player.getName() + " is the small blind and bets " + smallBlind + ".");
+		PokerTable.updateCurrentMessage(player.getName() + " is the small blind and bets " + smallBlind + ".");
 		return smallBlind;
 
 	}
@@ -98,6 +102,7 @@ public class Game {
 		int bigBlind = smallBlind * 2;
 		player.bet(bigBlind);
 		PokerTable.displayMessage(player.getName() + " is the big blind and bets " + bigBlind + ".");
+		PokerTable.updateCurrentMessage(player.getName() + " is the big blind and bets " + bigBlind + ".");
 		return bigBlind;
 	}
 
@@ -197,10 +202,12 @@ public class Game {
 		isPlayerTurn = !isPlayerTurn;
 		if (!player.isAllIn()) {
 			if (playerHasBet(player, maxBet)) {
+				PokerTable.updateCurrentMessage("Your turn! Check or raise.");
 				switch (player.checkRaise()) {
 				case CHECK:
 					playerActed = true;
 					PokerTable.displayMessage(player.getName() + " checks.");
+					PokerTable.updateCurrentMessage(player.getName() + " checks.");
 					break;
 				case RAISE:
 					playerActed = true;
@@ -208,15 +215,18 @@ public class Game {
 					int raiseAmount = player.bet(askPlayerForBet(player));
 					maxBet += raiseAmount;
 					PokerTable.displayMessage(player.getName() + " raises " + raiseAmount + ".");
+					PokerTable.updateCurrentMessage(player.getName() + " raises " + raiseAmount + ".");
 					break;
 				}
 			} else {
+				PokerTable.updateCurrentMessage("Your turn! Call, raise, or fold.");
 				switch (player.callRaiseFold()) {
 				case CALL:
 					playerActed = true;
 					computerActed = true;
 					player.bet(maxBet - player.getBet());
 					PokerTable.displayMessage(player.getName() + " calls.");
+					PokerTable.updateCurrentMessage(player.getName() + " calls.");
 					break;
 				case RAISE:
 					playerActed = true;
@@ -224,9 +234,11 @@ public class Game {
 					int raiseAmount = player.bet(askPlayerForBet(player));
 					maxBet += raiseAmount;
 					PokerTable.displayMessage(player.getName() + " raises " + raiseAmount + ".");
+					PokerTable.updateCurrentMessage(player.getName() + " raises " + raiseAmount + ".");
 					break;
 				case FOLD:
 					PokerTable.displayMessage(player.getName() + " folds.");
+					PokerTable.updateCurrentMessage(player.getName() + " folds.");
 					winner = computer;
 					break;
 
@@ -242,6 +254,7 @@ public class Game {
 				case CHECK:
 					computerActed = true;
 					PokerTable.displayMessage(computer.getName() + " checks.");
+					PokerTable.updateCurrentMessage(computer.getName() + " checks.");
 					break;
 				case RAISE:
 					computerActed = true;
@@ -249,6 +262,7 @@ public class Game {
 					int raiseAmount = computer.bet(smallBlind * 2);
 					maxBet += raiseAmount;
 					PokerTable.displayMessage(computer.getName() + " raises " + raiseAmount + ".");
+					PokerTable.updateCurrentMessage(computer.getName() + " raises " + raiseAmount + ".");
 					break;
 				}
 			} else {
@@ -258,6 +272,7 @@ public class Game {
 					playerActed = true;
 					computer.bet(maxBet - computer.getBet());
 					PokerTable.displayMessage(computer.getName() + " calls.");
+					PokerTable.updateCurrentMessage(computer.getName() + " calls.");
 					break;
 				case RAISE:
 					computerActed = true;
@@ -265,9 +280,11 @@ public class Game {
 					int raiseAmount = computer.bet(maxBet - computer.getBet() + smallBlind * 2);
 					maxBet += raiseAmount;
 					PokerTable.displayMessage(computer.getName() + " raises " + raiseAmount + ".");
+					PokerTable.updateCurrentMessage(computer.getName() + " raises " + raiseAmount + ".");
 					break;
 				case FOLD:
 					PokerTable.displayMessage(computer.getName() + " folds.");
+					PokerTable.updateCurrentMessage(computer.getName() + " folds.");
 					winner = player;
 					break;
 
@@ -282,7 +299,9 @@ public class Game {
 		playerHand.determineHighestRank(communityCards);
 		computerHand.determineHighestRank(communityCards);
 		PokerTable.displayMessage(player.getName() + ": " + player.getHand().getHighestRank());
+		PokerTable.updateCurrentMessage(player.getName() + ": " + player.getHand().getHighestRank());
 		PokerTable.displayMessage(computer.getName() + ": " + computer.getHand().getHighestRank());
+		PokerTable.updateCurrentMessage(computer.getName() + ": " + computer.getHand().getHighestRank());
 		int comparison = playerHand.compareTo(computerHand, communityCards);
 		if (comparison > 0) {
 			winner = player;
@@ -338,14 +357,18 @@ public class Game {
 			if (isShowdown) {
 				PokerTable.displayMessage(
 						winner.getName() + " wins the hand with a " + winner.getHand().getHighestRank() + " and the pot of " + this.getCurrentPot() + "!");
-				
+				PokerTable.updateCurrentMessage(
+						winner.getName() + " wins the hand with a " + winner.getHand().getHighestRank() + " and the pot of " + this.getCurrentPot() + "!");
 			} else {
 				PokerTable.displayMessage(
+						winner.getName() + " wins the hand and the pot of " + this.getCurrentPot() + "!");
+				PokerTable.updateCurrentMessage(
 						winner.getName() + " wins the hand and the pot of " + this.getCurrentPot() + "!");
 
 			}
 		} else {
 			PokerTable.displayMessage("Split hand! The pot was split.");
+			PokerTable.updateCurrentMessage("Split hand! The pot was split.");
 		}
 		winner = null;
 
@@ -354,10 +377,12 @@ public class Game {
 	public boolean checkForWinner() {
 		if (player.getMoney() == 0) {
 			PokerTable.displayMessage("The computer wins the game!");
+			PokerTable.updateCurrentMessage("The computer wins the game!");
 
 			return true;
 		} else if (computer.getMoney() == 0) {
 			PokerTable.displayMessage("You win the game!");
+			PokerTable.updateCurrentMessage("You win the game!");
 			return true;
 		}
 		return false;
