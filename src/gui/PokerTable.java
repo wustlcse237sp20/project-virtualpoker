@@ -155,7 +155,10 @@ public class PokerTable {
 
 		}
 	}
-
+	
+	/**
+	 * Initialize game ShowDwn round
+	 */
 	private static void roundShowDown() {
 		if (!pokerGame.isWinner()) {
 			// play showdown
@@ -171,8 +174,10 @@ public class PokerTable {
 		}
 	}
 
+	/**
+	 * 
+	 */
 	private static void roundRiver() {
-		aa playersMoney;
 		if (!pokerGame.isWinner()) {
 			// Play River
 			if (events.size() == 3) {
@@ -194,9 +199,10 @@ public class PokerTable {
 
 		}
 	}
-
+    
+	
+	
 	private static void roundTurn() {
-		aa playersMoney;
 		if (!pokerGame.isWinner()) {
 			// Play Turn
 			if (events.size() == 3) {
@@ -217,8 +223,11 @@ public class PokerTable {
 		}
 	}
 
+	
+	/**
+	 * Initialize game flop round
+	 */
 	private static void roundFlop() {
-		aa playersMoney;
 		if (!pokerGame.isWinner()) {
 
 			// Play Flop
@@ -240,6 +249,11 @@ public class PokerTable {
 		}
 	}
 
+	
+	/**
+	 * update message for players
+	 * @param message
+	 */
 	public static void updateCurrentMessage(String message) {
 		if (events.getSize() == 3) {
 			events.remove(0);
@@ -247,6 +261,9 @@ public class PokerTable {
 		events.add(events.getSize(), message);
 		currentMessage = message;
 	}
+	
+	
+	
 
 	public static void generateFrame(String playerName) {
 		EventQueue.invokeLater(new Runnable() {
@@ -261,6 +278,8 @@ public class PokerTable {
 		});
 	}
 
+	
+	
 	/**
 	 * Create the application.
 	 */
@@ -268,15 +287,21 @@ public class PokerTable {
 		initialize(playerName);
 	}
 
+	
+	
 	public static void displayMessage(String message) {
 		JOptionPane.showMessageDialog(frame, message);
 	}
 
+	
+	
 	public static int getUserInput(String message) {
 		int playerStrategy = Integer.parseInt(JOptionPane.showInputDialog(message));
 		return playerStrategy;
 	}
 
+	
+	
 	public static int getUserInputCheckRaise() {
 		choices[0] = 0;
 		callButton.removeActionListener(callButtonListener);
