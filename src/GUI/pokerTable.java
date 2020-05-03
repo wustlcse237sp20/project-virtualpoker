@@ -28,8 +28,11 @@ import poker.ComputerPlayer;
 import poker.Game;
 //import poker.Hand;
 import poker.Player;
+import poker.Player.PlayerChoice;
 
-public class pokerTable {
+import java.awt.event.ActionListener;
+
+public class pokerTable implements ActionListener{
 
 	private static JFrame frame;
 	private static Game pokerGame;
@@ -38,15 +41,86 @@ public class pokerTable {
 	static ArrayList<Card> playerHandArray = new ArrayList<Card>();
 	static ArrayList<Card> computerHandArray = new ArrayList<Card>();
 	
+	JButton btnNewButton = new JButton("Call");
+	JButton btnNewButton_1 = new JButton("Raise");
+	JButton btnNewButton_2 = new JButton("Fold");
+	JButton btnNewButton_3 = new JButton("Exit");
+	
+	
 	static int playersMoney = 0;
 	static int computersMoney = 0;
 	
-	
-	
-	
-	
-	
 
+	public void buttonProperties(JPanel panel) {
+		btnNewButton.setFocusable(false);
+		btnNewButton.setBackground(Color.GRAY);
+		btnNewButton.setForeground(Color.DARK_GRAY);
+		btnNewButton.setFont(new Font("Times New Roman", Font.BOLD, 17));
+		panel.add(btnNewButton);
+		btnNewButton.addActionListener(this);
+		
+	}
+		
+	public void buttonProperties_1(JPanel panel) {
+		btnNewButton_1.setFocusable(false);
+		btnNewButton_1.setBackground(Color.GRAY);
+		btnNewButton_1.setForeground(Color.DARK_GRAY);
+		btnNewButton_1.setFont(new Font("Times New Roman", Font.BOLD, 17));
+		panel.add(btnNewButton_1);
+		btnNewButton_1.addActionListener(this);
+	}
+	
+	public void buttonProperties_2(JPanel panel) {
+		btnNewButton_2.setFocusable(false);
+		btnNewButton_2.setBackground(Color.GRAY);
+		btnNewButton_2.setForeground(Color.DARK_GRAY);
+		btnNewButton_2.setFont(new Font("Times New Roman", Font.BOLD, 17));
+		panel.add(btnNewButton_2);
+		btnNewButton_2.addActionListener(this);
+	}
+	public void buttonProperties_3(JPanel panel) {
+		btnNewButton_3.setFocusable(false);
+		btnNewButton_3.setBackground(Color.GRAY);
+		btnNewButton_3.setForeground(Color.DARK_GRAY);
+		btnNewButton_3.setFont(new Font("Times New Roman", Font.BOLD, 17));
+		panel.add(btnNewButton_3);
+		btnNewButton_3.addActionListener(this);
+	}
+	
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if(e.getSource() == btnNewButton) {
+			this.setPlayerHolder(1);
+			System.out.println("call");
+			
+			 }
+		if(e.getSource() == btnNewButton_1) {
+			this.playerHolder = 2;
+			System.out.println("raise");
+				}
+				
+		if(e.getSource() == btnNewButton_2) {
+			this.playerHolder = 3; 
+			System.out.println("fold");
+			 }
+	}
+	
+		int playerHolder;
+		
+		public int getPlayerHolder() {
+			return playerHolder;
+		}
+
+		public void setPlayerHolder(int value) {
+			this.playerHolder = value;
+		}	
+		
+		public pokerTable(){
+			this.playerHolder=0;
+		}
+
+		
+		
 	/**
 	 * Launch the application.
 	 * @wbp.parser.entryPoint
@@ -65,6 +139,8 @@ public class pokerTable {
 		
 		Player player = new Player(playerName, 100);
 		ComputerPlayer computer = new ComputerPlayer("Computer", 100);
+		
+	
 		
 		pokerGame = new Game(player, computer);
 		
@@ -235,10 +311,6 @@ public class pokerTable {
 	 */
 	
 	
-	
-	
-	
-	
 
 	
 	
@@ -266,42 +338,12 @@ public class pokerTable {
 		frame.getContentPane().add(panel, BorderLayout.WEST);
 		panel.setLayout(new GridLayout(0, 1, 0, 0));
 		
-		
-		JButton btnNewButton = new JButton("Call");
-		btnNewButton.setFocusable(false);
-		btnNewButton.setBackground(Color.GRAY);
-		btnNewButton.setForeground(Color.DARK_GRAY);
-		btnNewButton.setFont(new Font("Times New Roman", Font.BOLD, 17));
-		panel.add(btnNewButton);
-		//btnNewButton.setEnabled(false);
-		
-		
-		JButton btnNewButton_1 = new JButton("Raise");
-		btnNewButton_1.setFocusable(false);
-		btnNewButton_1.setBackground(Color.GRAY);
-		btnNewButton_1.setForeground(Color.DARK_GRAY);
-		btnNewButton_1.setFont(new Font("Times New Roman", Font.BOLD, 17));
-		panel.add(btnNewButton_1);
-		//btnNewButton_1.setEnabled(false);
-		
-		JButton btnNewButton_2 = new JButton("Fold");
-		btnNewButton_2.setFocusable(false);
-		btnNewButton_2.setBackground(Color.GRAY);
-		btnNewButton_2.setForeground(Color.DARK_GRAY);
-		btnNewButton_2.setFont(new Font("Times New Roman", Font.BOLD, 17));
-		panel.add(btnNewButton_2);
-		//btnNewButton_2.setEnabled(false);
-		
-		
-		JButton btnNewButton_3 = new JButton("Exit");
-		btnNewButton_3.setFocusable(false);
-		btnNewButton_3.setBackground(Color.GRAY);
-		btnNewButton_3.setForeground(Color.DARK_GRAY);
-		btnNewButton_3.setFont(new Font("Times New Roman", Font.BOLD, 17));
-		panel.add(btnNewButton_3);
-		//btnNewButton_3.setEnabled(false);
-		
-		
+
+		buttonProperties(panel);
+		buttonProperties_1(panel);
+		buttonProperties_2(panel);
+		buttonProperties_3(panel);
+				
 		
 		
 		JLayeredPane layeredPane = new JLayeredPane();
