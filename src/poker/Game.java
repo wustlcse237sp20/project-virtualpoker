@@ -53,14 +53,17 @@ public class Game {
 		computer.setHand(new Hand());
 	}
 
+	
 	public int getSmallBlind() {
 		return smallBlind;
 	}
+	
 
 	public ArrayList<Player> getPlayers() {
 		return players;
 	}
 
+	
 	public void playRound() {
 		player.resetBet();
 		computer.resetBet();
@@ -72,6 +75,8 @@ public class Game {
 
 		isShowdown = false;
 	}
+	
+	
 
 	public boolean isWinner() {
 		if (winner == null) {
@@ -80,6 +85,8 @@ public class Game {
 		return true;
 	}
 
+	
+	
 	public void doBlinds() {
 		if (isPlayerTurn) {
 			doSmallBlind(player);
@@ -89,6 +96,8 @@ public class Game {
 			doBigBlind(player);
 		}
 	}
+	
+	
 
 	public int doSmallBlind(Player player) {
 		player.bet(smallBlind);
@@ -97,6 +106,8 @@ public class Game {
 		return smallBlind;
 
 	}
+	
+	
 
 	public int doBigBlind(Player player) {
 		int bigBlind = smallBlind * 2;
@@ -106,6 +117,8 @@ public class Game {
 		return bigBlind;
 	}
 
+	
+	
 	public ArrayList<Card> playPreflop() {
 		isPreflop = true;
 		deck.shuffle();
@@ -114,12 +127,16 @@ public class Game {
 		playerHandArray = playerHand.getHand();
 		return playerHandArray;
 	}
+	
+	
 
 	public ArrayList<Card> playerHandArray() {
 		playerHandArray = playerHand.getHand();
 		return playerHandArray;
 	}
 
+	
+	
 	public void dealPlayerCards() {
 		player.setHand(new Hand());
 		computer.setHand(new Hand());
@@ -129,12 +146,16 @@ public class Game {
 		computer.receiveCard(deck.deal());
 	}
 
+	
+	
 	public ArrayList<Card> playFlop() {
 		isPreflop = false;
 		dealFlop();
 		return communityCards;
 	}
 
+	
+	
 	public void dealFlop() {
 		deck.deal();
 		deck.deal();
@@ -145,25 +166,35 @@ public class Game {
 		communityCards.add(deck.deal());
 	}
 
+	
+	
 	public ArrayList<Card> playTurn() {
 		dealTurn();
 		return communityCards;
 	}
+	
+	
 
 	public void dealTurn() {
 		deck.deal();
 		communityCards.add(deck.deal());
 	}
 
+	
+	
 	public ArrayList<Card> playRiver() {
 		dealRiver();
 		return communityCards;
 	}
+	
+	
 
 	public void dealRiver() {
 		deck.deal();
 		communityCards.add(deck.deal());
 	}
+	
+	
 
 	public boolean isPreflop() {
 		if (isPreflop == true) {
@@ -172,7 +203,12 @@ public class Game {
 
 		return false;
 	}
-
+	
+	
+	/**
+	 * check for players bet turn
+	 * @param isPreflop
+	 */
 	public void playBettingRound(boolean isPreflop){
 		maxBet = getMaxBet();
 		do {
@@ -197,6 +233,10 @@ public class Game {
 		;
 	}
 
+	
+	/**
+	 * Initialize player betting
+	 */
 	public void playerBettingRound(){
 
 		isPlayerTurn = !isPlayerTurn;
@@ -247,6 +287,9 @@ public class Game {
 		}
 	}
 
+	/**
+	 * Initialize computer betting
+	 */
 	public void computerBettingRound() {
 		if (!computer.isAllIn()) {
 			if (playerHasBet(computer, maxBet)) {
@@ -293,6 +336,8 @@ public class Game {
 		}
 	}
 
+	
+	
 	public void playShowdown() {
 		Hand playerHand = player.getHand();
 		Hand computerHand = computer.getHand();
@@ -311,6 +356,8 @@ public class Game {
 		isShowdown = true;
 	}
 
+	
+	
 	public int getMaxBet() {
 		int maxBet = 0;
 
@@ -322,6 +369,8 @@ public class Game {
 		}
 		return maxBet;
 	}
+	
+	
 
 	public boolean playerHasBet(Player player, int maxBet) {
 		if (player.getBet() < maxBet) {
@@ -329,6 +378,8 @@ public class Game {
 		}
 		return true;
 	}
+	
+	
 
 	public int getCurrentPot() {
 		int pot = 0;
@@ -339,10 +390,14 @@ public class Game {
 		return pot;
 	}
 
+	
+	
 	public int askPlayerForBet(Player player) {
 		int betAmount = PokerTable.getUserInput("How much would you like to bet?");
 		return betAmount;
 	}
+	
+	
 
 	public void doRoundWinner() {
 		if (winner == player) {
@@ -373,6 +428,9 @@ public class Game {
 		winner = null;
 
 	}
+	
+	
+	
 
 	public boolean checkForWinner() {
 		if (player.getMoney() == 0) {

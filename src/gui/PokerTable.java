@@ -103,7 +103,6 @@ public class PokerTable {
 		pokerGame = new Game(player, computer);
 
 		generateFrame(playerName);
-
 		playersMoney = player.getMoney();
 		computersMoney = computer.getMoney();
 
@@ -111,6 +110,14 @@ public class PokerTable {
 
 		pokerGame.startGame();
 
+		checkForWinner();
+
+	}
+	
+    /**
+     * run the game until there is a winner
+     */
+	private static void checkForWinner() {
 		while (!pokerGame.checkForWinner()) {
 
 			isShowdown = false;
@@ -133,78 +140,13 @@ public class PokerTable {
 			playersMoney = player.getMoney();
 			computersMoney = computer.getMoney();
 
-			if (!pokerGame.isWinner()) {
+			roundFlop();
 
-				// Play Flop
-				if (events.size() == 3) {
-					events.remove(0);
-				}
-				events.add(events.size(), "Round: FLOP!");
-				displayMessage("Round: FLOP!");
+			roundTurn();
 
-				communityCards = pokerGame.playFlop();
+			roundRiver();
 
-				// display the community cards
-				generateFrame(playerName);
-
-				pokerGame.playBettingRound(pokerGame.isPreflop());
-
-				playersMoney = player.getMoney();
-				computersMoney = computer.getMoney();
-			}
-
-			if (!pokerGame.isWinner()) {
-				// Play Turn
-				if (events.size() == 3) {
-					events.remove(0);
-				}
-				events.add(events.size(), "Round: TURN!");
-				displayMessage("Round: TURN!");
-				communityCards = pokerGame.playTurn();
-
-				// display the community cards
-				generateFrame(playerName);
-
-				// call playBetting Round in TURN
-				pokerGame.playBettingRound(pokerGame.isPreflop());
-
-				playersMoney = player.getMoney();
-				computersMoney = computer.getMoney();
-			}
-
-			if (!pokerGame.isWinner()) {
-				// Play River
-				if (events.size() == 3) {
-					events.remove(0);
-				}
-				events.add(events.size(), "Round: RIVER!");
-				displayMessage("Round: RIVER!");
-
-				communityCards = pokerGame.playRiver();
-
-				// display the community cards
-				generateFrame(playerName);
-
-				// call playBetting Round in RIVER
-				pokerGame.playBettingRound(pokerGame.isPreflop());
-
-				playersMoney = player.getMoney();
-				computersMoney = computer.getMoney();
-
-			}
-
-			if (!pokerGame.isWinner()) {
-				// play showdown
-				if (events.size() == 3) {
-					events.remove(0);
-				}
-				events.add(events.size(), "Round: SHOWDOWN!");
-				isShowdown = true;
-				displayMessage("Round: SHOWDOWN!");
-				computerHandArray = computer.getHand().getHand();
-				generateFrame(playerName);
-				pokerGame.playShowdown();
-			}
+			roundShowDown();
 
 			pokerGame.doRoundWinner();
 
@@ -212,9 +154,106 @@ public class PokerTable {
 			computersMoney = computer.getMoney();
 
 		}
-
+	}
+	
+	/**
+	 * Initialize game ShowDwn round
+	 */
+	private static void roundShowDown() {
+		if (!pokerGame.isWinner()) {
+			// play showdown
+			if (events.size() == 3) {
+				events.remove(0);
+			}
+			events.add(events.size(), "Round: SHOWDOWN!");
+			isShowdown = true;
+			displayMessage("Round: SHOWDOWN!");
+			computerHandArray = computer.getHand().getHand();
+			generateFrame(playerName);
+			pokerGame.playShowdown();
+		}
 	}
 
+	/**
+	 * 
+	 */
+	private static void roundRiver() {
+		if (!pokerGame.isWinner()) {
+			// Play River
+			if (events.size() == 3) {
+				events.remove(0);
+			}
+			events.add(events.size(), "Round: RIVER!");
+			displayMessage("Round: RIVER!");
+
+			communityCards = pokerGame.playRiver();
+
+			// display the community cards
+			generateFrame(playerName);
+
+			// call playBetting Round in RIVER
+			pokerGame.playBettingRound(pokerGame.isPreflop());
+
+			playersMoney = player.getMoney();
+			computersMoney = computer.getMoney();
+
+		}
+	}
+    
+	
+	
+	private static void roundTurn() {
+		if (!pokerGame.isWinner()) {
+			// Play Turn
+			if (events.size() == 3) {
+				events.remove(0);
+			}
+			events.add(events.size(), "Round: TURN!");
+			displayMessage("Round: TURN!");
+			communityCards = pokerGame.playTurn();
+
+			// display the community cards
+			generateFrame(playerName);
+
+			// call playBetting Round in TURN
+			pokerGame.playBettingRound(pokerGame.isPreflop());
+
+			playersMoney = player.getMoney();
+			computersMoney = computer.getMoney();
+		}
+	}
+
+	
+	/**
+	 * Initialize game flop round
+	 */
+	private static void roundFlop() {
+		if (!pokerGame.isWinner()) {
+
+			// Play Flop
+			if (events.size() == 3) {
+				events.remove(0);
+			}
+			events.add(events.size(), "Round: FLOP!");
+			displayMessage("Round: FLOP!");
+
+			communityCards = pokerGame.playFlop();
+
+			// display the community cards
+			generateFrame(playerName);
+
+			pokerGame.playBettingRound(pokerGame.isPreflop());
+
+			playersMoney = player.getMoney();
+			computersMoney = computer.getMoney();
+		}
+	}
+
+	
+	/**
+	 * update message for players
+	 * @param message
+	 */
 	public static void updateCurrentMessage(String message) {
 		if (events.getSize() == 3) {
 			events.remove(0);
@@ -222,6 +261,9 @@ public class PokerTable {
 		events.add(events.getSize(), message);
 		currentMessage = message;
 	}
+	
+	
+	
 
 	public static void generateFrame(String playerName) {
 		EventQueue.invokeLater(new Runnable() {
@@ -236,6 +278,8 @@ public class PokerTable {
 		});
 	}
 
+	
+	
 	/**
 	 * Create the application.
 	 */
@@ -243,15 +287,21 @@ public class PokerTable {
 		initialize(playerName);
 	}
 
+	
+	
 	public static void displayMessage(String message) {
 		JOptionPane.showMessageDialog(frame, message);
 	}
 
+	
+	
 	public static int getUserInput(String message) {
 		int playerStrategy = Integer.parseInt(JOptionPane.showInputDialog(message));
 		return playerStrategy;
 	}
 
+	
+	
 	public static int getUserInputCheckRaise() {
 		choices[0] = 0;
 		callButton.removeActionListener(callButtonListener);
