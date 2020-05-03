@@ -103,7 +103,7 @@ public class PokerTable {
 		pokerGame = new Game(player, computer);
 
 		generateFrame(playerName);
-
+aa
 		playersMoney = player.getMoney();
 		computersMoney = computer.getMoney();
 
