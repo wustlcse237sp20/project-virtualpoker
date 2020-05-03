@@ -3,20 +3,18 @@ package gui;
 import java.awt.EventQueue;
 import java.awt.Image;
 
+import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
-import javax.swing.SpringLayout;
 import javax.swing.JLabel;
-import javax.swing.JTextPane;
 import javax.swing.JPanel;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import javax.swing.JButton;
 import javax.swing.JLayeredPane;
+import javax.swing.JList;
 import javax.swing.JOptionPane;
-import javax.swing.JInternalFrame;
 import java.awt.event.ActionListener;
-import java.beans.Beans;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
@@ -27,7 +25,6 @@ import javax.swing.border.MatteBorder;
 import poker.Card;
 import poker.ComputerPlayer;
 import poker.Game;
-import poker.Hand;
 import poker.Player;
 
 public class PokerTable {
@@ -41,8 +38,52 @@ public class PokerTable {
 
 	static int playersMoney = 0;
 	static int computersMoney = 0;
-	
+
 	static boolean isShowdown = false;
+	static boolean fold = false;
+	static boolean call = false;
+	static boolean raise = false;
+
+	static int potAmount = 0;
+
+	static String playerName;
+
+	static JPanel panel = new JPanel();
+
+	static JButton checkButton = new JButton("Check");
+	static JButton callButton = new JButton("Call");
+	static JButton raiseButton = new JButton("Raise");
+	static JButton foldButton = new JButton("Fold");
+
+	static int[] choices = new int[1];
+	
+	static ActionListener callButtonListener = new ActionListener(){
+        public void actionPerformed(ActionEvent e) {
+            choices[0] = 1;
+        }
+	};
+	
+	static ActionListener raiseButtonListener = new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+            choices[0] = 2;
+        }
+	};
+	
+	static ActionListener foldButtonListener = new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+            choices[0] = 3;
+        }
+	};
+	
+	
+	
+	static Player player;
+	static ComputerPlayer computer;
+
+	static DefaultListModel events = new DefaultListModel();
+	static JList list = new JList(events);
+
+	static String currentMessage = "";
 
 	/**
 	 * Launch the application.
@@ -51,55 +92,41 @@ public class PokerTable {
 	 */
 	public static void main(String[] args) {
 
-		String playerName = (String) JOptionPane.showInputDialog(frame, "Input Player Name:", "Input Name",
+		playerName = (String) JOptionPane.showInputDialog(frame, "Input Player Name:", "Input Name",
 				JOptionPane.PLAIN_MESSAGE, null, null, null);
 
-		Player player = new Player(playerName, 100);
-		ComputerPlayer computer = new ComputerPlayer("Computer", 100);
+		int startingMoney = Integer.parseInt(JOptionPane.showInputDialog("Enter a starting amount of money:"));
+
+		player = new Player(playerName, startingMoney);
+		computer = new ComputerPlayer("Computer", startingMoney);
 
 		pokerGame = new Game(player, computer);
 
+		generateFrame(playerName);
+
 		playersMoney = player.getMoney();
 		computersMoney = computer.getMoney();
-		
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					PokerTable window = new PokerTable(playerName);
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
 
-		pokerGame.startGame(playerName);
+		generateFrame(playerName);
+
+		pokerGame.startGame();
 
 		while (!pokerGame.checkForWinner()) {
-			
+
 			isShowdown = false;
+			events.clear();
+			events.add(0, "Round: New Round!");
 			displayMessage("Round: New Round!");
 
 			playersMoney = player.getMoney();
 			computersMoney = computer.getMoney();
 
 			pokerGame.playRound();
-
 			pokerGame.doBlinds();
 
 			playerHandArray = pokerGame.playPreflop();
 
-			// display player hand cards
-			EventQueue.invokeLater(new Runnable() {
-				public void run() {
-					try {
-						PokerTable window = new PokerTable(playerName);
-						window.frame.setVisible(true);
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-				}
-			});
+			generateFrame(playerName);
 
 			pokerGame.playBettingRound(pokerGame.isPreflop());
 
@@ -109,21 +136,16 @@ public class PokerTable {
 			if (!pokerGame.isWinner()) {
 
 				// Play Flop
+				if (events.size() == 3) {
+					events.remove(0);
+				}
+				events.add(events.size(), "Round: FLOP!");
 				displayMessage("Round: FLOP!");
 
 				communityCards = pokerGame.playFlop();
 
 				// display the community cards
-				EventQueue.invokeLater(new Runnable() {
-					public void run() {
-						try {
-							PokerTable window = new PokerTable(playerName);
-							window.frame.setVisible(true);
-						} catch (Exception e) {
-							e.printStackTrace();
-						}
-					}
-				});
+				generateFrame(playerName);
 
 				pokerGame.playBettingRound(pokerGame.isPreflop());
 
@@ -133,20 +155,15 @@ public class PokerTable {
 
 			if (!pokerGame.isWinner()) {
 				// Play Turn
+				if (events.size() == 3) {
+					events.remove(0);
+				}
+				events.add(events.size(), "Round: TURN!");
 				displayMessage("Round: TURN!");
 				communityCards = pokerGame.playTurn();
 
 				// display the community cards
-				EventQueue.invokeLater(new Runnable() {
-					public void run() {
-						try {
-							PokerTable window = new PokerTable(playerName);
-							window.frame.setVisible(true);
-						} catch (Exception e) {
-							e.printStackTrace();
-						}
-					}
-				});
+				generateFrame(playerName);
 
 				// call playBetting Round in TURN
 				pokerGame.playBettingRound(pokerGame.isPreflop());
@@ -157,23 +174,18 @@ public class PokerTable {
 
 			if (!pokerGame.isWinner()) {
 				// Play River
+				if (events.size() == 3) {
+					events.remove(0);
+				}
+				events.add(events.size(), "Round: RIVER!");
 				displayMessage("Round: RIVER!");
 
 				communityCards = pokerGame.playRiver();
 
 				// display the community cards
-				EventQueue.invokeLater(new Runnable() {
-					public void run() {
-						try {
-							PokerTable window = new PokerTable(playerName);
-							window.frame.setVisible(true);
-						} catch (Exception e) {
-							e.printStackTrace();
-						}
-					}
-				});
+				generateFrame(playerName);
 
-				// call plyBetting Round in RIVER
+				// call playBetting Round in RIVER
 				pokerGame.playBettingRound(pokerGame.isPreflop());
 
 				playersMoney = player.getMoney();
@@ -182,20 +194,15 @@ public class PokerTable {
 			}
 
 			if (!pokerGame.isWinner()) {
-				//play showdown
+				// play showdown
+				if (events.size() == 3) {
+					events.remove(0);
+				}
+				events.add(events.size(), "Round: SHOWDOWN!");
 				isShowdown = true;
 				displayMessage("Round: SHOWDOWN!");
 				computerHandArray = computer.getHand().getHand();
-				EventQueue.invokeLater(new Runnable() {
-					public void run() {
-						try {
-							PokerTable window = new PokerTable(playerName);
-							window.frame.setVisible(true);
-						} catch (Exception e) {
-							e.printStackTrace();
-						}
-					}
-				});
+				generateFrame(playerName);
 				pokerGame.playShowdown();
 			}
 
@@ -206,6 +213,27 @@ public class PokerTable {
 
 		}
 
+	}
+
+	public static void updateCurrentMessage(String message) {
+		if (events.getSize() == 3) {
+			events.remove(0);
+		}
+		events.add(events.getSize(), message);
+		currentMessage = message;
+	}
+
+	public static void generateFrame(String playerName) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					PokerTable window = new PokerTable(playerName);
+					window.frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
 	}
 
 	/**
@@ -222,6 +250,29 @@ public class PokerTable {
 	public static int getUserInput(String message) {
 		int playerStrategy = Integer.parseInt(JOptionPane.showInputDialog(message));
 		return playerStrategy;
+	}
+
+	public static int getUserInputCheckRaise() {
+		choices[0] = 0;
+		callButton.removeActionListener(callButtonListener);
+		foldButton.removeActionListener(foldButtonListener);
+		checkButton.addActionListener(callButtonListener);
+		raiseButton.addActionListener(raiseButtonListener);
+		
+		return choices[0];
+	}
+
+	public static int getUserInputCallRaiseFold() {
+		choices[0] = 0;
+		checkButton.removeActionListener(callButtonListener);
+		callButton.addActionListener(callButtonListener);
+		raiseButton.addActionListener(raiseButtonListener);
+		foldButton.addActionListener(foldButtonListener);
+		return choices[0];
+	}
+
+	public static String getPlayerName() {
+		return playerName;
 	}
 
 	/**
@@ -241,30 +292,38 @@ public class PokerTable {
 		String communityCard4 = "";
 		String communityCard5 = "";
 
+		playersMoney = player.getMoney();
+		computersMoney = computer.getMoney();
+		potAmount = pokerGame.getCurrentPot();
+
 		frame = new JFrame();
 		frame.setBounds(100, 100, 957, 730);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-		JPanel panel = new JPanel();
 		frame.getContentPane().add(panel, BorderLayout.WEST);
-		panel.setLayout(new GridLayout(3, 1, 0, 0));
+		panel.setLayout(new GridLayout(4, 1, 0, 0));
 
-		JButton callButton = new JButton("Call");
+		panel.add(checkButton);
 		panel.add(callButton);
-
-		JButton raiseButton = new JButton("Raise");
 		panel.add(raiseButton);
-
-		JButton foldButton = new JButton("Fold");
 		panel.add(foldButton);
 
 		JLayeredPane layeredPane = new JLayeredPane();
 		frame.getContentPane().add(layeredPane, BorderLayout.CENTER);
 
+		list.setBounds(51, 621, 740, 59);
+		layeredPane.add(list);
+
 		JLabel lblNewLabel_222 = new JLabel("");
 		lblNewLabel_222.setBorder(new MatteBorder(1, 1, 1, 1, (Color) Color.DARK_GRAY));
 		lblNewLabel_222.setBounds(51, 443, 289, 167);
 		layeredPane.add(lblNewLabel_222);
+
+		JLabel lblNewLabel_20 = new JLabel("VIRTUAL POKER");
+		lblNewLabel_20.setForeground(Color.GRAY);
+		lblNewLabel_20.setFont(new Font("Times New Roman", Font.BOLD, 34));
+		lblNewLabel_20.setBounds(273, 21, 295, 40);
+		layeredPane.add(lblNewLabel_20);
 
 		JLabel playerMoneyLabel = new JLabel("Player Money");
 		playerMoneyLabel.setFont(new Font("Times New Roman", Font.BOLD, 15));
@@ -314,14 +373,16 @@ public class PokerTable {
 			JLabel computerFirstCardLabel = new JLabel("ComputerCard1");
 			computerFirstCardLabel.setBounds(526, 511, 75, 98);
 			computerFirstCardLabel.setBorder(new MatteBorder(1, 1, 1, 1, (Color) Color.DARK_GRAY));
-			Image computerFirstCardImage = new ImageIcon(this.getClass().getResource("/" + computerFirstCard + ".jpg")).getImage();
+			Image computerFirstCardImage = new ImageIcon(this.getClass().getResource("/" + computerFirstCard + ".jpg"))
+					.getImage();
 			computerFirstCardLabel.setIcon(new ImageIcon(computerFirstCardImage));
 			layeredPane.add(computerFirstCardLabel);
 
 			JLabel computerSecondCardLabel = new JLabel("ComputerCard2");
 			computerSecondCardLabel.setBounds(670, 511, 75, 98);
 			computerSecondCardLabel.setBorder(new MatteBorder(1, 1, 1, 1, (Color) Color.DARK_GRAY));
-			Image computerSecondCardImage = new ImageIcon(this.getClass().getResource("/" + computerSecondCard + ".jpg")).getImage();
+			Image computerSecondCardImage = new ImageIcon(
+					this.getClass().getResource("/" + computerSecondCard + ".jpg")).getImage();
 			computerSecondCardLabel.setIcon(new ImageIcon(computerSecondCardImage));
 			layeredPane.add(computerSecondCardLabel);
 		}
@@ -335,7 +396,7 @@ public class PokerTable {
 			Image imgCard46 = new ImageIcon(this.getClass().getResource("/" + computerFirstCard + ".png")).getImage();
 			computerFirstCardLabel.setIcon(new ImageIcon(imgCard46));
 			layeredPane.add(computerFirstCardLabel);
-			
+
 			JLabel computerSecondCardLabel = new JLabel("ComputerCard2");
 			computerSecondCardLabel.setBounds(670, 511, 75, 98);
 			Image imgCard56 = new ImageIcon(this.getClass().getResource("/" + computerSecondCard + ".png")).getImage();
@@ -365,22 +426,25 @@ public class PokerTable {
 			communityCard1 = communityCards.get(0).imageToString();
 			communityCard2 = communityCards.get(1).imageToString();
 			communityCard3 = communityCards.get(2).imageToString();
-			
+
 			JLabel communityFirstCardLabel = new JLabel("CommunityCard1");
 			communityFirstCardLabel.setBounds(197, 226, 75, 98);
-			Image communityFirstCardImage = new ImageIcon(this.getClass().getResource("/" + communityCard1 + ".png")).getImage();
+			Image communityFirstCardImage = new ImageIcon(this.getClass().getResource("/" + communityCard1 + ".png"))
+					.getImage();
 			communityFirstCardLabel.setIcon(new ImageIcon(communityFirstCardImage));
 			layeredPane.add(communityFirstCardLabel);
 
 			JLabel communitySecondCardLabel = new JLabel("CommunityCard2");
 			communitySecondCardLabel.setBounds(292, 226, 75, 98);
-			Image communitySecondCardImage = new ImageIcon(this.getClass().getResource("/" + communityCard2 + ".png")).getImage();
+			Image communitySecondCardImage = new ImageIcon(this.getClass().getResource("/" + communityCard2 + ".png"))
+					.getImage();
 			communitySecondCardLabel.setIcon(new ImageIcon(communitySecondCardImage));
 			layeredPane.add(communitySecondCardLabel);
 
 			JLabel communityThirdCardLabel = new JLabel("CommunityCard3");
 			communityThirdCardLabel.setBounds(385, 226, 75, 98);
-			Image communityThirdCardImage = new ImageIcon(this.getClass().getResource("/" + communityCard3 + ".png")).getImage();
+			Image communityThirdCardImage = new ImageIcon(this.getClass().getResource("/" + communityCard3 + ".png"))
+					.getImage();
 			communityThirdCardLabel.setIcon(new ImageIcon(communityThirdCardImage));
 			layeredPane.add(communityThirdCardLabel);
 		}
@@ -391,7 +455,8 @@ public class PokerTable {
 
 			JLabel communityFourthCardLabel = new JLabel("");
 			communityFourthCardLabel.setBounds(481, 226, 75, 98);
-			Image communityFourthCardImage = new ImageIcon(this.getClass().getResource("/" + communityCard4 + ".png")).getImage();
+			Image communityFourthCardImage = new ImageIcon(this.getClass().getResource("/" + communityCard4 + ".png"))
+					.getImage();
 			communityFourthCardLabel.setIcon(new ImageIcon(communityFourthCardImage));
 			layeredPane.add(communityFourthCardLabel);
 		}
@@ -399,10 +464,11 @@ public class PokerTable {
 		if (communityCards.size() == 5) {
 
 			communityCard5 = communityCards.get(4).imageToString();
-			
+
 			JLabel communityFifthCardLabel = new JLabel("");
 			communityFifthCardLabel.setBounds(584, 226, 75, 98);
-			Image communityFifthCardImage = new ImageIcon(this.getClass().getResource("/" + communityCard5 + ".png")).getImage();
+			Image communityFifthCardImage = new ImageIcon(this.getClass().getResource("/" + communityCard5 + ".png"))
+					.getImage();
 			communityFifthCardLabel.setIcon(new ImageIcon(communityFifthCardImage));
 			layeredPane.add(communityFifthCardLabel);
 
@@ -415,5 +481,25 @@ public class PokerTable {
 		pokerTableLabel.setIcon(new ImageIcon(pokerTableImage));
 		layeredPane.add(pokerTableLabel);
 
+		JLabel lblNewLabel = new JLabel("");
+		lblNewLabel.setBackground(Color.LIGHT_GRAY);
+		lblNewLabel.setBorder(new MatteBorder(1, 1, 1, 1, (Color) Color.DARK_GRAY));
+		lblNewLabel.setBounds(375, 443, 83, 71);
+		layeredPane.add(lblNewLabel);
+
+		JLabel lblNewLabel_11 = new JLabel("POT");
+		lblNewLabel_11.setForeground(Color.RED);
+		lblNewLabel_11.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel_11.setHorizontalTextPosition(SwingConstants.CENTER);
+		lblNewLabel_11.setFont(new Font("Ti28s New Roman", Font.BOLD, 15));
+		lblNewLabel_11.setBounds(393, 455, 46, 14);
+		layeredPane.add(lblNewLabel_11);
+
+		JLabel lblNewLabel_2 = new JLabel(String.valueOf(potAmount));
+		lblNewLabel_2.setForeground(Color.RED);
+		lblNewLabel_2.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel_2.setBounds(403, 486, 22, 14);
+		layeredPane.add(lblNewLabel_2);
 	}
+
 }
