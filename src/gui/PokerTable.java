@@ -548,7 +548,7 @@ public class PokerTable {
 		JLabel potAmountLabel = new JLabel(String.valueOf(potAmount));
 		potAmountLabel.setForeground(Color.RED);
 		potAmountLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		potAmountLabel.setBounds(403, 486, 25, 14);
+		potAmountLabel.setBounds(403, 486, 26, 14);
 		layeredPane.add(potAmountLabel);
 	}
 

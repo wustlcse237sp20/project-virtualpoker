@@ -226,14 +226,8 @@ public class Game {
 				}
 			}
 			isPlayerTurn = !isPlayerTurn;
-			System.out.println(player.getBet());
-			System.out.println(computer.getBet());
-			System.out.println(playerHasBet(player, maxBet));
-			System.out.println(playerHasBet(computer, maxBet));
-			System.out.println(computerActed && playerActed);
 		} while (((!playerHasBet(player, maxBet) || !playerHasBet(computer, maxBet)) || !(computerActed && playerActed))
 				&& (winner == null) && !player.isAllIn() && !computer.isAllIn());
-		PokerTable.displayMessage("Current Pot: " + this.getCurrentPot())
 		;
 	}
 
