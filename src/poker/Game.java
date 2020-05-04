@@ -170,11 +170,6 @@ public class Game {
 		return false;
 	}
 
-	/**
-	 * Plays the betting round. Controls the order of play.
-	 * 
-	 * @param isPreflop
-	 */
 	public void playBettingRound(boolean isPreflop) {
 		maxBet = getMaxBet();
 		do {

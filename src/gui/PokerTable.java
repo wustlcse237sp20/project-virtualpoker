@@ -247,7 +247,7 @@ public class PokerTable {
 	}
 
 	/**
-	 * update message for players
+	 * Takes current message into history.
 	 * 
 	 * @param message
 	 */
