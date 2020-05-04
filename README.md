@@ -1,19 +1,15 @@
 # cse237-project
 This project aims to create a fully-playable virtual poker game, where a user can play against the computer in one-on-one no-limit Texas Hold'em.
 
-Iteration 2:
+Iteration 3:
 
 - What user stories were completed this iteration?
 
-In this iteration, we developed a functional GUI, in which the user can see his or her hole cards and the community cards as they are dealt. Moreover, during the showdown, the computer shows its cards. The game is played in a series of popups in which the user can make choices. Additionally, we implemented the standard blinds of poker to improve the betting experience. Finally, we fixed some logic that caused errors.
-
-- What user stories do you intend to complete next iteration?
-
-Next iteration, we aim to implement the buttons, which are displayed on the GUI, but have no functionality. Furthermore, we plan to add more features to the GUI, such as the current pot and the history of each move. Finally, we will add some more user choice, such as how much money each player starts with.
+In our final iteration, we focused on increasing the functionality of the GUI. Now, the user can play the game using buttons on the left side of the screen. We updated the visuals, which now include the title of the game and an updating pot counter in the middle of the screen. On the bottom of the GUI, there is an automatically updating history, which displays the last few game actions. Finally, we added a little bit of user customization. When the user runs the game, he or she can choose the amount of money that both players will begin with. 
 
 - Is there anything that you implemented but doesn't currently work?
 
-The buttons are on the screen, but currently do nothing. Additionally, we aim to fix some errors that arise from unexpected user input.
+There are no currently outstanding large bugs or issues. Users who attempt to feed the program unexpected input (such as a String when it asks for a number) may crash the program.
 
 - What commands are needed to compile and run the code?
 
