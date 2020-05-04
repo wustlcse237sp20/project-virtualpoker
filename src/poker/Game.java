@@ -1,7 +1,6 @@
 package poker;
 
 import java.util.ArrayList;
-import java.util.Scanner;
 
 import gui.PokerTable;
 
@@ -95,7 +94,6 @@ public class Game {
 		PokerTable.displayMessage(player.getName() + " is the small blind and bets " + smallBlind + ".");
 		PokerTable.updateCurrentMessage(player.getName() + " is the small blind and bets " + smallBlind + ".");
 		return smallBlind;
-
 	}
 
 	public int doBigBlind(Player player) {
@@ -169,43 +167,25 @@ public class Game {
 		if (isPreflop == true) {
 			return true;
 		}
-
 		return false;
 	}
 
-	/**
-	 * check for players bet turn
-	 * 
-	 * @param isPreflop
-	 */
 	public void playBettingRound(boolean isPreflop) {
 		maxBet = getMaxBet();
 		do {
 			playerActed = false;
 			computerActed = false;
-			if (isPlayerTurn) {
-				playerBettingRound();
-				if (winner == null && !(computerActed && playerActed)) {
-					computerBettingRound();
-				}
-			} else {
+			playerBettingRound();
+			if (winner == null && !(computerActed && playerActed)) {
 				computerBettingRound();
-				if (winner == null && !(computerActed && playerActed)) {
-					playerBettingRound();
-				}
 			}
-			isPlayerTurn = !isPlayerTurn;
+
 		} while (((!playerHasBet(player, maxBet) || !playerHasBet(computer, maxBet)) || !(computerActed && playerActed))
 				&& (winner == null) && !player.isAllIn() && !computer.isAllIn());
-		;
+		PokerTable.displayMessage("Current Pot: " + this.getCurrentPot());
 	}
 
-	/**
-	 * Initialize player betting
-	 */
 	public void playerBettingRound() {
-
-		isPlayerTurn = !isPlayerTurn;
 		if (!player.isAllIn()) {
 			if (playerHasBet(player, maxBet)) {
 				PokerTable.updateCurrentMessage("Your turn! Check or raise.");
