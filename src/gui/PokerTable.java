@@ -440,7 +440,9 @@ public class PokerTable {
 		if (isShowdown) {
 			computerFirstCard = computerHandArray.get(0).imageToString();
 			computerSecondCard = computerHandArray.get(1).imageToString();
-
+			
+			System.out.println(computerHandArray.size());
+			
 			JLabel computerFirstCardLabel = new JLabel("ComputerCard1");
 			computerFirstCardLabel.setBounds(526, 511, 75, 98);
 			Image imgCard46 = new ImageIcon(this.getClass().getResource("/" + computerFirstCard + ".png")).getImage();
