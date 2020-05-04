@@ -56,27 +56,25 @@ public class PokerTable {
 	static JButton foldButton = new JButton("Fold");
 
 	static int[] choices = new int[1];
-	
-	static ActionListener callButtonListener = new ActionListener(){
-        public void actionPerformed(ActionEvent e) {
-            choices[0] = 1;
-        }
+
+	static ActionListener callButtonListener = new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+			choices[0] = 1;
+		}
 	};
-	
+
 	static ActionListener raiseButtonListener = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
-            choices[0] = 2;
-        }
+			choices[0] = 2;
+		}
 	};
-	
+
 	static ActionListener foldButtonListener = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
-            choices[0] = 3;
-        }
+			choices[0] = 3;
+		}
 	};
-	
-	
-	
+
 	static Player player;
 	static ComputerPlayer computer;
 
@@ -103,6 +101,7 @@ public class PokerTable {
 		pokerGame = new Game(player, computer);
 
 		generateFrame(playerName);
+		
 		playersMoney = player.getMoney();
 		computersMoney = computer.getMoney();
 
@@ -113,10 +112,10 @@ public class PokerTable {
 		checkForWinner();
 
 	}
-	
-    /**
-     * run the game until there is a winner
-     */
+
+	/**
+	 * run the game until there is a winner
+	 */
 	private static void checkForWinner() {
 		while (!pokerGame.checkForWinner()) {
 
@@ -125,6 +124,8 @@ public class PokerTable {
 			events.add(0, "Round: New Round!");
 			displayMessage("Round: New Round!");
 
+			communityCards = new ArrayList<Card>();
+			
 			playersMoney = player.getMoney();
 			computersMoney = computer.getMoney();
 
@@ -146,62 +147,41 @@ public class PokerTable {
 
 			roundRiver();
 
-			roundShowDown();
-
+			roundShowdown();
+			
 			pokerGame.doRoundWinner();
 
 			playersMoney = player.getMoney();
 			computersMoney = computer.getMoney();
+			
+			
 
-		}
-	}
-	
-	/**
-	 * Initialize game ShowDwn round
-	 */
-	private static void roundShowDown() {
-		if (!pokerGame.isWinner()) {
-			// play showdown
-			if (events.size() == 3) {
-				events.remove(0);
-			}
-			events.add(events.size(), "Round: SHOWDOWN!");
-			isShowdown = true;
-			displayMessage("Round: SHOWDOWN!");
-			computerHandArray = computer.getHand().getHand();
-			generateFrame(playerName);
-			pokerGame.playShowdown();
 		}
 	}
 
 	/**
-	 * 
+	 * Initialize game flop round
 	 */
-	private static void roundRiver() {
+	private static void roundFlop() {
 		if (!pokerGame.isWinner()) {
-			// Play River
+
 			if (events.size() == 3) {
 				events.remove(0);
 			}
-			events.add(events.size(), "Round: RIVER!");
-			displayMessage("Round: RIVER!");
+			events.add(events.size(), "Round: FLOP!");
+			displayMessage("Round: FLOP!");
 
-			communityCards = pokerGame.playRiver();
-
+			communityCards = pokerGame.playFlop();
 			// display the community cards
 			generateFrame(playerName);
 
-			// call playBetting Round in RIVER
 			pokerGame.playBettingRound(pokerGame.isPreflop());
 
 			playersMoney = player.getMoney();
 			computersMoney = computer.getMoney();
-
 		}
 	}
-    
-	
-	
+
 	private static void roundTurn() {
 		if (!pokerGame.isWinner()) {
 			// Play Turn
@@ -223,21 +203,19 @@ public class PokerTable {
 		}
 	}
 
-	
 	/**
-	 * Initialize game flop round
+	 * play river
 	 */
-	private static void roundFlop() {
+	private static void roundRiver() {
 		if (!pokerGame.isWinner()) {
-
-			// Play Flop
+			// Play River
 			if (events.size() == 3) {
 				events.remove(0);
 			}
-			events.add(events.size(), "Round: FLOP!");
-			displayMessage("Round: FLOP!");
+			events.add(events.size(), "Round: RIVER!");
+			displayMessage("Round: RIVER!");
 
-			communityCards = pokerGame.playFlop();
+			communityCards = pokerGame.playRiver();
 
 			// display the community cards
 			generateFrame(playerName);
@@ -246,12 +224,31 @@ public class PokerTable {
 
 			playersMoney = player.getMoney();
 			computersMoney = computer.getMoney();
+
 		}
 	}
 
-	
+	/**
+	 * play showdown round
+	 */
+	private static void roundShowdown() {
+		if (!pokerGame.isWinner()) {
+			// play showdown
+			if (events.size() == 3) {
+				events.remove(0);
+			}
+			events.add(events.size(), "Round: SHOWDOWN!");
+			isShowdown = true;
+			displayMessage("Round: SHOWDOWN!");
+			computerHandArray = computer.getHand().getHand();
+			generateFrame(playerName);
+			pokerGame.playShowdown();
+		}
+	}
+
 	/**
 	 * update message for players
+	 * 
 	 * @param message
 	 */
 	public static void updateCurrentMessage(String message) {
@@ -259,11 +256,9 @@ public class PokerTable {
 			events.remove(0);
 		}
 		events.add(events.getSize(), message);
+
 		currentMessage = message;
 	}
-	
-	
-	
 
 	public static void generateFrame(String playerName) {
 		EventQueue.invokeLater(new Runnable() {
@@ -278,8 +273,6 @@ public class PokerTable {
 		});
 	}
 
-	
-	
 	/**
 	 * Create the application.
 	 */
@@ -287,28 +280,21 @@ public class PokerTable {
 		initialize(playerName);
 	}
 
-	
-	
 	public static void displayMessage(String message) {
 		JOptionPane.showMessageDialog(frame, message);
 	}
 
-	
-	
 	public static int getUserInput(String message) {
 		int playerStrategy = Integer.parseInt(JOptionPane.showInputDialog(message));
 		return playerStrategy;
 	}
 
-	
-	
 	public static int getUserInputCheckRaise() {
 		choices[0] = 0;
 		callButton.removeActionListener(callButtonListener);
 		foldButton.removeActionListener(foldButtonListener);
 		checkButton.addActionListener(callButtonListener);
 		raiseButton.addActionListener(raiseButtonListener);
-		
 		return choices[0];
 	}
 
@@ -394,7 +380,6 @@ public class PokerTable {
 		lblNewLabel_4.setBounds(76, 486, 75, 14);
 		layeredPane.add(lblNewLabel_4);
 
-		// display card box
 		JLabel cardBox = new JLabel("");
 		cardBox.setBorder(new MatteBorder(1, 1, 1, 1, (Color) Color.DARK_GRAY));
 		cardBox.setBounds(501, 443, 289, 167);
@@ -438,11 +423,10 @@ public class PokerTable {
 		}
 
 		if (isShowdown) {
+
 			computerFirstCard = computerHandArray.get(0).imageToString();
 			computerSecondCard = computerHandArray.get(1).imageToString();
-			
-			System.out.println(computerHandArray.size());
-			
+
 			JLabel computerFirstCardLabel = new JLabel("ComputerCard1");
 			computerFirstCardLabel.setBounds(526, 511, 75, 98);
 			Image imgCard46 = new ImageIcon(this.getClass().getResource("/" + computerFirstCard + ".png")).getImage();
