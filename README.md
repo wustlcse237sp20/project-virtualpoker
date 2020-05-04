@@ -9,7 +9,7 @@ In our final iteration, we focused on increasing the functionality of the GUI. N
 
 - Is there anything that you implemented but doesn't currently work?
 
-When both players are all-in, some errors pop up in the console. However, the game is still fully functional. 
+At this time, we are not aware of any major bugs or issues. If a user enters in unexpected input, such as a String when the game asks for a number, the program may crash.
 
 - What commands are needed to compile and run the code?
 
