@@ -53,17 +53,14 @@ public class Game {
 		computer.setHand(new Hand());
 	}
 
-	
 	public int getSmallBlind() {
 		return smallBlind;
 	}
-	
 
 	public ArrayList<Player> getPlayers() {
 		return players;
 	}
 
-	
 	public void playRound() {
 		player.resetBet();
 		computer.resetBet();
@@ -75,8 +72,6 @@ public class Game {
 
 		isShowdown = false;
 	}
-	
-	
 
 	public boolean isWinner() {
 		if (winner == null) {
@@ -85,8 +80,6 @@ public class Game {
 		return true;
 	}
 
-	
-	
 	public void doBlinds() {
 		if (isPlayerTurn) {
 			doSmallBlind(player);
@@ -96,8 +89,6 @@ public class Game {
 			doBigBlind(player);
 		}
 	}
-	
-	
 
 	public int doSmallBlind(Player player) {
 		player.bet(smallBlind);
@@ -106,8 +97,6 @@ public class Game {
 		return smallBlind;
 
 	}
-	
-	
 
 	public int doBigBlind(Player player) {
 		int bigBlind = smallBlind * 2;
@@ -117,8 +106,6 @@ public class Game {
 		return bigBlind;
 	}
 
-	
-	
 	public ArrayList<Card> playPreflop() {
 		isPreflop = true;
 		deck.shuffle();
@@ -127,16 +114,12 @@ public class Game {
 		playerHandArray = playerHand.getHand();
 		return playerHandArray;
 	}
-	
-	
 
 	public ArrayList<Card> playerHandArray() {
 		playerHandArray = playerHand.getHand();
 		return playerHandArray;
 	}
 
-	
-	
 	public void dealPlayerCards() {
 		player.setHand(new Hand());
 		computer.setHand(new Hand());
@@ -146,16 +129,12 @@ public class Game {
 		computer.receiveCard(deck.deal());
 	}
 
-	
-	
 	public ArrayList<Card> playFlop() {
 		isPreflop = false;
 		dealFlop();
 		return communityCards;
 	}
 
-	
-	
 	public void dealFlop() {
 		deck.deal();
 		deck.deal();
@@ -166,35 +145,25 @@ public class Game {
 		communityCards.add(deck.deal());
 	}
 
-	
-	
 	public ArrayList<Card> playTurn() {
 		dealTurn();
 		return communityCards;
 	}
-	
-	
 
 	public void dealTurn() {
 		deck.deal();
 		communityCards.add(deck.deal());
 	}
 
-	
-	
 	public ArrayList<Card> playRiver() {
 		dealRiver();
 		return communityCards;
 	}
-	
-	
 
 	public void dealRiver() {
 		deck.deal();
 		communityCards.add(deck.deal());
 	}
-	
-	
 
 	public boolean isPreflop() {
 		if (isPreflop == true) {
@@ -203,13 +172,13 @@ public class Game {
 
 		return false;
 	}
-	
-	
+
 	/**
 	 * check for players bet turn
+	 * 
 	 * @param isPreflop
 	 */
-	public void playBettingRound(boolean isPreflop){
+	public void playBettingRound(boolean isPreflop) {
 		maxBet = getMaxBet();
 		do {
 			playerActed = false;
@@ -231,11 +200,10 @@ public class Game {
 		;
 	}
 
-	
 	/**
 	 * Initialize player betting
 	 */
-	public void playerBettingRound(){
+	public void playerBettingRound() {
 
 		isPlayerTurn = !isPlayerTurn;
 		if (!player.isAllIn()) {
@@ -250,7 +218,7 @@ public class Game {
 				case RAISE:
 					playerActed = true;
 					computerActed = false;
-					int raiseAmount = player.bet(askPlayerForBet(player));
+					int raiseAmount = player.bet(determineRaiseAmount(askPlayerForBet(player)));
 					maxBet += raiseAmount;
 					PokerTable.displayMessage(player.getName() + " raises " + raiseAmount + ".");
 					PokerTable.updateCurrentMessage(player.getName() + " raises " + raiseAmount + ".");
@@ -270,13 +238,12 @@ public class Game {
 					playerActed = true;
 					computerActed = false;
 					int discrepancy = 0;
-					if(player.getBet() > computer.getBet()) {
+					if (player.getBet() > computer.getBet()) {
 						discrepancy = player.getBet() - computer.getBet();
-					}
-					else if(player.getBet() < computer.getBet()) {
+					} else if (player.getBet() < computer.getBet()) {
 						discrepancy = computer.getBet() - player.getBet();
 					}
-					int raiseAmount = player.bet(askPlayerForBet(player));
+					int raiseAmount = player.bet(determineRaiseAmount(askPlayerForBet(player)));
 					maxBet += raiseAmount - discrepancy;
 					PokerTable.displayMessage(player.getName() + " raises " + raiseAmount + ".");
 					PokerTable.updateCurrentMessage(player.getName() + " raises " + raiseAmount + ".");
@@ -327,8 +294,13 @@ public class Game {
 					playerActed = false;
 					int raiseAmount = computer.bet(maxBet - computer.getBet() + smallBlind * 2);
 					maxBet += raiseAmount;
-					PokerTable.displayMessage(computer.getName() + " raises " + raiseAmount + ".");
-					PokerTable.updateCurrentMessage(computer.getName() + " raises " + raiseAmount + ".");
+					if (player.getMoney() == 0) {
+						PokerTable.displayMessage(computer.getName() + " calls.");
+						PokerTable.updateCurrentMessage(computer.getName() + " calls.");
+					} else {
+						PokerTable.displayMessage(computer.getName() + " raises " + raiseAmount + ".");
+						PokerTable.updateCurrentMessage(computer.getName() + " raises " + raiseAmount + ".");
+					}
 					break;
 				case FOLD:
 					PokerTable.displayMessage(computer.getName() + " folds.");
@@ -341,8 +313,16 @@ public class Game {
 		}
 	}
 
-	
-	
+	public int determineRaiseAmount(int userInput) {
+		int discrepancy = 0;
+		discrepancy = computer.getBet() - player.getBet();
+
+		if (userInput > computer.getMoney()) {
+			return computer.getMoney() + discrepancy;
+		}
+		return userInput;
+	}
+
 	public void playShowdown() {
 		Hand playerHand = player.getHand();
 		Hand computerHand = computer.getHand();
@@ -361,8 +341,6 @@ public class Game {
 		isShowdown = true;
 	}
 
-	
-	
 	public int getMaxBet() {
 		int maxBet = 0;
 
@@ -374,8 +352,6 @@ public class Game {
 		}
 		return maxBet;
 	}
-	
-	
 
 	public boolean playerHasBet(Player player, int maxBet) {
 		if (player.getBet() < maxBet) {
@@ -383,8 +359,6 @@ public class Game {
 		}
 		return true;
 	}
-	
-	
 
 	public int getCurrentPot() {
 		int pot = 0;
@@ -395,14 +369,10 @@ public class Game {
 		return pot;
 	}
 
-	 
-	
 	public int askPlayerForBet(Player player) {
 		int betAmount = PokerTable.getUserInput("How much would you like to bet?");
 		return betAmount;
 	}
-	
-	
 
 	public void doRoundWinner() {
 		if (winner == player) {
@@ -415,10 +385,10 @@ public class Game {
 		}
 		if (winner != null) {
 			if (isShowdown) {
-				PokerTable.displayMessage(
-						winner.getName() + " wins the hand with a " + winner.getHand().getHighestRank() + " and the pot of " + this.getCurrentPot() + "!");
-				PokerTable.updateCurrentMessage(
-						winner.getName() + " wins the hand with a " + winner.getHand().getHighestRank() + " and the pot of " + this.getCurrentPot() + "!");
+				PokerTable.displayMessage(winner.getName() + " wins the hand with a "
+						+ winner.getHand().getHighestRank() + " and the pot of " + this.getCurrentPot() + "!");
+				PokerTable.updateCurrentMessage(winner.getName() + " wins the hand with a "
+						+ winner.getHand().getHighestRank() + " and the pot of " + this.getCurrentPot() + "!");
 			} else {
 				PokerTable.displayMessage(
 						winner.getName() + " wins the hand and the pot of " + this.getCurrentPot() + "!");
@@ -433,9 +403,6 @@ public class Game {
 		winner = null;
 
 	}
-	
-	
-	
 
 	public boolean checkForWinner() {
 		if (player.getMoney() == 0) {
