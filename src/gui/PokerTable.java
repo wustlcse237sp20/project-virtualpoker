@@ -531,25 +531,25 @@ public class PokerTable {
 		pokerTableLabel.setIcon(new ImageIcon(pokerTableImage));
 		layeredPane.add(pokerTableLabel);
 
-		JLabel lblNewLabel = new JLabel("");
-		lblNewLabel.setBackground(Color.LIGHT_GRAY);
-		lblNewLabel.setBorder(new MatteBorder(1, 1, 1, 1, (Color) Color.DARK_GRAY));
-		lblNewLabel.setBounds(375, 443, 83, 71);
-		layeredPane.add(lblNewLabel);
+		JLabel potBorder = new JLabel("");
+		potBorder.setBackground(Color.LIGHT_GRAY);
+		potBorder.setBorder(new MatteBorder(1, 1, 1, 1, (Color) Color.DARK_GRAY));
+		potBorder.setBounds(375, 443, 83, 71);
+		layeredPane.add(potBorder);
 
-		JLabel lblNewLabel_11 = new JLabel("POT");
-		lblNewLabel_11.setForeground(Color.RED);
-		lblNewLabel_11.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_11.setHorizontalTextPosition(SwingConstants.CENTER);
-		lblNewLabel_11.setFont(new Font("Ti28s New Roman", Font.BOLD, 15));
-		lblNewLabel_11.setBounds(393, 455, 46, 14);
-		layeredPane.add(lblNewLabel_11);
+		JLabel potLabel = new JLabel("POT");
+		potLabel.setForeground(Color.RED);
+		potLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		potLabel.setHorizontalTextPosition(SwingConstants.CENTER);
+		potLabel.setFont(new Font("Ti28s New Roman", Font.BOLD, 15));
+		potLabel.setBounds(393, 455, 46, 14);
+		layeredPane.add(potLabel);
 
-		JLabel lblNewLabel_2 = new JLabel(String.valueOf(potAmount));
-		lblNewLabel_2.setForeground(Color.RED);
-		lblNewLabel_2.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_2.setBounds(403, 486, 22, 14);
-		layeredPane.add(lblNewLabel_2);
+		JLabel potAmountLabel = new JLabel(String.valueOf(potAmount));
+		potAmountLabel.setForeground(Color.RED);
+		potAmountLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		potAmountLabel.setBounds(403, 486, 25, 14);
+		layeredPane.add(potAmountLabel);
 	}
 
 }

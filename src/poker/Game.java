@@ -215,18 +215,22 @@ public class Game {
 			playerActed = false;
 			computerActed = false;
 			if (isPlayerTurn) {
-				isPlayerTurn = !isPlayerTurn;
 				playerBettingRound();
 				if (winner == null && !(computerActed && playerActed)) {
 					computerBettingRound();
 				}
 			} else {
-				isPlayerTurn = !isPlayerTurn;
 				computerBettingRound();
 				if (winner == null && !(computerActed && playerActed)) {
 					playerBettingRound();
 				}
 			}
+			isPlayerTurn = !isPlayerTurn;
+			System.out.println(player.getBet());
+			System.out.println(computer.getBet());
+			System.out.println(playerHasBet(player, maxBet));
+			System.out.println(playerHasBet(computer, maxBet));
+			System.out.println(computerActed && playerActed);
 		} while (((!playerHasBet(player, maxBet) || !playerHasBet(computer, maxBet)) || !(computerActed && playerActed))
 				&& (winner == null) && !player.isAllIn() && !computer.isAllIn());
 		PokerTable.displayMessage("Current Pot: " + this.getCurrentPot())
@@ -271,8 +275,15 @@ public class Game {
 				case RAISE:
 					playerActed = true;
 					computerActed = false;
+					int discrepancy = 0;
+					if(player.getBet() > computer.getBet()) {
+						discrepancy = player.getBet() - computer.getBet();
+					}
+					else if(player.getBet() < computer.getBet()) {
+						discrepancy = computer.getBet() - player.getBet();
+					}
 					int raiseAmount = player.bet(askPlayerForBet(player));
-					maxBet += raiseAmount;
+					maxBet += raiseAmount - discrepancy;
 					PokerTable.displayMessage(player.getName() + " raises " + raiseAmount + ".");
 					PokerTable.updateCurrentMessage(player.getName() + " raises " + raiseAmount + ".");
 					break;
