@@ -226,14 +226,8 @@ public class Game {
 				}
 			}
 			isPlayerTurn = !isPlayerTurn;
-			System.out.println(player.getBet());
-			System.out.println(computer.getBet());
-			System.out.println(playerHasBet(player, maxBet));
-			System.out.println(playerHasBet(computer, maxBet));
-			System.out.println(computerActed && playerActed);
 		} while (((!playerHasBet(player, maxBet) || !playerHasBet(computer, maxBet)) || !(computerActed && playerActed))
 				&& (winner == null) && !player.isAllIn() && !computer.isAllIn());
-		PokerTable.displayMessage("Current Pot: " + this.getCurrentPot())
 		;
 	}
 
@@ -401,7 +395,7 @@ public class Game {
 		return pot;
 	}
 
-	
+	 
 	
 	public int askPlayerForBet(Player player) {
 		int betAmount = PokerTable.getUserInput("How much would you like to bet?");
@@ -447,7 +441,6 @@ public class Game {
 		if (player.getMoney() == 0) {
 			PokerTable.displayMessage("The computer wins the game!");
 			PokerTable.updateCurrentMessage("The computer wins the game!");
-
 			return true;
 		} else if (computer.getMoney() == 0) {
 			PokerTable.displayMessage("You win the game!");
