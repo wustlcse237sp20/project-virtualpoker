@@ -369,11 +369,11 @@ public class PokerTable {
 		lblNewLabel_222.setBounds(51, 443, 289, 167);
 		layeredPane.add(lblNewLabel_222);
 
-		JLabel lblNewLabel_20 = new JLabel("VIRTUAL POKER");
-		lblNewLabel_20.setForeground(Color.GRAY);
-		lblNewLabel_20.setFont(new Font("Times New Roman", Font.BOLD, 34));
-		lblNewLabel_20.setBounds(273, 21, 295, 40);
-		layeredPane.add(lblNewLabel_20);
+		JLabel titleLabel = new JLabel("VIRTUAL POKER");
+		titleLabel.setForeground(Color.GRAY);
+		titleLabel.setFont(new Font("Times New Roman", Font.BOLD, 34));
+		titleLabel.setBounds(273, 21, 295, 40);
+		layeredPane.add(titleLabel);
 
 		JLabel playerMoneyLabel = new JLabel("Player Money");
 		playerMoneyLabel.setFont(new Font("Times New Roman", Font.BOLD, 15));

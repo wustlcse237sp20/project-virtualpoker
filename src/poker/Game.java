@@ -395,7 +395,7 @@ public class Game {
 		return pot;
 	}
 
-	
+	 
 	
 	public int askPlayerForBet(Player player) {
 		int betAmount = PokerTable.getUserInput("How much would you like to bet?");
@@ -441,7 +441,6 @@ public class Game {
 		if (player.getMoney() == 0) {
 			PokerTable.displayMessage("The computer wins the game!");
 			PokerTable.updateCurrentMessage("The computer wins the game!");
-
 			return true;
 		} else if (computer.getMoney() == 0) {
 			PokerTable.displayMessage("You win the game!");
